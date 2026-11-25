@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<!--
+  Seite 8: Das Box-Modell
+  Jedes HTML-Element ist für CSS ein Rechteck ("Box"). Hier lernst du, wie Größe,
+  Innenabstand, Rahmen und Außenabstand zusammenspielen.
+  Klassen in den Beispielen beginnen mit "b8-".
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 8: Box-Modell – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 8: Das Box-Modell 📦</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#modell">Die vier Schichten</a></li>
+          <li><a href="#padding-margin">padding und margin</a></li>
+          <li><a href="#border">Rahmen (border) und Ecken</a></li>
+          <li><a href="#groesse">Breite und Höhe</a></li>
+          <li><a href="#box-sizing">box-sizing</a></li>
+          <li><a href="#zentrieren">Zentrieren mit margin: auto</a></li>
+          <li><a href="#zusammenfallen">Zusammenfallende Abstände</a></li>
+          <li><a href="#display">display</a></li>
+          <li><a href="#verstecken">Verstecken: display, visibility, opacity</a></li>
+          <li><a href="#overflow">overflow</a></li>
+          <li><a href="#schatten">Schatten und outline</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="modell">
+        <h2>8.1 Die vier Schichten</h2>
+        <p>Von innen nach außen besteht jede Box aus:</p>
+        <ol>
+          <li><strong>content</strong> – der Inhalt (Text, Bild)</li>
+          <li><strong>padding</strong> – Innenabstand, hat die Hintergrundfarbe der Box</li>
+          <li><strong>border</strong> – der Rahmen</li>
+          <li><strong>margin</strong> – Außenabstand zu anderen Boxen, immer durchsichtig</li>
+        </ol>
+        <div class="beispiel">
+          <style>
+            /* Die äußeren Boxen färben wir nur, um die Schichten sichtbar zu machen */
+            .b8-margin  { background-color: #f9cb9c; padding: 20px; display: inline-block; color: #222; }
+            .b8-border  { background-color: #222; padding: 10px; }
+            .b8-padding { background-color: #93c47d; padding: 30px; }
+            .b8-content { background-color: #6fa8dc; padding: 0.5rem; text-align: center; }
+          </style>
+          <div class="b8-margin">margin
+            <div class="b8-border"><span style="color: white;">border</span>
+              <div class="b8-padding">padding
+                <div class="b8-content">content</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="tipp">💡 F12 → Element anklicken → unten rechts im Reiter „Berechnet“ zeigt der Browser genau dieses Bild mit den echten Zahlen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="padding-margin">
+        <h2>8.2 padding und margin</h2>
+        <p>Beide gibt es für jede Seite einzeln (<code>padding-top</code>, <code>-right</code>, <code>-bottom</code>, <code>-left</code>) oder als Kurzschreibweise im Uhrzeigersinn:</p>
+        <table class="tabelle">
+          <tr><th>Schreibweise</th><th>Bedeutung</th></tr>
+          <tr><td><code>padding: 10px;</code></td><td>alle vier Seiten 10px</td></tr>
+          <tr><td><code>padding: 10px 20px;</code></td><td>oben/unten 10px, links/rechts 20px</td></tr>
+          <tr><td><code>padding: 10px 20px 30px;</code></td><td>oben 10, links/rechts 20, unten 30</td></tr>
+          <tr><td><code>padding: 10px 20px 30px 40px;</code></td><td>oben, rechts, unten, links (Merkhilfe: „TRouBLe“ = Top Right Bottom Left)</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b8-pm { background-color: #6fa8dc; color: #111; border: 2px solid #1c4587; margin-bottom: 0.5rem; }
+          </style>
+          <div class="b8-pm" style="padding: 5px;">padding: 5px</div>
+          <div class="b8-pm" style="padding: 20px;">padding: 20px</div>
+          <div class="b8-pm" style="padding: 5px 60px;">padding: 5px 60px</div>
+          <div class="b8-pm" style="margin-left: 80px;">margin-left: 80px</div>
+          <div class="b8-pm" style="margin: 30px 10px;">margin: 30px 10px</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="border">
+        <h2>8.3 Rahmen (border) und Ecken</h2>
+        <p>
+          Kurzschreibweise: <code>border: breite stil farbe;</code>, z. B.
+          <code>border: 2px solid red;</code>. Stile: <code>solid</code>, <code>dashed</code>,
+          <code>dotted</code>, <code>double</code>, <code>groove</code>, <code>ridge</code>,
+          <code>inset</code>, <code>outset</code>, <code>none</code>.
+          <code>border-radius</code> rundet die Ecken.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b8-rahmen { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+            .b8-rahmen div { padding: 0.7rem; min-width: 110px; text-align: center; }
+          </style>
+          <div class="b8-rahmen">
+            <div style="border: 3px solid crimson;">solid</div>
+            <div style="border: 3px dashed crimson;">dashed</div>
+            <div style="border: 3px dotted crimson;">dotted</div>
+            <div style="border: 6px double crimson;">double</div>
+            <div style="border-bottom: 4px solid crimson;">nur unten</div>
+            <div style="border: 3px solid crimson; border-radius: 12px;">radius 12px</div>
+            <div style="border: 3px solid crimson; border-radius: 50%; width: 80px; height: 80px; min-width: 0; display: grid; place-items: center;">Kreis</div>
+            <div style="border: 3px solid crimson; border-radius: 30px 0;">30px 0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="groesse">
+        <h2>8.4 Breite und Höhe</h2>
+        <ul>
+          <li><code>width</code> / <code>height</code> – feste Größe</li>
+          <li><code>max-width</code> – höchstens so breit (wichtig fürs Handy!)</li>
+          <li><code>min-width</code> / <code>min-height</code> – mindestens so groß</li>
+          <li><code>auto</code> – der Browser rechnet selbst (Standard)</li>
+          <li><code>aspect-ratio: 16 / 9</code> – festes Seitenverhältnis</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b8-g { background-color: #93c47d; color: #111; margin-bottom: 0.5rem; padding: 0.3rem; }
+          </style>
+          <div class="b8-g" style="width: 600px; max-width: 100%;">width 600px, aber max-width 100 % (zieh das Fenster schmal!)</div>
+          <div class="b8-g" style="min-height: 80px;">min-height: 80px</div>
+          <div class="b8-g" style="width: 200px; aspect-ratio: 16 / 9;">aspect-ratio 16/9</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="box-sizing">
+        <h2>8.5 box-sizing</h2>
+        <p>
+          Standardmäßig (<code>content-box</code>) gilt <code>width</code> nur für den Inhalt.
+          padding und border kommen <strong>dazu</strong>. Mit <code>border-box</code> sind sie
+          schon <strong>enthalten</strong>. Das ist viel einfacher zu rechnen, deshalb steht ganz
+          oben in deiner style.css: <code>* { box-sizing: border-box; }</code>
+        </p>
+        <div class="beispiel">
+          <style>
+            .b8-bs { width: 300px; padding: 20px; border: 10px solid #1c4587; background-color: #6fa8dc; color: #111; margin-bottom: 0.5rem; }
+          </style>
+          <div class="b8-bs" style="box-sizing: content-box;">content-box: in Wahrheit 300 + 40 + 20 = 360px breit</div>
+          <div class="b8-bs" style="box-sizing: border-box;">border-box: genau 300px breit</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zentrieren">
+        <h2>8.6 Zentrieren mit margin: auto</h2>
+        <p>Ein Block-Element mit fester oder maximaler Breite wird mit <code>margin: 0 auto;</code> waagerecht zentriert. So ist auch der Hauptbereich dieser Seite zentriert (<code>main</code> in style.css).</p>
+        <div class="beispiel">
+          <div style="max-width: 250px; margin: 0 auto; background-color: #f9cb9c; color: #222; padding: 0.6rem; text-align: center;">
+            Ich bin mittig
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zusammenfallen">
+        <h2>8.7 Zusammenfallende Abstände (margin collapsing)</h2>
+        <p>
+          Wenn zwei Block-Elemente übereinander stehen, werden ihre margins oben und unten
+          <strong>nicht addiert</strong>. Es zählt nur der größere. Das überrascht viele!
+        </p>
+        <div class="beispiel">
+          <div style="margin-bottom: 30px; background-color: #6fa8dc; color: #111; padding: 0.4rem;">margin-bottom: 30px</div>
+          <div style="margin-top: 20px; background-color: #93c47d; color: #111; padding: 0.4rem;">margin-top: 20px → Abstand ist 30px, nicht 50px</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="display">
+        <h2>8.8 display</h2>
+        <table class="tabelle">
+          <tr><th>Wert</th><th>Verhalten</th></tr>
+          <tr><td><code>block</code></td><td>neue Zeile, volle Breite, width/height wirken</td></tr>
+          <tr><td><code>inline</code></td><td>im Textfluss, width/height wirken NICHT</td></tr>
+          <tr><td><code>inline-block</code></td><td>im Textfluss, aber width/height und padding wirken</td></tr>
+          <tr><td><code>none</code></td><td>komplett weg</td></tr>
+          <tr><td><code>flex</code> / <code>grid</code></td><td>moderne Layouts, eigene Seiten 11 und 12</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b8-d { background-color: #f9cb9c; color: #222; border: 1px solid #b45f06; width: 120px; padding: 0.3rem; margin: 0.2rem; }
+          </style>
+          <p>
+            <span class="b8-d" style="display: inline;">inline</span>
+            <span class="b8-d" style="display: inline;">width wirkt nicht</span>
+          </p>
+          <p>
+            <span class="b8-d" style="display: inline-block;">inline-block</span>
+            <span class="b8-d" style="display: inline-block;">120px breit</span>
+          </p>
+          <p><span class="b8-d" style="display: block;">block</span></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="verstecken">
+        <h2>8.9 Verstecken: display, visibility, opacity</h2>
+        <ul>
+          <li><code>display: none</code> – weg, der Platz wird frei</li>
+          <li><code>visibility: hidden</code> – unsichtbar, der Platz bleibt</li>
+          <li><code>opacity: 0</code> – durchsichtig, aber noch anklickbar; Werte von 0 bis 1</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b8-reihe span { display: inline-block; padding: 0.4rem 0.7rem; background-color: #6fa8dc; color: #111; margin-right: 0.3rem; }
+          </style>
+          <p class="b8-reihe"><span>A</span><span style="display: none;">B</span><span>C</span> ← B mit display: none</p>
+          <p class="b8-reihe"><span>A</span><span style="visibility: hidden;">B</span><span>C</span> ← B mit visibility: hidden</p>
+          <p class="b8-reihe"><span>A</span><span style="opacity: 0.3;">B</span><span>C</span> ← B mit opacity: 0.3</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="overflow">
+        <h2>8.10 overflow</h2>
+        <p>Was passiert, wenn der Inhalt nicht in die Box passt?</p>
+        <div class="beispiel">
+          <style>
+            .b8-of { width: 220px; height: 70px; border: 2px solid #1c4587; margin: 0 1rem 2.5rem 0; display: inline-block; vertical-align: top; font-size: 0.9rem; }
+          </style>
+          <div class="b8-of" style="overflow: visible;">visible (Standard): Der Text läuft einfach unten aus der Box hinaus und überlappt andere Dinge.</div>
+          <div class="b8-of" style="overflow: hidden;">hidden: Alles, was nicht passt, wird abgeschnitten und ist nicht mehr zu sehen, egal wie viel Text noch kommt.</div>
+          <div class="b8-of" style="overflow: auto;">auto: Wenn der Inhalt zu lang ist, erscheint eine Scrollleiste. Scroll mal nach unten, hier geht es weiter. Ende.</div>
+        </div>
+        <p class="tipp">💡 <code>text-overflow: ellipsis</code> mit <code>white-space: nowrap</code> und <code>overflow: hidden</code> kürzt einzeilige Texte mit „…“.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="schatten">
+        <h2>8.11 Schatten und outline</h2>
+        <p>
+          <code>box-shadow: x y unschärfe ausdehnung farbe;</code> erzeugt einen Schatten.
+          <code>outline</code> ist wie ein Rahmen, nimmt aber keinen Platz ein. Browser zeigen
+          ihn, wenn man ein Element mit der Tab-Taste auswählt. Entferne ihn nie ersatzlos!
+        </p>
+        <div class="beispiel">
+          <style>
+            .b8-s { display: inline-block; padding: 1rem; margin: 0.8rem; background-color: white; color: #222; border-radius: 8px; }
+          </style>
+          <div class="b8-s" style="box-shadow: 0 2px 6px rgb(0 0 0 / 20%);">leicht</div>
+          <div class="b8-s" style="box-shadow: 0 10px 25px rgb(0 0 0 / 35%);">stark</div>
+          <div class="b8-s" style="box-shadow: 6px 6px 0 #326ece;">harter Schatten</div>
+          <div class="b8-s" style="box-shadow: inset 0 0 12px rgb(0 0 0 / 40%);">inset (innen)</div>
+          <div class="b8-s" style="outline: 3px dashed orange; outline-offset: 4px;">outline</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue eine „Karte“: 300px breit, 1rem padding, 1px grauer Rahmen, runde Ecken, leichter Schatten, mittig mit margin auto.</li>
+          <li>Rechne: Wie breit ist eine Box mit <code>width: 200px; padding: 15px; border: 5px</code> mit content-box und mit border-box? Prüfe mit F12.</li>
+          <li>Mach drei Buttons nebeneinander mit inline-block und gleicher Breite.</li>
+          <li>Erstelle eine Box mit fester Höhe und langem Text, die eine Scrollleiste bekommt.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 8</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

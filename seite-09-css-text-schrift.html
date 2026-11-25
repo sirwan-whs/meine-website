@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--
+  Seite 9: Text, Schrift, Links, Listen und Tabellen gestalten
+  Klassen in den Beispielen beginnen mit "b9-".
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 9: Text und Schrift – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 9: Text und Schrift ✒️</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#text">Text ausrichten und dekorieren</a></li>
+          <li><a href="#abstaende">Zeilen- und Zeichenabstand</a></li>
+          <li><a href="#schriftarten">Schriftarten</a></li>
+          <li><a href="#schriftstil">Größe, Stärke, Stil</a></li>
+          <li><a href="#webfonts">Eigene Schriften (Web Fonts)</a></li>
+          <li><a href="#links">Links gestalten</a></li>
+          <li><a href="#listen">Listen gestalten</a></li>
+          <li><a href="#tabellen">Tabellen gestalten</a></li>
+          <li><a href="#cursor">Mauszeiger</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="text">
+        <h2>9.1 Text ausrichten und dekorieren</h2>
+        <table class="tabelle">
+          <tr><th>Eigenschaft</th><th>Werte</th></tr>
+          <tr><td><code>text-align</code></td><td><code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code> (Blocksatz)</td></tr>
+          <tr><td><code>text-decoration</code></td><td><code>none</code>, <code>underline</code>, <code>line-through</code>, <code>overline</code> + Stil und Farbe</td></tr>
+          <tr><td><code>text-transform</code></td><td><code>uppercase</code>, <code>lowercase</code>, <code>capitalize</code></td></tr>
+          <tr><td><code>text-indent</code></td><td>Einzug der ersten Zeile</td></tr>
+          <tr><td><code>text-shadow</code></td><td><code>x y unschärfe farbe</code></td></tr>
+        </table>
+        <div class="beispiel">
+          <p style="text-align: center;">zentriert</p>
+          <p style="text-align: right;">rechtsbündig</p>
+          <p style="text-align: justify;">Blocksatz: Die Wörter werden so verteilt, dass jede Zeile genau bis zum rechten Rand geht. Das sieht man erst bei mehreren Zeilen Text richtig, deshalb steht hier etwas mehr.</p>
+          <p style="text-decoration: underline wavy crimson;">wellig rot unterstrichen</p>
+          <p style="text-decoration: line-through;">durchgestrichen</p>
+          <p style="text-transform: uppercase;">wird groß geschrieben</p>
+          <p style="text-transform: capitalize;">jedes wort beginnt groß</p>
+          <p style="text-indent: 2rem;">Die erste Zeile dieses Absatzes ist eingerückt, so wie in einem Buch. Die zweite Zeile beginnt wieder ganz links am Rand.</p>
+          <p style="font-size: 2rem; font-weight: bold; text-shadow: 2px 2px 4px rgb(0 0 0 / 40%);">Text mit Schatten</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="abstaende">
+        <h2>9.2 Zeilen- und Zeichenabstand</h2>
+        <ul>
+          <li><code>line-height</code> – Zeilenhöhe, am besten ohne Einheit (z. B. <code>1.6</code> = 1,6-fache Schriftgröße)</li>
+          <li><code>letter-spacing</code> – Abstand zwischen Buchstaben</li>
+          <li><code>word-spacing</code> – Abstand zwischen Wörtern</li>
+          <li><code>white-space: nowrap</code> – kein automatischer Zeilenumbruch</li>
+        </ul>
+        <div class="beispiel">
+          <p style="line-height: 1;">line-height: 1 – eng. Diese Zeilen kleben fast aneinander, wenn der Text über mehrere Zeilen geht. Das liest sich schlecht.</p>
+          <p style="line-height: 2;">line-height: 2 – sehr luftig. Diese Zeilen haben viel Platz zwischen sich, wenn der Text über mehrere Zeilen geht.</p>
+          <p style="letter-spacing: 0.3em;">letter-spacing</p>
+          <p style="word-spacing: 1.5em;">word spacing mit großem Abstand</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="schriftarten">
+        <h2>9.3 Schriftarten</h2>
+        <p>
+          Mit <code>font-family</code> gibst du eine Liste von Schriften an. Der Browser nimmt
+          die erste, die installiert ist. Am Ende steht immer eine <strong>generische
+          Familie</strong> als Notlösung:
+        </p>
+        <ul>
+          <li><code>serif</code> – mit Füßchen (wie Times New Roman)</li>
+          <li><code>sans-serif</code> – ohne Füßchen (wie Arial), gut für Bildschirme</li>
+          <li><code>monospace</code> – alle Zeichen gleich breit (für Code)</li>
+          <li><code>cursive</code> – Schreibschrift, <code>fantasy</code> – verspielt</li>
+          <li><code>system-ui</code> – die Schrift deines Betriebssystems (nutzt diese Seite)</li>
+        </ul>
+        <div class="beispiel">
+          <p style="font-family: Georgia, 'Times New Roman', serif;">Georgia, serif</p>
+          <p style="font-family: Arial, Helvetica, sans-serif;">Arial, sans-serif</p>
+          <p style="font-family: Consolas, 'Courier New', monospace;">Consolas, monospace</p>
+          <p style="font-family: 'Comic Sans MS', cursive;">Comic Sans, cursive</p>
+          <p style="font-family: Impact, fantasy;">Impact, fantasy</p>
+        </div>
+        <p class="tipp">💡 Schriftnamen mit Leerzeichen kommen in Anführungszeichen: <code>'Times New Roman'</code>.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="schriftstil">
+        <h2>9.4 Größe, Stärke, Stil</h2>
+        <ul>
+          <li><code>font-size</code> – Größe, am besten in <code>rem</code></li>
+          <li><code>font-weight</code> – Stärke: <code>normal</code> (400), <code>bold</code> (700) oder 100 bis 900</li>
+          <li><code>font-style</code> – <code>italic</code> für kursiv</li>
+          <li><code>font-variant: small-caps</code> – Kapitälchen</li>
+          <li><code>font</code> – Kurzschreibweise: <code>font: italic bold 1.2rem/1.5 Georgia, serif;</code></li>
+        </ul>
+        <div class="beispiel">
+          <p style="font-size: 0.8rem;">0.8rem</p>
+          <p style="font-size: 1.2rem;">1.2rem</p>
+          <p style="font-size: 2rem;">2rem</p>
+          <p style="font-size: clamp(1rem, 4vw, 2.5rem);">clamp(1rem, 4vw, 2.5rem): wächst mit dem Fenster, aber nur zwischen min und max</p>
+          <p><span style="font-weight: 300;">300 dünn</span> · <span style="font-weight: 400;">400 normal</span> · <span style="font-weight: 700;">700 fett</span> · <span style="font-weight: 900;">900 sehr fett</span></p>
+          <p style="font-style: italic;">kursiv</p>
+          <p style="font-variant: small-caps;">Kapitälchen Für Überschriften</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="webfonts">
+        <h2>9.5 Eigene Schriften (Web Fonts)</h2>
+        <p>Nicht jeder hat jede Schrift installiert. Mit Web Fonts liefert die Website die Schrift selbst mit. Zwei Wege:</p>
+        <p><strong>1. Google Fonts:</strong> Auf fonts.google.com eine Schrift wählen, den <code>&lt;link&gt;</code>-Code in den head kopieren und dann benutzen:</p>
+        <pre><code>&lt;link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet"&gt;
+
+body {
+  font-family: "Poppins", sans-serif;
+}</code></pre>
+        <p><strong>2. Eigene Datei mit @font-face:</strong> Die Schriftdatei (.woff2) ins Projekt legen, z. B. in einen Ordner <code>schriften</code>:</p>
+        <pre><code>@font-face {
+  font-family: "MeineSchrift";              /* Name frei wählbar */
+  src: url("schriften/meine-schrift.woff2") format("woff2");
+  font-weight: 400;
+}
+
+h1 {
+  font-family: "MeineSchrift", sans-serif;
+}</code></pre>
+        <p class="tipp">💡 Achte auf die Lizenz der Schrift. Google Fonts dürfen frei benutzt werden. Nach der DSGVO ist es sogar besser, die Datei selbst zu hosten (Weg 2), weil dann keine Daten an Google gehen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="links">
+        <h2>9.6 Links gestalten</h2>
+        <p>Links haben verschiedene <strong>Zustände</strong>, die man mit Pseudo-Klassen anspricht. Die Reihenfolge ist wichtig (Merkhilfe: <strong>L</strong>o<strong>V</strong>e <strong>HA</strong>te):</p>
+        <ol>
+          <li><code>:link</code> – noch nicht besucht</li>
+          <li><code>:visited</code> – schon besucht</li>
+          <li><code>:hover</code> – Maus ist darüber</li>
+          <li><code>:active</code> – wird gerade angeklickt</li>
+        </ol>
+        <p>Dazu <code>:focus-visible</code> – per Tastatur ausgewählt (Tab-Taste).</p>
+        <div class="beispiel">
+          <style>
+            .b9-link:link    { color: #326ece; }
+            .b9-link:visited { color: #8e44ad; }
+            .b9-link:hover   { color: #e67e22; text-decoration: none; }
+            .b9-link:active  { color: crimson; }
+            .b9-link:focus-visible { outline: 3px solid orange; }
+
+            /* Ein Link, der wie ein Button aussieht */
+            .b9-knopf {
+              display: inline-block;
+              padding: 0.6rem 1.2rem;
+              background-color: #27ae60;
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              transition: background-color 0.2s;  /* weicher Farbwechsel */
+            }
+            .b9-knopf:hover { background-color: #1e8449; }
+          </style>
+          <p><a class="b9-link" href="#links">Fahr drüber, klick, drück Tab</a></p>
+          <p><a class="b9-knopf" href="#links">Link als Button</a></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="listen">
+        <h2>9.7 Listen gestalten</h2>
+        <ul>
+          <li><code>list-style-type</code> – <code>disc</code>, <code>circle</code>, <code>square</code>, <code>decimal</code>, <code>upper-roman</code>, <code>lower-alpha</code>, <code>none</code> oder ein eigenes Zeichen</li>
+          <li><code>list-style-position</code> – <code>inside</code> oder <code>outside</code></li>
+          <li><code>::marker</code> – das Aufzählungszeichen selbst färben</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b9-quadrat { list-style-type: square; }
+            .b9-roemisch { list-style-type: upper-roman; }
+            .b9-emoji { list-style-type: "✅ "; }
+            .b9-bunt li::marker { color: crimson; font-weight: bold; }
+            /* Liste ohne Punkte als Menü, nebeneinander */
+            .b9-menue { list-style: none; padding: 0; display: flex; gap: 1rem; }
+            .b9-menue li { background-color: #326ece; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; }
+          </style>
+          <ul class="b9-quadrat"><li>square</li><li>square</li></ul>
+          <ol class="b9-roemisch"><li>upper-roman</li><li>upper-roman</li></ol>
+          <ul class="b9-emoji"><li>eigenes Zeichen</li><li>eigenes Zeichen</li></ul>
+          <ol class="b9-bunt"><li>roter Marker</li><li>roter Marker</li></ol>
+          <ul class="b9-menue"><li>Start</li><li>Kurs</li><li>Kontakt</li></ul>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="tabellen">
+        <h2>9.8 Tabellen gestalten</h2>
+        <ul>
+          <li><code>border-collapse: collapse</code> – doppelte Linien zu einer zusammenfassen</li>
+          <li><code>tr:nth-child(even)</code> – jede zweite Zeile (Zebrastreifen)</li>
+          <li><code>tr:hover</code> – Zeile unter der Maus hervorheben</li>
+          <li><code>vertical-align</code> – Inhalt oben, mittig, unten in der Zelle</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b9-tab { border-collapse: collapse; width: 100%; color: #222; }
+            .b9-tab th { background-color: #326ece; color: white; text-align: left; }
+            .b9-tab th, .b9-tab td { padding: 0.5rem 0.8rem; border-bottom: 1px solid #ccc; }
+            .b9-tab tr:nth-child(even) td { background-color: #eef3fb; }  /* gerade Zeilen */
+            .b9-tab tr:nth-child(odd) td { background-color: #ffffff; }   /* ungerade Zeilen */
+            .b9-tab tr:hover td { background-color: #ffe08a; }            /* Zeile unter der Maus */
+            .b9-tab td:last-child { text-align: right; }                  /* Preise rechtsbündig */
+          </style>
+          <table class="b9-tab">
+            <tr><th>Produkt</th><th>Kategorie</th><th>Preis</th></tr>
+            <tr><td>Tastatur</td><td>Zubehör</td><td>49,99 €</td></tr>
+            <tr><td>Monitor</td><td>Bildschirm</td><td>199,00 €</td></tr>
+            <tr><td>Maus</td><td>Zubehör</td><td>24,90 €</td></tr>
+            <tr><td>Laptop</td><td>Computer</td><td>899,00 €</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="cursor">
+        <h2>9.9 Mauszeiger</h2>
+        <div class="beispiel">
+          <style>
+            .b9-cursor { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+            .b9-cursor span { border: 1px solid #999; padding: 0.5rem 0.8rem; border-radius: 6px; }
+          </style>
+          <p>Fahr mit der Maus über die Felder:</p>
+          <div class="b9-cursor">
+            <span style="cursor: pointer;">pointer</span>
+            <span style="cursor: help;">help</span>
+            <span style="cursor: wait;">wait</span>
+            <span style="cursor: not-allowed;">not-allowed</span>
+            <span style="cursor: move;">move</span>
+            <span style="cursor: text;">text</span>
+            <span style="cursor: crosshair;">crosshair</span>
+            <span style="cursor: zoom-in;">zoom-in</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Gestalte die Überschriften deiner Übungsseite mit einer Google-Font, Großbuchstaben und etwas Buchstabenabstand.</li>
+          <li>Setze für Fließtext <code>line-height: 1.6</code> und <code>max-width: 65ch</code> und vergleiche die Lesbarkeit.</li>
+          <li>Baue einen Link, der wie ein Button aussieht und beim Drüberfahren die Farbe wechselt.</li>
+          <li>Gestalte deine Stundenplan-Tabelle von Seite 4 mit Zebrastreifen und farbigem Kopf.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 9</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<!--
+  Seite 10: Positionierung, float, Pseudo-Klassen und Pseudo-Elemente
+  Klassen in den Beispielen beginnen mit "b10-".
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 10: Position und Pseudo-Klassen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 10: Position und Pseudo-Klassen 📍</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#position">position</a></li>
+          <li><a href="#absolut">relative und absolute zusammen</a></li>
+          <li><a href="#fixed-sticky">fixed und sticky</a></li>
+          <li><a href="#z-index">z-index: was liegt oben?</a></li>
+          <li><a href="#float">float und clear</a></li>
+          <li><a href="#pseudo-klassen">Pseudo-Klassen</a></li>
+          <li><a href="#nth-child">Strukturelle Pseudo-Klassen</a></li>
+          <li><a href="#formular-zustaende">Formular-Zustände</a></li>
+          <li><a href="#pseudo-elemente">Pseudo-Elemente</a></li>
+          <li><a href="#tooltip">Praxis: Tooltip und Badge</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="position">
+        <h2>10.1 position</h2>
+        <table class="tabelle">
+          <tr><th>Wert</th><th>Verhalten</th></tr>
+          <tr><td><code>static</code></td><td>Standard, ganz normal im Fluss. top/left wirken nicht.</td></tr>
+          <tr><td><code>relative</code></td><td>wird von seinem normalen Platz aus verschoben, der Platz bleibt frei</td></tr>
+          <tr><td><code>absolute</code></td><td>wird aus dem Fluss genommen und am nächsten positionierten Vorfahren ausgerichtet</td></tr>
+          <tr><td><code>fixed</code></td><td>klebt am Fenster, auch beim Scrollen</td></tr>
+          <tr><td><code>sticky</code></td><td>normal, bis es beim Scrollen eine Kante erreicht, dann klebt es</td></tr>
+        </table>
+        <p>Verschoben wird mit <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> (oder kurz <code>inset</code>).</p>
+        <div class="beispiel">
+          <style>
+            .b10-k { display: inline-block; width: 90px; padding: 0.6rem; background-color: #6fa8dc; color: #111; margin-right: 0.3rem; text-align: center; }
+          </style>
+          <div class="b10-k">1</div>
+          <div class="b10-k" style="position: relative; top: 20px; left: 20px; background-color: #f6b26b;">2 relative</div>
+          <div class="b10-k">3</div>
+          <p style="margin-top: 2rem;">Box 2 ist 20px nach unten und rechts gerückt. Ihr alter Platz bleibt frei.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="absolut">
+        <h2>10.2 relative und absolute zusammen</h2>
+        <p>
+          Das wichtigste Muster: Das Eltern-Element bekommt <code>position: relative</code>, das
+          Kind <code>position: absolute</code>. Dann bezieht sich <code>top</code>/<code>right</code>
+          des Kindes auf die Ecken des Eltern-Elements.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b10-eltern { position: relative; height: 160px; border: 2px dashed #1c4587; }
+            .b10-kind { position: absolute; padding: 0.4rem 0.6rem; background-color: #f6b26b; color: #111; }
+          </style>
+          <div class="b10-eltern">
+            Eltern (relative)
+            <div class="b10-kind" style="top: 0; right: 0;">oben rechts</div>
+            <div class="b10-kind" style="bottom: 0; left: 0;">unten links</div>
+            <!-- Trick zum perfekten Zentrieren: 50 % verschieben und mit translate um die halbe eigene Größe zurück -->
+            <div class="b10-kind" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">genau mittig</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fixed-sticky">
+        <h2>10.3 fixed und sticky</h2>
+        <p>
+          <code>fixed</code> nimmt man für Dinge, die immer sichtbar sein sollen, z. B. einen
+          „Nach oben“-Button. Unten rechts auf dieser Seite siehst du einen.
+          <code>sticky</code> ist ideal für Überschriften in langen Listen: Scroll in der Box!
+        </p>
+        <div class="beispiel">
+          <style>
+            .b10-scroll { height: 180px; overflow: auto; border: 2px solid #1c4587; }
+            .b10-kopf { position: sticky; top: 0; background-color: #326ece; color: white; padding: 0.3rem 0.6rem; margin: 0; }
+            .b10-scroll p { margin: 0; padding: 0.3rem 0.6rem; }
+          </style>
+          <div class="b10-scroll">
+            <h4 class="b10-kopf">A</h4>
+            <p>Apfel</p><p>Ananas</p><p>Aprikose</p><p>Avocado</p>
+            <h4 class="b10-kopf">B</h4>
+            <p>Banane</p><p>Birne</p><p>Brombeere</p><p>Blaubeere</p>
+            <h4 class="b10-kopf">C</h4>
+            <p>Cranberry</p><p>Clementine</p><p>Cherimoya</p>
+          </div>
+        </div>
+        <!-- Der echte fixed-Button für diese Seite. Er springt mit #top ganz nach oben. -->
+        <a href="#" class="b10-nach-oben" aria-label="Nach oben">⬆</a>
+        <style>
+          .b10-nach-oben {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: 3rem;
+            height: 3rem;
+            display: grid;
+            place-items: center;
+            background-color: #326ece;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgb(0 0 0 / 30%);
+            z-index: 10;
+          }
+        </style>
+        <pre><code>.nach-oben {
+  position: fixed;   /* am Fenster festkleben */
+  right: 1rem;       /* 1rem vom rechten Rand */
+  bottom: 1rem;      /* 1rem vom unteren Rand */
+  z-index: 10;       /* über allem anderen */
+}</code></pre>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="z-index">
+        <h2>10.4 z-index: was liegt oben?</h2>
+        <p>Überlappen sich positionierte Elemente, entscheidet <code>z-index</code>: Die höhere Zahl liegt oben. Es wirkt nur bei Elementen mit <code>position</code> (nicht static), in Flex und Grid.</p>
+        <div class="beispiel">
+          <style>
+            .b10-stapel { position: relative; height: 150px; }
+            .b10-karte { position: absolute; width: 130px; height: 90px; padding: 0.5rem; color: white; border-radius: 8px; box-shadow: 0 3px 8px rgb(0 0 0 / 30%); }
+          </style>
+          <div class="b10-stapel">
+            <div class="b10-karte" style="left: 0; top: 0; background-color: #c0392b; z-index: 1;">z-index 1</div>
+            <div class="b10-karte" style="left: 60px; top: 25px; background-color: #27ae60; z-index: 3;">z-index 3</div>
+            <div class="b10-karte" style="left: 120px; top: 50px; background-color: #2980b9; z-index: 2;">z-index 2</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="float">
+        <h2>10.5 float und clear</h2>
+        <p>
+          <code>float: left</code> oder <code>right</code> schiebt ein Element an den Rand, und
+          Text fließt drumherum, wie bei Bildern in einer Zeitung. Früher hat man damit ganze
+          Layouts gebaut, heute nimmt man dafür Flexbox und Grid. <code>clear: both</code>
+          beendet das Umfließen.
+        </p>
+        <div class="beispiel">
+          <img src="bilder/logo.svg" alt="" width="80" height="80" style="float: left; margin: 0 1rem 0.5rem 0;">
+          <p>
+            Dieser Text fließt um das Logo herum, weil es mit float nach links geschoben wurde.
+            Wenn der Text länger ist als das Bild hoch, geht er darunter wieder über die volle
+            Breite. So sieht man es oft in Zeitungsartikeln und Blogs. Noch ein bisschen mehr
+            Text, damit man den Effekt gut erkennt.
+          </p>
+          <p style="clear: both; border-top: 1px dashed #999; padding-top: 0.4rem;">Dieser Absatz hat <code>clear: both</code> und beginnt deshalb unter dem Bild.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="pseudo-klassen">
+        <h2>10.6 Pseudo-Klassen</h2>
+        <p>Eine Pseudo-Klasse beginnt mit <strong>einem</strong> Doppelpunkt und wählt Elemente in einem bestimmten <strong>Zustand</strong> aus:</p>
+        <ul>
+          <li><code>:hover</code> – Maus darüber</li>
+          <li><code>:active</code> – wird gerade gedrückt</li>
+          <li><code>:focus</code> – hat den Fokus (z. B. Eingabefeld, in dem der Cursor ist)</li>
+          <li><code>:focus-within</code> – irgendein Kind hat den Fokus</li>
+          <li><code>:not(...)</code> – alles außer …</li>
+          <li><code>:has(...)</code> – Elemente, die etwas Bestimmtes enthalten</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b10-hover { padding: 0.8rem; background-color: #ddd; color: #222; border-radius: 8px; transition: all 0.2s; }
+            .b10-hover:hover { background-color: #326ece; color: white; transform: scale(1.03); }
+            .b10-hover:active { background-color: #1c4587; }
+
+            .b10-feld:focus { outline: 3px solid #27ae60; background-color: #eafaf1; }
+
+            .b10-gruppe { padding: 0.6rem; border: 2px solid #ccc; border-radius: 8px; margin-top: 0.6rem; }
+            .b10-gruppe:focus-within { border-color: #e67e22; }  /* wird orange, sobald ein Feld darin aktiv ist */
+
+            .b10-liste li:not(:last-child) { border-bottom: 1px solid #ccc; }  /* alle außer dem letzten */
+
+            .b10-karten div { padding: 0.5rem; border: 2px solid #ccc; margin-top: 0.4rem; }
+            .b10-karten div:has(img) { border-color: #8e44ad; }  /* nur Karten, die ein Bild enthalten */
+          </style>
+          <div class="b10-hover">Fahr über mich und klick</div>
+          <p><label>Klick hinein: <input class="b10-feld" type="text"></label></p>
+          <div class="b10-gruppe">
+            <label>Name <input type="text"></label>
+            <label>Ort <input type="text"></label>
+          </div>
+          <ul class="b10-liste"><li>Linie darunter</li><li>Linie darunter</li><li>keine Linie (letztes)</li></ul>
+          <div class="b10-karten">
+            <div>Karte ohne Bild</div>
+            <div><img src="bilder/logo.svg" alt="" width="24" height="24"> Karte mit Bild (lila Rahmen dank :has)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="nth-child">
+        <h2>10.7 Strukturelle Pseudo-Klassen</h2>
+        <table class="tabelle">
+          <tr><th>Selektor</th><th>Wählt</th></tr>
+          <tr><td><code>:first-child</code> / <code>:last-child</code></td><td>erstes / letztes Kind</td></tr>
+          <tr><td><code>:nth-child(3)</code></td><td>das dritte Kind</td></tr>
+          <tr><td><code>:nth-child(odd)</code> / <code>(even)</code></td><td>ungerade / gerade</td></tr>
+          <tr><td><code>:nth-child(3n)</code></td><td>jedes dritte (3, 6, 9, …)</td></tr>
+          <tr><td><code>:nth-child(-n+3)</code></td><td>die ersten drei</td></tr>
+          <tr><td><code>:first-of-type</code></td><td>das erste Element seiner Art</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b10-zahlen { display: flex; flex-wrap: wrap; gap: 0.3rem; list-style: none; padding: 0; }
+            .b10-zahlen li { width: 2.4rem; height: 2.4rem; display: grid; place-items: center; background-color: #ddd; color: #222; border-radius: 6px; }
+            .b10-zahlen li:first-child { background-color: #27ae60; color: white; }
+            .b10-zahlen li:last-child { background-color: #c0392b; color: white; }
+            .b10-zahlen li:nth-child(3n) { outline: 3px solid #8e44ad; }
+            .b10-zahlen li:nth-child(-n+3) { font-weight: bold; }
+          </style>
+          <ul class="b10-zahlen">
+            <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li>
+          </ul>
+          <p>Grün = erstes, Rot = letztes, lila Rahmen = jedes dritte, fett = die ersten drei.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="formular-zustaende">
+        <h2>10.8 Formular-Zustände</h2>
+        <ul>
+          <li><code>:checked</code> – angehakte Checkbox oder gewähltes Radio</li>
+          <li><code>:disabled</code> / <code>:enabled</code> – gesperrt / benutzbar</li>
+          <li><code>:required</code> / <code>:optional</code> – Pflichtfeld oder nicht</li>
+          <li><code>:valid</code> / <code>:invalid</code> – Prüfung bestanden / nicht bestanden</li>
+          <li><code>:placeholder-shown</code> – Feld ist noch leer</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            /* Ein Schalter ganz ohne JavaScript: Checkbox + Label + :checked */
+            .b10-schalter input { position: absolute; opacity: 0; }          /* echte Checkbox unsichtbar */
+            .b10-schalter span {
+              display: inline-block; width: 3rem; height: 1.6rem; border-radius: 1rem;
+              background-color: #bbb; position: relative; vertical-align: middle; transition: background-color 0.2s;
+            }
+            .b10-schalter span::after {                                     /* der weiße Knopf */
+              content: ""; position: absolute; top: 0.2rem; left: 0.2rem;
+              width: 1.2rem; height: 1.2rem; border-radius: 50%; background-color: white; transition: left 0.2s;
+            }
+            .b10-schalter input:checked + span { background-color: #27ae60; }          /* + = direkt danach */
+            .b10-schalter input:checked + span::after { left: 1.6rem; }
+            .b10-schalter input:focus-visible + span { outline: 3px solid orange; }
+
+            .b10-mail:invalid { border: 2px solid crimson; }
+            .b10-mail:valid { border: 2px solid #27ae60; }
+          </style>
+          <p><label class="b10-schalter"><input type="checkbox"> <span></span> Benachrichtigungen</label></p>
+          <p><label>E-Mail: <input class="b10-mail" type="email" required placeholder="tippen …"></label></p>
+          <p><button type="button" disabled>Gesperrter Button</button></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="pseudo-elemente">
+        <h2>10.9 Pseudo-Elemente</h2>
+        <p>Pseudo-Elemente beginnen mit <strong>zwei</strong> Doppelpunkten und gestalten einen <strong>Teil</strong> eines Elements oder fügen etwas hinzu:</p>
+        <ul>
+          <li><code>::before</code> / <code>::after</code> – fügt Inhalt vor / nach dem Inhalt ein. Braucht immer <code>content</code>!</li>
+          <li><code>::first-letter</code> / <code>::first-line</code> – erster Buchstabe / erste Zeile</li>
+          <li><code>::selection</code> – markierter Text</li>
+          <li><code>::placeholder</code> – der Platzhaltertext in Feldern</li>
+          <li><code>::marker</code> – Aufzählungszeichen (Seite 9)</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b10-pflicht::after { content: " *"; color: crimson; }
+            .b10-zitat::before { content: "„"; font-size: 2rem; color: #326ece; }
+            .b10-zitat::after { content: "“"; font-size: 2rem; color: #326ece; }
+            .b10-buch::first-letter { font-size: 3rem; float: left; line-height: 1; margin-right: 0.3rem; color: #8e44ad; font-weight: bold; }
+            .b10-buch::first-line { font-variant: small-caps; }
+            .b10-markieren::selection { background-color: #f1c40f; color: black; }
+            .b10-platz::placeholder { color: #8e44ad; font-style: italic; }
+          </style>
+          <p class="b10-pflicht">Name (Pflichtfeld)</p>
+          <p class="b10-zitat">Ein Zitat mit eingefügten Anführungszeichen</p>
+          <p class="b10-buch">Es war einmal ein kleiner Programmierer, der jeden Abend Code schrieb. Der erste Buchstabe ist groß wie in einem Märchenbuch, und die erste Zeile steht in Kapitälchen.</p>
+          <p class="b10-markieren">Markiere diesen Text mit der Maus: Die Markierung wird gelb.</p>
+          <p><input class="b10-platz" type="text" placeholder="lila Platzhalter"></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="tooltip">
+        <h2>10.10 Praxis: Tooltip und Badge</h2>
+        <p>Hier kommt alles zusammen: position, ::after, :hover und Attribute.</p>
+        <div class="beispiel">
+          <style>
+            /* Tooltip: der Text kommt aus dem Attribut data-tipp, attr() liest ihn aus */
+            .b10-tipp { position: relative; border-bottom: 2px dotted currentColor; cursor: help; }
+            .b10-tipp::after {
+              content: attr(data-tipp);
+              position: absolute;
+              bottom: 130%;
+              left: 50%;
+              transform: translateX(-50%);
+              background-color: #222;
+              color: white;
+              padding: 0.3rem 0.6rem;
+              border-radius: 6px;
+              white-space: nowrap;
+              font-size: 0.85rem;
+              opacity: 0;                 /* erst unsichtbar … */
+              pointer-events: none;
+              transition: opacity 0.2s;
+            }
+            .b10-tipp:hover::after { opacity: 1; }   /* … beim Drüberfahren sichtbar */
+
+            /* Badge: kleiner roter Kreis mit Zahl an der Ecke eines Buttons */
+            .b10-badge-knopf { position: relative; }
+            .b10-badge {
+              position: absolute;
+              top: -0.5rem;
+              right: -0.5rem;
+              background-color: crimson;
+              color: white;
+              font-size: 0.75rem;
+              min-width: 1.4rem;
+              height: 1.4rem;
+              border-radius: 0.7rem;
+              display: grid;
+              place-items: center;
+            }
+          </style>
+          <p style="margin-top: 2rem;">Fahr über das Wort <span class="b10-tipp" data-tipp="Cascading Style Sheets">CSS</span>.</p>
+          <p><button class="b10-badge-knopf" type="button">📬 Nachrichten <span class="b10-badge">3</span></button></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue eine Bild-Karte, bei der ein Text „NEU“ mit position absolute oben links auf dem Bild liegt.</li>
+          <li>Mach die Kopfzeile deiner Übungsseite mit <code>position: sticky; top: 0</code> klebend.</li>
+          <li>Färbe in einer Liste jedes zweite Element und das letzte anders.</li>
+          <li>Füge allen externen Links mit <code>a[href^="http"]::after</code> ein ↗ hinzu.</li>
+          <li>Baue den Schalter aus 10.8 nach und ändere seine Farben.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 10 · Weiter geht es mit Flexbox und Grid</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

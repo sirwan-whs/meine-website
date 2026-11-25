@@ -1,3 +1,3 @@
 # meine-website
 
-Meine erste Website mit HTML, CSS und JS.
+Meine erste Website mit HTML, CSS und JS

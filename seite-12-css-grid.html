@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+  Seite 12: CSS Grid
+  Grid ordnet Elemente in ZWEI Richtungen an: Zeilen UND Spalten, wie ein Raster.
+  Klassen in den Beispielen beginnen mit "b12-".
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 12: CSS Grid – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 12: CSS Grid 🔲</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <!-- Gemeinsames Aussehen der Kästchen auf dieser Seite -->
+      <style>
+        .b12-g { display: grid; gap: 0.5rem; border: 2px dashed #1c4587; padding: 0.5rem; border-radius: 8px; margin-bottom: 0.6rem; }
+        .b12-g > div { background-color: #6fa8dc; color: #111; padding: 0.7rem; border-radius: 6px; font-weight: bold; text-align: center; }
+        .b12-g > div:nth-child(3n+2) { background-color: #93c47d; }
+        .b12-g > div:nth-child(3n) { background-color: #f6b26b; }
+      </style>
+
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#idee">Grid oder Flexbox?</a></li>
+          <li><a href="#spalten">Spalten und Zeilen festlegen</a></li>
+          <li><a href="#fr">Die Einheit fr und repeat()</a></li>
+          <li><a href="#auto-fill">Automatisch responsive: auto-fill und minmax</a></li>
+          <li><a href="#platzieren">Items platzieren: Linien und span</a></li>
+          <li><a href="#areas">grid-template-areas: Layout mit Namen</a></li>
+          <li><a href="#ausrichten">Ausrichten im Grid</a></li>
+          <li><a href="#praxis">Praxis: Galerie und Dashboard</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="idee">
+        <h2>12.1 Grid oder Flexbox?</h2>
+        <table class="tabelle">
+          <tr><th></th><th>Flexbox</th><th>Grid</th></tr>
+          <tr><td>Richtungen</td><td>eine (Reihe <em>oder</em> Spalte)</td><td>zwei (Zeilen <em>und</em> Spalten)</td></tr>
+          <tr><td>Denkweise</td><td>vom Inhalt aus: Items nehmen sich Platz</td><td>vom Layout aus: erst Raster, dann Items hineinlegen</td></tr>
+          <tr><td>Typisch für</td><td>Navigationsleisten, Buttons in einer Reihe, Zentrieren</td><td>Seitenlayouts, Galerien, Dashboards, Formulare</td></tr>
+        </table>
+        <p>Beide lassen sich prima kombinieren: Grid für das große Layout, Flexbox in den einzelnen Bereichen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="spalten">
+        <h2>12.2 Spalten und Zeilen festlegen</h2>
+        <p>
+          <code>display: grid</code> macht ein Element zum Grid-Container.
+          <code>grid-template-columns</code> legt die Spalten fest, <code>grid-template-rows</code>
+          die Zeilen. Jeder Wert ist eine Spalte bzw. Zeile. <code>gap</code> ist der Abstand.
+        </p>
+        <div class="beispiel">
+          <!-- Drei Spalten: 100px, 200px, und der Rest -->
+          <div class="b12-g" style="grid-template-columns: 100px 200px auto;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+          </div>
+          <!-- Zwei Spalten und zwei feste Zeilenhöhen -->
+          <div class="b12-g" style="grid-template-columns: 1fr 1fr; grid-template-rows: 50px 100px;">
+            <div>50px hoch</div><div>50px hoch</div><div>100px hoch</div><div>100px hoch</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fr">
+        <h2>12.3 Die Einheit fr und repeat()</h2>
+        <p>
+          <strong>fr</strong> heißt „fraction“ (Bruchteil) und verteilt den
+          <strong>freien Platz</strong>. <code>1fr 2fr</code> heißt: Die zweite Spalte ist doppelt
+          so breit wie die erste. <code>repeat(4, 1fr)</code> ist die Kurzform für
+          <code>1fr 1fr 1fr 1fr</code>.
+        </p>
+        <div class="beispiel">
+          <div class="b12-g" style="grid-template-columns: 1fr 2fr 1fr;">
+            <div>1fr</div><div>2fr</div><div>1fr</div>
+          </div>
+          <div class="b12-g" style="grid-template-columns: repeat(4, 1fr);">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+          </div>
+          <div class="b12-g" style="grid-template-columns: 200px 1fr;">
+            <div>200px fest</div><div>1fr: Rest</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="auto-fill">
+        <h2>12.4 Automatisch responsive: auto-fill und minmax</h2>
+        <p>Diese eine Zeile ist einer der nützlichsten Tricks in CSS:</p>
+        <pre><code>grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));</code></pre>
+        <ul>
+          <li><code>minmax(150px, 1fr)</code> – jede Spalte ist mindestens 150px und höchstens 1fr breit</li>
+          <li><code>auto-fill</code> – so viele Spalten, wie hineinpassen</li>
+        </ul>
+        <p>Ergebnis: Auf dem Handy 2 Spalten, am Laptop 4 oder 5, ganz ohne Media Queries. Zieh das Fenster schmal und breit!</p>
+        <div class="beispiel">
+          <div class="b12-g" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+          </div>
+        </div>
+        <p class="tipp">💡 <code>auto-fit</code> statt <code>auto-fill</code> lässt wenige Items die ganze Breite füllen, statt leere Spalten zu reservieren.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="platzieren">
+        <h2>12.5 Items platzieren: Linien und span</h2>
+        <p>
+          Ein Grid hat nummerierte <strong>Linien</strong>. Bei 3 Spalten gibt es die Linien 1 bis
+          4. Mit <code>grid-column: 1 / 3</code> geht ein Item von Linie 1 bis Linie 3, also über 2
+          Spalten. Einfacher: <code>grid-column: span 2</code>. <code>1 / -1</code> heißt „von
+          ganz links bis ganz rechts“.
+        </p>
+        <div class="beispiel">
+          <div class="b12-g" style="grid-template-columns: repeat(3, 1fr);">
+            <div style="grid-column: 1 / -1;">grid-column: 1 / -1 (ganze Breite)</div>
+            <div style="grid-column: span 2;">span 2</div>
+            <div style="grid-row: span 2;">grid-row: span 2 (zwei Zeilen hoch)</div>
+            <div>normal</div>
+            <div>normal</div>
+            <div style="grid-column: 2 / 4;">grid-column: 2 / 4</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="areas">
+        <h2>12.6 grid-template-areas: Layout mit Namen</h2>
+        <p>
+          Du kannst Bereichen Namen geben und das Layout wie eine kleine Zeichnung hinschreiben.
+          Jede Zeile in Anführungszeichen ist eine Grid-Zeile, jedes Wort eine Zelle. Ein Punkt
+          <code>.</code> ist eine leere Zelle.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b12-seite {
+              display: grid;
+              gap: 0.5rem;
+              grid-template-columns: 160px 1fr;
+              grid-template-areas:
+                "kopf   kopf"
+                "seite  inhalt"
+                "fuss   fuss";
+            }
+            .b12-seite > div { padding: 1rem; border-radius: 6px; color: #111; font-weight: bold; }
+            .b12-kopf   { grid-area: kopf;   background-color: #6fa8dc; }
+            .b12-seite-leiste { grid-area: seite; background-color: #f6b26b; min-height: 120px; }
+            .b12-inhalt { grid-area: inhalt; background-color: #93c47d; }
+            .b12-fuss   { grid-area: fuss;   background-color: #c27ba0; }
+
+            /* Auf schmalen Bildschirmen: alles untereinander, nur durch neue areas! */
+            @media (max-width: 600px) {
+              .b12-seite {
+                grid-template-columns: 1fr;
+                grid-template-areas: "kopf" "inhalt" "seite" "fuss";
+              }
+            }
+          </style>
+          <div class="b12-seite">
+            <div class="b12-kopf">Kopf</div>
+            <div class="b12-seite-leiste">Seitenleiste</div>
+            <div class="b12-inhalt">Inhalt (zieh das Fenster schmal!)</div>
+            <div class="b12-fuss">Fuß</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="ausrichten">
+        <h2>12.7 Ausrichten im Grid</h2>
+        <table class="tabelle">
+          <tr><th>Eigenschaft</th><th>Wirkt auf</th></tr>
+          <tr><td><code>justify-items</code></td><td>alle Items waagerecht in ihrer Zelle</td></tr>
+          <tr><td><code>align-items</code></td><td>alle Items senkrecht in ihrer Zelle</td></tr>
+          <tr><td><code>place-items</code></td><td>beides auf einmal, z. B. <code>place-items: center</code></td></tr>
+          <tr><td><code>justify-self</code> / <code>align-self</code></td><td>nur ein Item</td></tr>
+          <tr><td><code>justify-content</code> / <code>align-content</code></td><td>das ganze Raster im Container, wenn es kleiner ist</td></tr>
+        </table>
+        <div class="beispiel">
+          <div class="b12-g" style="grid-template-columns: repeat(3, 1fr); grid-auto-rows: 90px; place-items: center;">
+            <div>center</div><div>center</div>
+            <div style="justify-self: end; align-self: start;">end / start</div>
+          </div>
+        </div>
+        <p class="tipp">💡 Der kürzeste Weg, etwas zu zentrieren: <code>display: grid; place-items: center;</code></p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>12.8 Praxis: Galerie und Dashboard</h2>
+        <div class="beispiel">
+          <style>
+            /* Galerie: dichte Packung mit unterschiedlich großen Bildern */
+            .b12-galerie {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+              grid-auto-rows: 90px;                 /* jede automatisch erzeugte Zeile 90px */
+              grid-auto-flow: dense;                /* Lücken auffüllen */
+              gap: 0.4rem;
+            }
+            .b12-galerie div { border-radius: 6px; background-size: cover; background-position: center; background-image: url("bilder/landschaft.svg"); }
+            .b12-breit { grid-column: span 2; }
+            .b12-gross { grid-column: span 2; grid-row: span 2; }
+
+            /* Dashboard: Kennzahlen-Kacheln */
+            .b12-dash { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; margin-top: 1rem; }
+            .b12-kachel { background-color: white; color: #222; border-radius: 10px; padding: 0.8rem; box-shadow: 0 2px 6px rgb(0 0 0 / 15%); }
+            .b12-kachel strong { display: block; font-size: 1.6rem; color: #326ece; }
+          </style>
+          <div class="b12-galerie">
+            <div class="b12-gross"></div><div></div><div></div><div class="b12-breit"></div>
+            <div></div><div></div><div class="b12-breit"></div><div></div><div></div>
+          </div>
+          <div class="b12-dash">
+            <div class="b12-kachel">Seiten<strong>22</strong></div>
+            <div class="b12-kachel">Commits<strong>12</strong></div>
+            <div class="b12-kachel">Pull Requests<strong>6</strong></div>
+            <div class="b12-kachel">Kaffee ☕<strong>∞</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue mit <code>grid-template-areas</code> ein Layout mit Kopf, Navigation links, Inhalt, Werbung rechts und Fuß.</li>
+          <li>Mach daraus mit einer Media Query auf dem Handy ein einspaltiges Layout.</li>
+          <li>Baue eine Bildergalerie mit <code>repeat(auto-fill, minmax(200px, 1fr))</code> und mach ein Bild doppelt so groß.</li>
+          <li>Spiele das Lernspiel <em>Grid Garden</em> (im Internet suchen).</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 12</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

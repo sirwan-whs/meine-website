@@ -17,8 +17,8 @@
 :root {
   --hintergrund: #f7f7fb;
   --text: #1f2330;
-  --akzent: #e57b46; /* Lila-Blau für Links und Button */
-  --karte: #ffffff;
+  --akzent: #1a3197; /* Lila-Blau für Links und Button */
+  --karte: #7794d2;
 }
 
 /* Gilt für ALLE Elemente (*). box-sizing macht Größenangaben leichter berechenbar. */

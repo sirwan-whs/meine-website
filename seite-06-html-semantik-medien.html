@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--
+  Seite 6: Semantik und Medien
+  Hier geht es darum, welche Elemente was BEDEUTEN, wie Block- und Inline-Elemente
+  sich verhalten und wie man Audio, Video und andere Seiten einbettet.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- description: der Text, den Google unter dem Suchergebnis anzeigt -->
+    <meta name="description" content="Lernseite zu semantischem HTML, Block- und Inline-Elementen und Medien." />
+    <meta name="author" content="Sirwan" />
+    <title>Seite 6: Semantik und Medien – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Favicon: das kleine Bild im Browser-Tab -->
+    <link rel="icon" href="bilder/logo.svg" type="image/svg+xml" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 6: Semantik und Medien 🎬</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#block-inline">Block- und Inline-Elemente</a></li>
+          <li><a href="#div-span">div und span</a></li>
+          <li><a href="#id-class">id und class</a></li>
+          <li><a href="#semantik">Semantische Elemente</a></li>
+          <li><a href="#details">Auf- und zuklappen</a></li>
+          <li><a href="#medien">Audio und Video</a></li>
+          <li><a href="#iframe">Andere Seiten einbetten (iframe)</a></li>
+          <li><a href="#entities">Sonderzeichen (Entities) und Emojis</a></li>
+          <li><a href="#head">Der head-Bereich</a></li>
+          <li><a href="#barrierefrei">Barrierefreiheit</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="block-inline">
+        <h2>6.1 Block- und Inline-Elemente</h2>
+        <p>
+          <strong>Block-Elemente</strong> beginnen immer in einer neuen Zeile und nehmen die
+          ganze Breite ein, z. B. <code>p</code>, <code>h1</code>–<code>h6</code>,
+          <code>ul</code>, <code>div</code>, <code>section</code>.
+        </p>
+        <p>
+          <strong>Inline-Elemente</strong> stehen im Textfluss und sind nur so breit wie ihr
+          Inhalt, z. B. <code>a</code>, <code>strong</code>, <code>em</code>, <code>span</code>,
+          <code>img</code>.
+        </p>
+        <div class="beispiel">
+          <!-- Die gestrichelten Rahmen kommen aus style.css (.zeige-rahmen) und zeigen die Größe -->
+          <div class="zeige-rahmen">
+            <p>Ich bin ein p (Block) und gehe über die ganze Breite.</p>
+            <p>Ich bin auch ein Block und beginne in einer neuen Zeile.</p>
+            <p>In mir stecken <a href="#">ein Link</a>, <strong>ein strong</strong> und <span>ein span</span>. Das sind Inline-Elemente.</p>
+          </div>
+        </div>
+        <p class="tipp">💡 Mit CSS kann man das ändern: <code>display: block</code> bzw. <code>display: inline</code>. Mehr dazu auf den CSS-Seiten.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="div-span">
+        <h2>6.2 div und span</h2>
+        <p>
+          <code>&lt;div&gt;</code> (Block) und <code>&lt;span&gt;</code> (Inline) haben
+          <strong>keine eigene Bedeutung</strong>. Sie sind neutrale Behälter, die man mit CSS
+          oder JavaScript anspricht. Nutze sie nur, wenn kein passenderes Element existiert.
+        </p>
+        <div class="beispiel">
+          <div style="background-color: #ffe08a; color: #222; padding: 0.5rem;">
+            Ein div als gelbe Box mit
+            <span style="color: crimson; font-weight: bold;">rotem span</span>
+            mitten im Text.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="id-class">
+        <h2>6.3 id und class</h2>
+        <table class="tabelle">
+          <tr><th></th><th>id</th><th>class</th></tr>
+          <tr><td>Wie oft?</td><td>nur <strong>einmal</strong> pro Seite</td><td>beliebig oft</td></tr>
+          <tr><td>Mehrere Werte?</td><td>nein</td><td>ja, mit Leerzeichen: <code>class="karte wichtig"</code></td></tr>
+          <tr><td>CSS</td><td><code>#name { }</code></td><td><code>.name { }</code></td></tr>
+          <tr><td>JavaScript</td><td><code>getElementById("name")</code></td><td><code>querySelectorAll(".name")</code></td></tr>
+          <tr><td>Sprungmarke</td><td>ja: <code>href="#name"</code></td><td>nein</td></tr>
+        </table>
+        <div class="beispiel">
+          <!-- Die Klassen .hinweis und .wichtig sind in style.css definiert -->
+          <p class="hinweis">Ich habe die Klasse „hinweis“.</p>
+          <p class="hinweis">Ich auch, deshalb sehe ich gleich aus.</p>
+          <p class="hinweis wichtig">Ich habe zwei Klassen: „hinweis“ und „wichtig“.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="semantik">
+        <h2>6.4 Semantische Elemente</h2>
+        <p>
+          <strong>Semantisch</strong> heißt: Der Name sagt, was drinsteht. Statt überall
+          <code>div</code> zu benutzen, nimmst du Elemente, die Browser, Suchmaschinen und
+          Screenreader verstehen:
+        </p>
+        <dl class="semantik-liste">
+          <dt>header</dt><dd>Kopfbereich (Logo, Titel, Navigation)</dd>
+          <dt>nav</dt><dd>Hauptnavigation mit Links</dd>
+          <dt>main</dt><dd>der Hauptinhalt, nur einmal pro Seite</dd>
+          <dt>section</dt><dd>ein Themenabschnitt, meist mit Überschrift</dd>
+          <dt>article</dt><dd>ein für sich verständlicher Inhalt, z. B. Blogartikel oder Kommentar</dd>
+          <dt>aside</dt><dd>Nebeninhalt, z. B. Seitenleiste oder Infobox</dd>
+          <dt>footer</dt><dd>Fußbereich (Impressum, Kontakt, Copyright)</dd>
+          <dt>time</dt><dd>Datum oder Uhrzeit in maschinenlesbarer Form</dd>
+        </dl>
+        <div class="beispiel">
+          <!-- So könnte ein Blogartikel aufgebaut sein -->
+          <article class="zeige-rahmen">
+            <header>
+              <h3>Mein erster Commit</h3>
+              <!-- datetime ist das Datum für Maschinen, der Text für Menschen -->
+              <p>Veröffentlicht am <time datetime="2026-11-25">25. November 2026</time></p>
+            </header>
+            <p>Heute habe ich mein erstes Repo auf GitHub erstellt …</p>
+            <aside>💡 Infobox: Ein Commit ist ein gespeicherter Zwischenstand.</aside>
+            <footer>Geschrieben von Sirwan</footer>
+          </article>
+        </div>
+        <p class="tipp">💡 Diese Seite selbst nutzt header, nav, main, section und footer. Schau in den Quelltext!</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="details">
+        <h2>6.5 Auf- und zuklappen</h2>
+        <div class="beispiel">
+          <!-- <details> ist zu, bis man auf <summary> klickt. Ganz ohne JavaScript! -->
+          <details>
+            <summary>Was ist der Unterschied zwischen Git und GitHub?</summary>
+            <p>Git ist das Programm für Versionen auf deinem Rechner. GitHub ist eine Website, auf der Git-Repos gespeichert und geteilt werden.</p>
+          </details>
+          <details>
+            <summary>Ist HTML eine Programmiersprache?</summary>
+            <p>Nein, eine Auszeichnungssprache. Es gibt keine Variablen, Bedingungen oder Schleifen.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="medien">
+        <h2>6.6 Audio und Video</h2>
+        <p>
+          Mit <code>&lt;video&gt;</code> und <code>&lt;audio&gt;</code> spielst du Medien ohne
+          Zusatzprogramm ab. Mehrere <code>&lt;source&gt;</code> geben Alternativen; der
+          Browser nimmt die erste, die er kann. Der Text dazwischen erscheint nur in sehr
+          alten Browsern.
+        </p>
+        <pre><code>&lt;video width="640" height="360" controls poster="bilder/vorschau.jpg"&gt;
+  &lt;source src="videos/film.mp4"  type="video/mp4"&gt;
+  &lt;source src="videos/film.webm" type="video/webm"&gt;
+  &lt;track src="videos/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch"&gt;
+  Dein Browser kann leider keine Videos abspielen.
+&lt;/video&gt;
+
+&lt;audio controls&gt;
+  &lt;source src="audio/lied.mp3" type="audio/mpeg"&gt;
+&lt;/audio&gt;</code></pre>
+        <ul>
+          <li><code>controls</code> – Play, Pause, Lautstärke anzeigen</li>
+          <li><code>autoplay</code> – sofort starten (geht meist nur zusammen mit <code>muted</code>)</li>
+          <li><code>loop</code> – endlos wiederholen</li>
+          <li><code>poster</code> – Vorschaubild vor dem Start</li>
+          <li><code>&lt;track&gt;</code> – Untertitel</li>
+        </ul>
+        <p class="tipp">💡 Leg dir einen Ordner <code>videos</code> an und probiere es mit einem eigenen kurzen Handy-Video (als .mp4) aus. Halte Dateien klein, GitHub erlaubt maximal 100 MB pro Datei.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="iframe">
+        <h2>6.7 Andere Seiten einbetten (iframe)</h2>
+        <p>
+          Ein <code>&lt;iframe&gt;</code> ist ein Fenster, in dem eine andere Seite angezeigt
+          wird. So bettet man z. B. YouTube-Videos oder Karten ein (der Code dafür steht bei
+          YouTube unter <em>Teilen → Einbetten</em>). <code>title</code> beschreibt den Inhalt
+          für Screenreader.
+        </p>
+        <div class="beispiel">
+          <!-- Hier zeigen wir einfach deine eigene Seite 2 im Fenster -->
+          <iframe src="seite-02-quiz.html" title="Das Quiz von Seite 2" width="100%" height="320" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="entities">
+        <h2>6.8 Sonderzeichen (Entities) und Emojis</h2>
+        <p>
+          Manche Zeichen haben in HTML eine Sonderbedeutung, vor allem <code>&lt;</code> und
+          <code>&gt;</code>. Um sie als Text anzuzeigen, schreibt man <strong>Entities</strong>:
+          Sie beginnen mit <code>&amp;</code> und enden mit <code>;</code>.
+        </p>
+        <table class="tabelle">
+          <tr><th>Ergebnis</th><th>Entity</th><th>Bedeutung</th></tr>
+          <tr><td>&lt;</td><td><code>&amp;lt;</code></td><td>kleiner als (less than)</td></tr>
+          <tr><td>&gt;</td><td><code>&amp;gt;</code></td><td>größer als (greater than)</td></tr>
+          <tr><td>&amp;</td><td><code>&amp;amp;</code></td><td>kaufmännisches Und</td></tr>
+          <tr><td>&quot;</td><td><code>&amp;quot;</code></td><td>Anführungszeichen</td></tr>
+          <tr><td>&copy;</td><td><code>&amp;copy;</code></td><td>Copyright</td></tr>
+          <tr><td>&euro;</td><td><code>&amp;euro;</code></td><td>Euro</td></tr>
+          <tr><td>a&nbsp;b</td><td><code>&amp;nbsp;</code></td><td>geschütztes Leerzeichen (kein Zeilenumbruch hier)</td></tr>
+        </table>
+        <div class="beispiel">
+          <p>In HTML schreibt man &lt;p&gt; für einen Absatz.</p>
+          <p>&copy; 2026 Sirwan · Preis: 10&nbsp;&euro;</p>
+          <!-- Emojis sind ganz normale Zeichen, dank UTF-8 einfach hineinkopieren (Windows: Win + .) -->
+          <p>Emojis: 😀 🚀 💻 ✅</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="head">
+        <h2>6.9 Der head-Bereich</h2>
+        <p>Was im <code>&lt;head&gt;</code> steht, sieht man nicht direkt, es ist aber wichtig. Schau in den Quelltext dieser Seite:</p>
+        <ul>
+          <li><code>&lt;meta charset="UTF-8"&gt;</code> – Zeichensatz für Umlaute und Emojis</li>
+          <li><code>&lt;meta name="viewport" …&gt;</code> – richtige Darstellung auf dem Handy</li>
+          <li><code>&lt;meta name="description" …&gt;</code> – Beschreibung für Suchmaschinen</li>
+          <li><code>&lt;title&gt;</code> – Text im Browser-Tab und bei Lesezeichen</li>
+          <li><code>&lt;link rel="stylesheet" …&gt;</code> – CSS-Datei einbinden</li>
+          <li><code>&lt;link rel="icon" …&gt;</code> – das Favicon (schau auf diesen Tab!)</li>
+          <li><code>&lt;script src="…"&gt;</code> – JavaScript einbinden (hier am Ende des body)</li>
+        </ul>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="barrierefrei">
+        <h2>6.10 Barrierefreiheit</h2>
+        <p>Eine gute Website kann jeder benutzen, auch mit Screenreader oder nur mit der Tastatur. Die wichtigsten Regeln:</p>
+        <ol>
+          <li>Jedes Bild hat einen sinnvollen <code>alt</code>-Text (reine Deko: <code>alt=""</code>).</li>
+          <li>Jedes Formularfeld hat ein <code>label</code>.</li>
+          <li>Überschriften in der richtigen Reihenfolge (h1 → h2 → h3).</li>
+          <li>Semantische Elemente statt nur <code>div</code>.</li>
+          <li>Links haben verständliche Texte, nicht „hier“.</li>
+          <li>Buttons sind echte <code>&lt;button&gt;</code>, keine anklickbaren <code>div</code>.</li>
+          <li>Die Sprache ist angegeben: <code>&lt;html lang="de"&gt;</code>.</li>
+        </ol>
+        <p class="tipp">💡 Test: Leg die Maus weg und bediene diese Seite nur mit <kbd>Tab</kbd>, <kbd>Umschalt</kbd> + <kbd>Tab</kbd> und <kbd>Enter</kbd>.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue eine Blogseite mit header, nav, main, zwei article und einem footer.</li>
+          <li>Füge eine FAQ mit drei <code>details</code>-Fragen hinzu.</li>
+          <li>Bette ein YouTube-Video per iframe ein (Teilen → Einbetten → Code kopieren).</li>
+          <li>Schreib einen Absatz, der den Code <code>&lt;h1&gt;Hallo&lt;/h1&gt;</code> als Text zeigt.</li>
+          <li>Mach den Tastatur-Test auf deiner eigenen Startseite.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 6 · Weiter geht es bald mit CSS</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

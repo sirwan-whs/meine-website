@@ -297,3 +297,209 @@ progress {
   font-weight: 600;
   min-height: 1.6em; /* Platz freihalten, damit nichts springt */
 }
+
+/* =========================================================
+   NEU: Kurs-Seiten (Seite 3 und folgende)
+   ========================================================= */
+
+/* Auswahlliste in der Navigation */
+.seiten-auswahl {
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.95rem;
+  max-width: 100%;
+}
+
+/* Inhaltsverzeichnis oben auf jeder Kurs-Seite */
+.inhalt a {
+  color: var(--akzent);
+}
+
+/* Ein Beispiel: gestrichelter Kasten, damit man sieht, wo das "Ergebnis" ist */
+.beispiel {
+  border: 2px dashed var(--akzent);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0 0;
+  background-color: var(--hintergrund);
+  overflow-x: auto; /* breite Inhalte (Tabellen) seitlich scrollbar machen */
+}
+
+/* Header und Footer INNERHALB von Beispielen sollen nicht wie der Seitenkopf aussehen */
+.beispiel header,
+.beispiel footer {
+  background: none;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+/* Die Code-Box, die lektion.js unter jedes Beispiel setzt */
+.code-box {
+  margin: 0 0 1rem;
+}
+
+.code-box summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.3rem 0;
+}
+
+/* <pre> mit Code: dunkler Kasten, Schrift mit fester Breite */
+pre {
+  background-color: #1e1e2e;
+  color: #e0e0f0;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto; /* lange Zeilen seitlich scrollbar */
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* <pre> im Beispiel (Gedicht) soll nicht wie Code aussehen */
+.beispiel pre {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+code,
+kbd {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+/* Inline-Code im Fließtext leicht hinterlegen */
+p code,
+li code,
+td code,
+dd code {
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
+/* Tastatur-Tasten sehen aus wie kleine Tasten */
+kbd {
+  border: 1px solid #999;
+  border-bottom-width: 3px;
+  border-radius: 4px;
+  padding: 0 0.35rem;
+  font-size: 0.85em;
+}
+
+/* Tipp-Kasten */
+.tipp {
+  border-left: 4px solid #f5b301;
+  background-color: rgba(245, 179, 1, 0.12);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Tabellen mit Linien */
+.tabelle {
+  border-collapse: collapse; /* doppelte Linien zu einer zusammenfassen */
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.tabelle th,
+.tabelle td {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  overflow-wrap: anywhere; /* lange Wörter dürfen umbrechen, sonst wird die Tabelle zu breit */
+}
+
+.tabelle th {
+  background-color: rgba(128, 128, 128, 0.15);
+}
+
+.tabelle caption {
+  font-weight: 600;
+  padding-bottom: 0.4rem;
+}
+
+blockquote {
+  border-left: 4px solid var(--akzent);
+  margin: 0.5rem 0;
+  padding: 0.3rem 1rem;
+  font-style: italic;
+}
+
+/* Formulare auf Seite 5 */
+.formular-raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.8rem;
+}
+
+.formular-raster label {
+  display: flex;
+  flex-direction: column; /* Text über dem Feld */
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  padding: 0.3rem;
+  max-width: 100%;
+}
+
+/* :invalid / :valid sind Pseudo-Klassen: sie gelten, wenn die Prüfung fehlschlägt / klappt.
+   :user-invalid erst, nachdem der Nutzer etwas eingegeben hat. */
+.pruef-formular input:user-invalid {
+  outline: 2px solid #d33;
+}
+
+.pruef-formular input:user-valid {
+  outline: 2px solid #1f9d55;
+}
+
+.formular-ausgabe {
+  font-weight: 600;
+}
+
+fieldset {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 8px;
+}
+
+/* Seite 6: Rahmen um Elemente, um Block und Inline sichtbar zu machen */
+.zeige-rahmen p,
+.zeige-rahmen a,
+.zeige-rahmen strong,
+.zeige-rahmen span,
+.zeige-rahmen header,
+.zeige-rahmen aside,
+.zeige-rahmen footer {
+  outline: 1px dashed #e67e22;
+}
+
+.hinweis {
+  border-left: 4px solid var(--akzent);
+  padding-left: 0.6rem;
+}
+
+.wichtig {
+  font-weight: bold;
+  color: #d33;
+}
+
+.semantik-liste dt {
+  font-family: Consolas, "Courier New", monospace;
+  font-weight: bold;
+}
+
+iframe {
+  border: 1px solid rgba(128, 128, 128, 0.5);
+  border-radius: 8px;
+}
+
+img {
+  max-width: 100%; /* Bilder nie breiter als ihr Behälter */
+  height: auto;
+}

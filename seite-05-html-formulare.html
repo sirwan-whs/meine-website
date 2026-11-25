@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  Seite 5: HTML Formulare
+  Formulare sammeln Eingaben. Normalerweise werden sie an einen Server geschickt.
+  Wir haben keinen Server, deshalb zeigt ein kleines Skript am Ende die Daten einfach an.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 5: HTML Formulare – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 5: HTML Formulare 📝</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#form">Das form-Element</a></li>
+          <li><a href="#label">input und label</a></li>
+          <li><a href="#typen">Input-Typen</a></li>
+          <li><a href="#auswahl">Checkbox, Radio, Auswahl</a></li>
+          <li><a href="#textarea">Textbereich und Buttons</a></li>
+          <li><a href="#fieldset">Gruppieren mit fieldset</a></li>
+          <li><a href="#validierung">Eingaben prüfen (Validierung)</a></li>
+          <li><a href="#komplett">Komplettes Beispiel</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="form">
+        <h2>5.1 Das form-Element</h2>
+        <p><code>&lt;form&gt;</code> umschließt alle Eingabefelder. Zwei wichtige Attribute:</p>
+        <ul>
+          <li><code>action</code> – an welche Adresse die Daten geschickt werden (z. B. <code>/anmelden</code>)</li>
+          <li><code>method</code> – wie: <code>get</code> hängt die Daten an die Adresse (<code>?name=Sirwan</code>), <code>post</code> schickt sie unsichtbar mit (für Passwörter!)</li>
+        </ul>
+        <p>Jedes Feld braucht ein <code>name</code>-Attribut, sonst wird es nicht mitgeschickt.</p>
+        <div class="beispiel">
+          <!-- Ohne action wird an dieselbe Seite geschickt. Schick es ab und schau in die Adresszeile! -->
+          <form method="get">
+            <label for="suche">Suchbegriff:</label>
+            <input type="text" id="suche" name="suchbegriff">
+            <button type="submit">Suchen</button>
+          </form>
+        </div>
+        <p class="tipp">💡 Nach dem Absenden steht in der Adresszeile z. B. <code>?suchbegriff=html</code>. So sieht <code>method="get"</code> aus.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="label">
+        <h2>5.2 input und label</h2>
+        <p>
+          <code>&lt;input&gt;</code> ist ein leeres Element. Jedes Feld sollte ein
+          <code>&lt;label&gt;</code> haben. Es gibt zwei Wege, sie zu verbinden:
+        </p>
+        <div class="beispiel">
+          <!-- Weg 1: for="..." am Label = id="..." am Feld -->
+          <p>
+            <label for="vorname">Vorname:</label>
+            <input type="text" id="vorname" name="vorname" placeholder="z. B. Sirwan">
+          </p>
+
+          <!-- Weg 2: das Feld steckt IM Label -->
+          <p>
+            <label>Nachname: <input type="text" name="nachname"></label>
+          </p>
+
+          <!-- value = Startwert, readonly = nur lesen, disabled = gesperrt (wird nicht mitgeschickt) -->
+          <p><label>Mit Startwert: <input type="text" value="vorausgefüllt"></label></p>
+          <p><label>Nur lesen: <input type="text" value="nicht änderbar" readonly></label></p>
+          <p><label>Gesperrt: <input type="text" value="ausgegraut" disabled></label></p>
+        </div>
+        <p class="tipp">💡 Klick auf den Text „Vorname:“, der Cursor springt ins Feld. Das schafft das Label.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="typen">
+        <h2>5.3 Input-Typen</h2>
+        <p>Das Attribut <code>type</code> bestimmt, wie das Feld aussieht und was man eingeben kann. Auf dem Handy passt sich sogar die Tastatur an.</p>
+        <div class="beispiel">
+          <div class="formular-raster">
+            <label>text <input type="text"></label>
+            <label>password <input type="password" value="geheim"></label>
+            <label>email <input type="email" placeholder="name@beispiel.de"></label>
+            <label>number <input type="number" min="0" max="10" step="1" value="5"></label>
+            <label>tel <input type="tel" placeholder="0123 456789"></label>
+            <label>url <input type="url" placeholder="https://"></label>
+            <label>search <input type="search"></label>
+            <label>date <input type="date"></label>
+            <label>time <input type="time"></label>
+            <label>datetime-local <input type="datetime-local"></label>
+            <label>month <input type="month"></label>
+            <label>week <input type="week"></label>
+            <label>color <input type="color" value="#326ece"></label>
+            <label>range <input type="range" min="0" max="100" value="40"></label>
+            <label>file <input type="file"></label>
+          </div>
+          <!-- hidden: unsichtbar, wird aber mitgeschickt (z. B. eine interne Nummer) -->
+          <input type="hidden" name="formular-id" value="42">
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="auswahl">
+        <h2>5.4 Checkbox, Radio, Auswahl</h2>
+        <ul>
+          <li><strong>Checkbox</strong>: beliebig viele ankreuzen</li>
+          <li><strong>Radio</strong>: genau eine Option. Alle Radios einer Gruppe brauchen <strong>denselben</strong> <code>name</code>.</li>
+          <li><strong>select</strong>: Aufklappliste, mit <code>multiple</code> auch Mehrfachauswahl</li>
+          <li><strong>datalist</strong>: Vorschläge für ein Textfeld</li>
+        </ul>
+        <div class="beispiel">
+          <p>Welche Sprachen kannst du?</p>
+          <label><input type="checkbox" name="sprache" value="html" checked> HTML</label>
+          <label><input type="checkbox" name="sprache" value="css"> CSS</label>
+          <label><input type="checkbox" name="sprache" value="js"> JavaScript</label>
+
+          <p>Wie gut?</p>
+          <!-- gleicher name="niveau" = eine Gruppe, nur eins wählbar -->
+          <label><input type="radio" name="niveau" value="anfaenger" checked> Anfänger</label>
+          <label><input type="radio" name="niveau" value="fortgeschritten"> Fortgeschritten</label>
+          <label><input type="radio" name="niveau" value="profi"> Profi</label>
+
+          <p>
+            <label for="studiengang">Studiengang:</label>
+            <select id="studiengang" name="studiengang">
+              <!-- <optgroup> gruppiert Optionen, selected wählt vor -->
+              <optgroup label="Informatik">
+                <option value="inf">Informatik</option>
+                <option value="winf" selected>Wirtschaftsinformatik</option>
+              </optgroup>
+              <optgroup label="Technik">
+                <option value="et">Elektrotechnik</option>
+                <option value="mb">Maschinenbau</option>
+              </optgroup>
+            </select>
+          </p>
+
+          <p>
+            <label for="browser">Lieblingsbrowser (tippen):</label>
+            <!-- list="..." verbindet das Feld mit der datalist -->
+            <input id="browser" name="browser" list="browser-liste">
+            <datalist id="browser-liste">
+              <option value="Firefox">
+              <option value="Chrome">
+              <option value="Edge">
+              <option value="Safari">
+            </datalist>
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="textarea">
+        <h2>5.5 Textbereich und Buttons</h2>
+        <div class="beispiel">
+          <!-- <textarea> für längeren Text. rows = Zeilen. Der Startwert steht ZWISCHEN den Tags. -->
+          <p>
+            <label for="nachricht">Nachricht:</label><br>
+            <textarea id="nachricht" name="nachricht" rows="4" cols="40">Hallo!</textarea>
+          </p>
+
+          <!-- Drei Arten von Buttons -->
+          <button type="submit">submit: schickt ab</button>
+          <button type="reset">reset: setzt zurück</button>
+          <button type="button">button: macht nichts (für JavaScript)</button>
+        </div>
+        <p class="tipp">💡 Ein <code>&lt;button&gt;</code> in einem Formular ist standardmäßig <code>type="submit"</code>. Schreib den Typ deshalb immer dazu.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fieldset">
+        <h2>5.6 Gruppieren mit fieldset</h2>
+        <div class="beispiel">
+          <!-- <fieldset> zeichnet einen Rahmen um zusammengehörige Felder, <legend> ist der Titel -->
+          <fieldset>
+            <legend>Adresse</legend>
+            <p><label>Straße <input type="text" name="strasse"></label></p>
+            <p><label>PLZ <input type="text" name="plz" size="5"></label>
+               <label>Ort <input type="text" name="ort"></label></p>
+          </fieldset>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="validierung">
+        <h2>5.7 Eingaben prüfen (Validierung)</h2>
+        <p>Der Browser kann Eingaben selbst prüfen, ganz ohne JavaScript. Versuch, das Formular falsch abzuschicken:</p>
+        <ul>
+          <li><code>required</code> – Pflichtfeld</li>
+          <li><code>minlength</code> / <code>maxlength</code> – Mindest- und Höchstlänge von Text</li>
+          <li><code>min</code> / <code>max</code> / <code>step</code> – für Zahlen und Datum</li>
+          <li><code>pattern</code> – ein Muster (regulärer Ausdruck)</li>
+          <li><code>type="email"</code> prüft automatisch auf ein @</li>
+        </ul>
+        <div class="beispiel">
+          <form class="pruef-formular">
+            <p><label>Benutzername (3–12 Zeichen, Pflicht): <input name="benutzer" required minlength="3" maxlength="12"></label></p>
+            <p><label>E-Mail: <input type="email" name="mail" required></label></p>
+            <p><label>Alter (16–99): <input type="number" name="alter" min="16" max="99"></label></p>
+            <!-- pattern="[0-9]{5}" heißt: genau 5 Ziffern -->
+            <p><label>PLZ (5 Ziffern): <input name="plz" pattern="[0-9]{5}" title="Bitte genau 5 Ziffern"></label></p>
+            <button type="submit">Prüfen</button>
+          </form>
+          <p class="formular-ausgabe" aria-live="polite"></p>
+        </div>
+        <p class="tipp">💡 Wichtig für später: Prüfungen im Browser kann man umgehen. Ein echter Server muss die Daten immer noch einmal selbst prüfen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="komplett">
+        <h2>5.8 Komplettes Beispiel: Anmeldung</h2>
+        <div class="beispiel">
+          <form class="pruef-formular" method="post">
+            <fieldset>
+              <legend>Kursanmeldung</legend>
+              <p><label for="k-name">Name *</label><br>
+                 <input id="k-name" name="name" required autocomplete="name"></p>
+              <p><label for="k-mail">E-Mail *</label><br>
+                 <input id="k-mail" type="email" name="email" required autocomplete="email"></p>
+              <p><label for="k-kurs">Kurs</label><br>
+                 <select id="k-kurs" name="kurs">
+                   <option>HTML</option>
+                   <option>CSS</option>
+                   <option>JavaScript</option>
+                 </select></p>
+              <p><label for="k-start">Startdatum</label><br>
+                 <input id="k-start" type="date" name="start"></p>
+              <p><label><input type="checkbox" name="agb" required> Ich akzeptiere die Bedingungen *</label></p>
+              <button type="submit">Anmelden</button>
+              <button type="reset" class="zweitrangig">Zurücksetzen</button>
+            </fieldset>
+          </form>
+          <p class="formular-ausgabe" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue ein Kontaktformular mit Name, E-Mail, Betreff (select) und Nachricht (textarea).</li>
+          <li>Mach Name und E-Mail zu Pflichtfeldern und begrenze die Nachricht auf 500 Zeichen.</li>
+          <li>Füge eine Radio-Gruppe „Wie hast du von uns erfahren?“ mit drei Optionen hinzu.</li>
+          <li>Bonus: Finde mit <code>pattern</code> eine Regel für eine deutsche Handynummer, die mit 01 beginnt.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 5</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+    <script>
+      /*
+        Kleines Skript nur für diese Seite (ein <script> darf auch direkt im HTML stehen).
+        Weil wir keinen Server haben, fangen wir das Absenden der Prüf-Formulare ab
+        und zeigen die Daten an. Wie das funktioniert, lernst du ausführlich auf den JS-Seiten.
+      */
+      document.querySelectorAll(".pruef-formular").forEach(function (formular) {
+        formular.addEventListener("submit", function (event) {
+          event.preventDefault(); // nicht wirklich abschicken
+          // FormData sammelt alle Felder mit name-Attribut ein
+          const daten = new FormData(formular);
+          const zeilen = [];
+          for (const [name, wert] of daten) {
+            zeilen.push(`${name} = ${wert}`);
+          }
+          // Das Ausgabe-Element liegt direkt hinter dem Formular
+          const ausgabe = formular.parentElement.querySelector(".formular-ausgabe");
+          ausgabe.textContent = "✅ Alles gültig! Gesendet würde: " + zeilen.join(", ");
+        });
+      });
+    </script>
+  </body>
+</html>

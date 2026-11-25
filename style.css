@@ -1,0 +1,108 @@
+/*
+  style.css – das DESIGN der Website.
+  CSS sagt dem Browser, wie die HTML-Elemente aussehen sollen.
+
+  Aufbau einer CSS-Regel:
+    selektor {
+      eigenschaft: wert;
+    }
+
+  Der Selektor wählt aus, welche Elemente gemeint sind:
+    body        -> das <body>-Element
+    .klasse     -> alle Elemente mit class="klasse"
+    #id         -> das Element mit id="id"
+*/
+
+/* :root – Variablen für Farben. So musst du eine Farbe nur an EINER Stelle ändern. */
+:root {
+  --hintergrund: #f7f7fb;
+  --text: #1f2330;
+  --akzent: #4f46e5; /* Lila-Blau für Links und Button */
+  --karte: #ffffff;
+}
+
+/* Gilt für ALLE Elemente (*). box-sizing macht Größenangaben leichter berechenbar. */
+* {
+  box-sizing: border-box;
+}
+
+/* Grundeinstellungen für die ganze Seite. */
+body {
+  margin: 0; /* Browser setzen sonst einen kleinen Rand */
+  font-family: system-ui, sans-serif; /* Schrift des Betriebssystems */
+  line-height: 1.6; /* Zeilenabstand: macht Text besser lesbar */
+  background-color: var(--hintergrund); /* var(...) liest eine Variable von oben */
+  color: var(--text);
+}
+
+/* Kopfbereich: farbiger Hintergrund, Text zentriert. */
+header {
+  background-color: var(--akzent);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem; /* Innenabstand: 2rem oben/unten, 1rem links/rechts */
+}
+
+/* Navigation: Links nebeneinander mit Abstand. */
+nav {
+  display: flex; /* Flexbox ordnet die Kinder in einer Reihe an */
+  justify-content: center; /* ... und zentriert sie */
+  gap: 1.5rem; /* Abstand zwischen den Links */
+  flex-wrap: wrap; /* Auf schmalen Bildschirmen in die nächste Zeile umbrechen */
+}
+
+nav a {
+  color: white;
+  text-decoration: none; /* Unterstreichung entfernen */
+  font-weight: 600;
+}
+
+/* :hover gilt nur, solange die Maus über dem Link ist. */
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Hauptbereich: nicht breiter als 800px und mittig. */
+main {
+  max-width: 800px;
+  margin: 2rem auto; /* "auto" links und rechts zentriert den Block */
+  padding: 0 1rem;
+}
+
+/* Jede Section sieht aus wie eine Karte. */
+section {
+  background-color: var(--karte);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem; /* Außenabstand nach unten */
+  border-radius: 12px; /* abgerundete Ecken */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* leichter Schatten */
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--akzent);
+}
+
+/* Der Button. */
+button {
+  background-color: var(--akzent);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer; /* Mauszeiger wird zur Hand */
+  transition: transform 0.1s; /* Änderungen weich animieren */
+}
+
+button:hover {
+  transform: scale(1.05); /* beim Drüberfahren leicht vergrößern */
+}
+
+/* Fußbereich. */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}

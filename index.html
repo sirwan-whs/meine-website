@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+  index.html – das GERÜST der Website.
+  HTML beschreibt, WAS auf der Seite steht (Überschriften, Texte, Bilder, Buttons).
+  Wie es aussieht, regelt style.css. Was passiert, wenn man klickt, regelt script.js.
+
+  Grundregel: Fast alles besteht aus einem öffnenden <tag> und einem schließenden </tag>.
+  Dazwischen steht der Inhalt.
+-->
+<html lang="de">
+  <!-- <head>: Infos für den Browser, die man auf der Seite selbst nicht sieht. -->
+  <head>
+    <!-- Zeichensatz UTF-8, damit Umlaute wie ä, ö, ü richtig angezeigt werden. -->
+    <meta charset="UTF-8" />
+
+    <!-- Sorgt dafür, dass die Seite auf dem Handy nicht winzig dargestellt wird. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Der Text im Browser-Tab. -->
+    <title>Meine Website</title>
+
+    <!-- Hier wird die CSS-Datei eingebunden (das Design). -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <!-- <body>: alles, was man auf der Seite tatsächlich sieht. -->
+  <body>
+    <!-- <header>: der Kopfbereich der Seite, meist mit Titel und Navigation. -->
+    <header>
+      <!-- <h1> ist die wichtigste Überschrift. Pro Seite gibt es nur eine. -->
+      <h1>Hallo, ich bin Sirwan 👋</h1>
+
+      <!-- <nav> enthält Links. href="#ueber-mich" springt zum Element mit id="ueber-mich". -->
+      <nav>
+        <a href="#ueber-mich">Über mich</a>
+        <a href="#lernziele">Lernziele</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </header>
+
+    <!-- <main>: der Hauptinhalt. -->
+    <main>
+      <!-- <section> fasst einen Themenblock zusammen. Die id brauchen wir für die Links oben. -->
+      <section id="ueber-mich">
+        <!-- <h2> ist eine Zwischenüberschrift. -->
+        <h2>Über mich</h2>
+        <!-- <p> ist ein Absatz (paragraph). -->
+        <p>
+          Ich lerne gerade Webentwicklung mit HTML, CSS und JavaScript.
+          Diese Seite ist mein erstes eigenes Projekt.
+        </p>
+      </section>
+
+      <section id="lernziele">
+        <h2>Meine Lernziele</h2>
+        <!-- <ul> ist eine Liste mit Punkten, jedes <li> ist ein Eintrag. -->
+        <ul>
+          <li>Git und GitHub sicher benutzen</li>
+          <li>Websites mit HTML, CSS und JavaScript bauen</li>
+          <li>Datenbanken mit SQL verstehen</li>
+          <li>Grundlagen der Computernetzwerke lernen</li>
+        </ul>
+      </section>
+
+      <section id="kontakt">
+        <h2>Kontakt</h2>
+        <p>Klick auf den Button, um eine Begrüßung zu sehen:</p>
+
+        <!-- Ein Button. Die id="gruss-button" brauchen wir, um ihn in script.js zu finden. -->
+        <button id="gruss-button">Sag Hallo</button>
+
+        <!-- Ein leerer Absatz. script.js schreibt hier später Text hinein. -->
+        <p id="gruss-text"></p>
+      </section>
+    </main>
+
+    <!-- <footer>: der Fußbereich ganz unten. -->
+    <footer>
+      <!-- Das <span> ist leer, script.js setzt dort automatisch das aktuelle Jahr ein. -->
+      <p>© <span id="jahr"></span> Sirwan</p>
+    </footer>
+
+    <!--
+      Die JavaScript-Datei wird ganz am Ende eingebunden.
+      So ist das HTML schon fertig geladen, wenn das Skript startet,
+      und das Skript findet alle Elemente (z. B. den Button).
+    -->
+    <script src="script.js"></script>
+  </body>
+</html>

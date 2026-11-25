@@ -21,6 +21,9 @@ const seiten = [
   { nummer: 8, datei: "seite-08-css-boxmodell.html", bereich: "CSS", titel: "Box-Modell", thema: "padding, margin, border, Größen, box-sizing, display, overflow, Schatten" },
   { nummer: 9, datei: "seite-09-css-text-schrift.html", bereich: "CSS", titel: "Text und Schrift", thema: "Text, Schriften, Web Fonts, Links, Listen, Tabellen, Cursor" },
   { nummer: 10, datei: "seite-10-css-position-pseudo.html", bereich: "CSS", titel: "Position und Pseudo-Klassen", thema: "position, z-index, float, :hover, :nth-child, ::before, ::after" },
+  { nummer: 11, datei: "seite-11-css-flexbox.html", bereich: "CSS", titel: "Flexbox", thema: "Achsen, justify-content, align-items, wrap, gap, flex-grow, Spielplatz" },
+  { nummer: 12, datei: "seite-12-css-grid.html", bereich: "CSS", titel: "CSS Grid", thema: "Spalten, fr, auto-fill, minmax, span, grid-template-areas" },
+  { nummer: 13, datei: "seite-13-css-responsive-animation.html", bereich: "CSS", titel: "Responsive und Animation", thema: "Media Queries, Mobile First, transition, transform, @keyframes" },
 ];
 
 // ----- Welche Seite ist gerade offen? -----

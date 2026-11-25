@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<!--
+  Seite 11: Flexbox
+  Flexbox ordnet Elemente in EINER Richtung an: als Reihe oder als Spalte.
+  Klassen in den Beispielen beginnen mit "b11-".
+  Ganz unten gibt es einen Spielplatz, auf dem du die Werte selbst umschalten kannst.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 11: Flexbox – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 11: Flexbox ↔️</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <!-- Gemeinsames Aussehen der bunten Kästchen in allen Beispielen dieser Seite -->
+      <style>
+        .b11-c { border: 2px dashed #1c4587; padding: 0.4rem; border-radius: 8px; margin-bottom: 0.6rem; min-height: 60px; }
+        .b11-c > div { background-color: #6fa8dc; color: #111; padding: 0.6rem 0.9rem; border-radius: 6px; font-weight: bold; }
+        .b11-c > div:nth-child(2) { background-color: #93c47d; }
+        .b11-c > div:nth-child(3) { background-color: #f6b26b; }
+        .b11-c > div:nth-child(4) { background-color: #c27ba0; }
+      </style>
+
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#idee">Die Idee: Container und Items</a></li>
+          <li><a href="#richtung">flex-direction</a></li>
+          <li><a href="#justify">justify-content: Hauptachse</a></li>
+          <li><a href="#align">align-items: Querachse</a></li>
+          <li><a href="#wrap">flex-wrap und gap</a></li>
+          <li><a href="#grow">flex-grow, flex-shrink, flex-basis</a></li>
+          <li><a href="#einzeln">Einzelne Items: align-self und order</a></li>
+          <li><a href="#praxis">Praxis: Navigation, Karten, Footer unten</a></li>
+          <li><a href="#spielplatz">Spielplatz</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="idee">
+        <h2>11.1 Die Idee: Container und Items</h2>
+        <p>
+          Du schreibst <code>display: flex</code> an das <strong>Eltern-Element</strong> (den
+          <strong>Flex-Container</strong>). Seine direkten Kinder werden dann zu
+          <strong>Flex-Items</strong> und stehen automatisch nebeneinander.
+        </p>
+        <p>
+          Es gibt zwei Achsen: Die <strong>Hauptachse</strong> (main axis) ist bei
+          <code>row</code> waagerecht, die <strong>Querachse</strong> (cross axis) steht senkrecht
+          dazu. Fast alle Flexbox-Eigenschaften beziehen sich auf eine der beiden.
+        </p>
+        <div class="beispiel">
+          <!-- Ohne flex: die divs stehen untereinander -->
+          <div class="b11-c">
+            <div>1</div><div>2</div><div>3</div>
+          </div>
+          <!-- Mit flex: nebeneinander -->
+          <div class="b11-c" style="display: flex;">
+            <div>1</div><div>2</div><div>3</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="richtung">
+        <h2>11.2 flex-direction</h2>
+        <ul>
+          <li><code>row</code> – nebeneinander, von links nach rechts (Standard)</li>
+          <li><code>row-reverse</code> – nebeneinander, von rechts nach links</li>
+          <li><code>column</code> – untereinander (die Hauptachse ist jetzt senkrecht!)</li>
+          <li><code>column-reverse</code> – untereinander, von unten nach oben</li>
+        </ul>
+        <div class="beispiel">
+          <div class="b11-c" style="display: flex; flex-direction: row-reverse;">
+            <div>1</div><div>2</div><div>3</div>
+          </div>
+          <div class="b11-c" style="display: flex; flex-direction: column;">
+            <div>1</div><div>2</div><div>3</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="justify">
+        <h2>11.3 justify-content: Verteilung auf der Hauptachse</h2>
+        <div class="beispiel">
+          <p>flex-start (Standard)</p>
+          <div class="b11-c" style="display: flex; justify-content: flex-start;"><div>1</div><div>2</div><div>3</div></div>
+          <p>center</p>
+          <div class="b11-c" style="display: flex; justify-content: center;"><div>1</div><div>2</div><div>3</div></div>
+          <p>flex-end</p>
+          <div class="b11-c" style="display: flex; justify-content: flex-end;"><div>1</div><div>2</div><div>3</div></div>
+          <p>space-between: außen kein Abstand, dazwischen gleich viel</p>
+          <div class="b11-c" style="display: flex; justify-content: space-between;"><div>1</div><div>2</div><div>3</div></div>
+          <p>space-around: jedes Item hat links und rechts gleich viel Platz</p>
+          <div class="b11-c" style="display: flex; justify-content: space-around;"><div>1</div><div>2</div><div>3</div></div>
+          <p>space-evenly: alle Abstände exakt gleich</p>
+          <div class="b11-c" style="display: flex; justify-content: space-evenly;"><div>1</div><div>2</div><div>3</div></div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="align">
+        <h2>11.4 align-items: Ausrichtung auf der Querachse</h2>
+        <p>Damit man etwas sieht, ist der Container hier 130px hoch und die Items sind unterschiedlich groß.</p>
+        <div class="beispiel">
+          <style>
+            .b11-hoch { display: flex; height: 130px; gap: 0.4rem; }
+            .b11-hoch > div:nth-child(2) { font-size: 1.6rem; }
+          </style>
+          <p>stretch (Standard): Items werden auf volle Höhe gezogen</p>
+          <div class="b11-c b11-hoch" style="align-items: stretch;"><div>1</div><div>2</div><div>3</div></div>
+          <p>flex-start</p>
+          <div class="b11-c b11-hoch" style="align-items: flex-start;"><div>1</div><div>2</div><div>3</div></div>
+          <p>center</p>
+          <div class="b11-c b11-hoch" style="align-items: center;"><div>1</div><div>2</div><div>3</div></div>
+          <p>flex-end</p>
+          <div class="b11-c b11-hoch" style="align-items: flex-end;"><div>1</div><div>2</div><div>3</div></div>
+          <p>baseline: Textgrundlinien liegen auf einer Höhe</p>
+          <div class="b11-c b11-hoch" style="align-items: baseline;"><div>1</div><div>2</div><div>3</div></div>
+        </div>
+        <p class="tipp">💡 Etwas genau in die Mitte setzen, waagerecht UND senkrecht: <code>display: flex; justify-content: center; align-items: center;</code></p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="wrap">
+        <h2>11.5 flex-wrap und gap</h2>
+        <p>
+          Normalerweise quetscht Flexbox alle Items in eine Zeile. Mit
+          <code>flex-wrap: wrap</code> dürfen sie in die nächste Zeile umbrechen.
+          <code>gap</code> setzt den Abstand <strong>zwischen</strong> den Items (nicht außen).
+          Bei mehreren Zeilen verteilt <code>align-content</code> die Zeilen.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b11-viele > div { width: 120px; }
+          </style>
+          <p>nowrap (Standard): alles in einer Zeile, Items schrumpfen</p>
+          <div class="b11-c b11-viele" style="display: flex; gap: 0.5rem;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+          </div>
+          <p>wrap: Umbruch in die nächste Zeile</p>
+          <div class="b11-c b11-viele" style="display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+          </div>
+        </div>
+        <p class="tipp">💡 Kurzschreibweise: <code>flex-flow: row wrap;</code> = flex-direction + flex-wrap.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="grow">
+        <h2>11.6 flex-grow, flex-shrink, flex-basis</h2>
+        <p>Diese drei Eigenschaften stehen an den <strong>Items</strong> und regeln, wie sie den Platz aufteilen:</p>
+        <ul>
+          <li><code>flex-basis</code> – Startgröße, bevor verteilt wird (z. B. <code>200px</code> oder <code>auto</code>)</li>
+          <li><code>flex-grow</code> – wie viel vom <strong>übrigen</strong> Platz das Item bekommt (0 = nichts)</li>
+          <li><code>flex-shrink</code> – wie stark es schrumpfen darf, wenn es eng wird (0 = gar nicht)</li>
+          <li>Kurz: <code>flex: grow shrink basis</code>, z. B. <code>flex: 1</code> = <code>1 1 0</code></li>
+        </ul>
+        <div class="beispiel">
+          <p>Item 2 hat flex-grow: 1 und nimmt den ganzen Rest</p>
+          <div class="b11-c" style="display: flex; gap: 0.4rem;">
+            <div>1</div><div style="flex-grow: 1;">2</div><div>3</div>
+          </div>
+          <p>flex: 1, 2, 1 → Item 2 bekommt doppelt so viel</p>
+          <div class="b11-c" style="display: flex; gap: 0.4rem;">
+            <div style="flex: 1;">1</div><div style="flex: 2;">2</div><div style="flex: 1;">3</div>
+          </div>
+          <p>Seitenleiste fest 150px, Inhalt flexibel</p>
+          <div class="b11-c" style="display: flex; gap: 0.4rem;">
+            <div style="flex: 0 0 150px;">Seitenleiste</div><div style="flex: 1;">Inhalt</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="einzeln">
+        <h2>11.7 Einzelne Items: align-self und order</h2>
+        <ul>
+          <li><code>align-self</code> – überschreibt align-items für ein einzelnes Item</li>
+          <li><code>order</code> – ändert die Reihenfolge der Anzeige (Standard 0, kleinere zuerst). Der HTML-Code bleibt gleich!</li>
+          <li><code>margin-left: auto</code> – schiebt ein Item ganz nach rechts</li>
+        </ul>
+        <div class="beispiel">
+          <div class="b11-c" style="display: flex; height: 120px; gap: 0.4rem; align-items: flex-start;">
+            <div>1</div>
+            <div style="align-self: center;">2 center</div>
+            <div style="align-self: flex-end;">3 end</div>
+            <div style="order: -1;">4 mit order -1</div>
+          </div>
+          <div class="b11-c" style="display: flex; gap: 0.4rem;">
+            <div>Logo</div><div>Link</div><div>Link</div>
+            <div style="margin-left: auto;">Anmelden →</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>11.8 Praxis: Navigation, Karten, Footer unten</h2>
+        <div class="beispiel">
+          <style>
+            /* Navigation: Logo links, Links rechts */
+            .b11-nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; background-color: #1e1e2e; color: white; padding: 0.8rem 1rem; border-radius: 8px; }
+            .b11-nav ul { display: flex; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+            .b11-nav a { color: white; text-decoration: none; }
+
+            /* Karten-Reihe: brechen um und sind mindestens 180px breit */
+            .b11-karten { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+            .b11-karte { flex: 1 1 180px; display: flex; flex-direction: column; border: 1px solid #ccc; border-radius: 8px; padding: 0.8rem; background-color: white; color: #222; }
+            .b11-karte p { flex-grow: 1; }   /* der Text wächst, damit alle Buttons unten auf einer Linie sind */
+          </style>
+          <nav class="b11-nav">
+            <strong>🚀 MeinLogo</strong>
+            <ul><li><a href="#praxis">Start</a></li><li><a href="#praxis">Kurs</a></li><li><a href="#praxis">Kontakt</a></li></ul>
+          </nav>
+          <div class="b11-karten">
+            <div class="b11-karte"><h4>HTML</h4><p>Kurzer Text.</p><button type="button">Mehr</button></div>
+            <div class="b11-karte"><h4>CSS</h4><p>Hier steht ein deutlich längerer Text, damit man sieht, dass die Buttons trotzdem auf einer Höhe bleiben.</p><button type="button">Mehr</button></div>
+            <div class="b11-karte"><h4>JS</h4><p>Mittellanger Text als Beispiel.</p><button type="button">Mehr</button></div>
+          </div>
+        </div>
+        <p class="tipp">💡 „Footer immer unten“: <code>body { display: flex; flex-direction: column; min-height: 100vh; }</code> und <code>main { flex: 1; }</code>. Dann füllt main den Platz und schiebt den Footer nach unten, auch bei wenig Inhalt.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="spielplatz">
+        <h2>11.9 Spielplatz</h2>
+        <p>Ändere die Werte und schau, was passiert. Darunter steht der passende CSS-Code.</p>
+        <!-- Die Auswahlfelder ändert ein kleines Skript ganz unten auf dieser Seite -->
+        <div class="spielplatz-steuerung">
+          <label>flex-direction
+            <select data-eigenschaft="flexDirection">
+              <option>row</option><option>row-reverse</option><option>column</option><option>column-reverse</option>
+            </select>
+          </label>
+          <label>justify-content
+            <select data-eigenschaft="justifyContent">
+              <option>flex-start</option><option>center</option><option>flex-end</option><option>space-between</option><option>space-around</option><option>space-evenly</option>
+            </select>
+          </label>
+          <label>align-items
+            <select data-eigenschaft="alignItems">
+              <option>stretch</option><option>flex-start</option><option>center</option><option>flex-end</option><option>baseline</option>
+            </select>
+          </label>
+          <label>flex-wrap
+            <select data-eigenschaft="flexWrap">
+              <option>nowrap</option><option>wrap</option><option>wrap-reverse</option>
+            </select>
+          </label>
+          <label>gap
+            <select data-eigenschaft="gap">
+              <option>0px</option><option selected>8px</option><option>20px</option>
+            </select>
+          </label>
+        </div>
+        <div id="b11-spielfeld" class="b11-c" style="display: flex; height: 220px; gap: 8px;">
+          <div>1</div><div style="font-size: 1.5rem;">2</div><div>3</div><div>4</div>
+        </div>
+        <pre><code id="b11-code"></code></pre>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue eine Navigationsleiste: Logo links, drei Links rechts, alles senkrecht mittig.</li>
+          <li>Setze ein Wort mit Flexbox genau in die Mitte einer 300px hohen Box.</li>
+          <li>Baue drei Karten, die auf dem Handy untereinander und am PC nebeneinander stehen (Tipp: <code>flex-wrap</code> und <code>flex-basis</code>).</li>
+          <li>Spiele das Lernspiel <em>Flexbox Froggy</em> (im Internet suchen). Damit sitzt alles!</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 11</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+    <script>
+      // Spielplatz: Bei jeder Änderung den Stil des Spielfelds setzen und den Code anzeigen.
+      const spielfeld = document.getElementById("b11-spielfeld");
+      const codeAnzeige = document.getElementById("b11-code");
+      const auswahlen = document.querySelectorAll("#spielplatz select");
+
+      // Wandelt "justifyContent" in "justify-content" um (JS-Name → CSS-Name)
+      function cssName(jsName) {
+        return jsName.replace(/[A-Z]/g, function (b) { return "-" + b.toLowerCase(); });
+      }
+
+      function aktualisieren() {
+        let code = ".container {\n  display: flex;\n";
+        auswahlen.forEach(function (auswahl) {
+          const eigenschaft = auswahl.dataset.eigenschaft;   // data-eigenschaft="..."
+          spielfeld.style[eigenschaft] = auswahl.value;      // Stil direkt setzen
+          code += `  ${cssName(eigenschaft)}: ${auswahl.value};\n`;
+        });
+        codeAnzeige.textContent = code + "}";
+      }
+
+      auswahlen.forEach(function (auswahl) {
+        auswahl.addEventListener("change", aktualisieren);
+      });
+      aktualisieren();
+    </script>
+  </body>
+</html>

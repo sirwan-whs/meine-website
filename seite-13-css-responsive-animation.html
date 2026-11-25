@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<!--
+  Seite 13: Responsive Design, Übergänge, Transformationen und Animationen
+  Klassen in den Beispielen beginnen mit "b13-".
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 13: Responsive und Animation – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 13: Responsive und Animation 📱✨</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#responsive">Was ist Responsive Design?</a></li>
+          <li><a href="#media">Media Queries</a></li>
+          <li><a href="#mobile-first">Mobile First</a></li>
+          <li><a href="#bilder">Flexible Bilder und Schrift</a></li>
+          <li><a href="#vorlieben">Nutzer-Vorlieben: Dunkelmodus und weniger Bewegung</a></li>
+          <li><a href="#transition">Übergänge (transition)</a></li>
+          <li><a href="#transform">Transformationen (transform)</a></li>
+          <li><a href="#animation">Animationen mit @keyframes</a></li>
+          <li><a href="#praxis">Praxis: Lade-Spinner, Karte zum Umdrehen</a></li>
+          <li><a href="#extras">Weitere nützliche Dinge</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="responsive">
+        <h2>13.1 Was ist Responsive Design?</h2>
+        <p>
+          <strong>Responsive</strong> heißt: Die Seite passt sich an jede Bildschirmgröße an, vom
+          Handy bis zum großen Monitor. Die Zutaten kennst du schon:
+        </p>
+        <ol>
+          <li>Der Viewport-Meta-Tag im head (sonst zeigt das Handy eine verkleinerte PC-Seite)</li>
+          <li>Flexible Breiten (<code>%</code>, <code>fr</code>, <code>max-width</code>) statt fester Pixel</li>
+          <li>Flexbox mit <code>wrap</code> und Grid mit <code>auto-fill</code></li>
+          <li><strong>Media Queries</strong> für alles, was sich wirklich ändern muss</li>
+        </ol>
+        <p class="tipp">💡 Testen: F12 drücken, dann das Handy-Symbol oben links in den Entwicklertools (<kbd>Strg</kbd> + <kbd>Umschalt</kbd> + <kbd>M</kbd>). Dort kannst du verschiedene Geräte auswählen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="media">
+        <h2>13.2 Media Queries</h2>
+        <p>Eine Media Query ist eine Bedingung. Die Regeln darin gelten nur, wenn sie zutrifft:</p>
+        <pre><code>@media (max-width: 600px) {     /* bis 600px Breite */
+  .menue { flex-direction: column; }
+}
+
+@media (min-width: 900px) {     /* ab 900px Breite */
+  .spalten { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+@media (min-width: 600px) and (max-width: 899px) { … }   /* dazwischen */
+@media (orientation: landscape) { … }                    /* Querformat */
+@media print { … }                                       /* beim Drucken */</code></pre>
+        <div class="beispiel">
+          <style>
+            .b13-box { padding: 1rem; border-radius: 8px; font-weight: bold; color: white; background-color: #c0392b; }
+            .b13-box::after { content: "Schmal (unter 600px)"; }
+            @media (min-width: 600px) {
+              .b13-box { background-color: #e67e22; }
+              .b13-box::after { content: "Mittel (600px bis 899px)"; }
+            }
+            @media (min-width: 900px) {
+              .b13-box { background-color: #27ae60; }
+              .b13-box::after { content: "Breit (ab 900px)"; }
+            }
+          </style>
+          <div class="b13-box">Fenstergröße: </div>
+        </div>
+        <p>Zieh das Browserfenster schmaler und breiter, die Farbe ändert sich.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="mobile-first">
+        <h2>13.3 Mobile First</h2>
+        <p>
+          <strong>Mobile First</strong> heißt: Erst schreibst du das CSS für das Handy (ohne Media
+          Query), dann erweiterst du es mit <code>min-width</code> für größere Bildschirme. Das
+          Beispiel oben arbeitet genau so. Vorteil: Das Handy lädt nur einfache Regeln, und die
+          einspaltige Ansicht ist sowieso der einfachste Fall.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b13-raster { display: grid; gap: 0.5rem; grid-template-columns: 1fr; }  /* Handy: 1 Spalte */
+            .b13-raster div { background-color: #6fa8dc; color: #111; padding: 1rem; border-radius: 6px; text-align: center; }
+            @media (min-width: 600px) { .b13-raster { grid-template-columns: 1fr 1fr; } }      /* Tablet: 2 */
+            @media (min-width: 900px) { .b13-raster { grid-template-columns: repeat(4, 1fr); } }  /* PC: 4 */
+          </style>
+          <div class="b13-raster"><div>A</div><div>B</div><div>C</div><div>D</div></div>
+        </div>
+        <p class="tipp">💡 Gängige Umbruchpunkte (Breakpoints): 600px, 900px, 1200px. Besser noch: Setz sie dort, wo dein Layout „kaputtgeht“.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="bilder">
+        <h2>13.4 Flexible Bilder und Schrift</h2>
+        <ul>
+          <li><code>img { max-width: 100%; height: auto; }</code> – Bilder werden nie breiter als ihr Platz (steht schon in deiner style.css)</li>
+          <li><code>object-fit: cover</code> – Bild füllt einen festen Rahmen, ohne verzerrt zu werden</li>
+          <li><code>font-size: clamp(1rem, 2.5vw, 2rem)</code> – Schrift wächst mit dem Fenster, aber in Grenzen</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b13-bildrahmen { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+            .b13-bildrahmen img { width: 140px; height: 140px; border-radius: 8px; border: 2px solid #999; background-color: #eee; }
+          </style>
+          <div class="b13-bildrahmen">
+            <img src="bilder/landschaft.svg" alt="fill: verzerrt" style="object-fit: fill;">
+            <img src="bilder/landschaft.svg" alt="contain: ganz sichtbar" style="object-fit: contain;">
+            <img src="bilder/landschaft.svg" alt="cover: füllt und schneidet ab" style="object-fit: cover;">
+          </div>
+          <p>Links fill (verzerrt), Mitte contain (ganz sichtbar), rechts cover (füllt, schneidet ab).</p>
+          <p style="font-size: clamp(1rem, 4vw, 2.2rem); font-weight: bold;">Diese Schrift wächst mit dem Fenster.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="vorlieben">
+        <h2>13.5 Nutzer-Vorlieben: Dunkelmodus und weniger Bewegung</h2>
+        <p>Media Queries können auch Einstellungen des Betriebssystems abfragen:</p>
+        <pre><code>/* Der Nutzer hat in Windows/macOS den dunklen Modus eingestellt */
+@media (prefers-color-scheme: dark) {
+  :root { --hintergrund: #12151f; --text: #e8eaf2; }
+}
+
+/* Der Nutzer möchte weniger Animationen (z. B. wegen Schwindel) */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}</code></pre>
+        <p class="tipp">💡 Deine Website hat einen eigenen Schalter (theme.js). Als Übung könntest du ihn so erweitern, dass beim allerersten Besuch die System-Einstellung übernommen wird: <code>matchMedia("(prefers-color-scheme: dark)").matches</code>.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="transition">
+        <h2>13.6 Übergänge (transition)</h2>
+        <p>
+          Ohne <code>transition</code> springt eine Änderung (z. B. bei <code>:hover</code>) sofort.
+          Mit transition wird sie weich animiert.
+          Schreibweise: <code>transition: eigenschaft dauer zeitkurve verzögerung;</code>
+        </p>
+        <ul>
+          <li>Zeitkurven: <code>ease</code> (Standard), <code>linear</code>, <code>ease-in</code>, <code>ease-out</code>, <code>ease-in-out</code></li>
+          <li>Mehrere: <code>transition: background-color 0.3s, transform 0.5s;</code></li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b13-t { display: inline-block; width: 120px; padding: 1rem 0.5rem; margin: 0.3rem; text-align: center; background-color: #326ece; color: white; border-radius: 8px; }
+            .b13-t:hover { background-color: #e67e22; width: 180px; }
+            .b13-ohne { transition: none; }
+            .b13-mit { transition: all 0.5s ease; }
+            .b13-langsam { transition: all 1.5s ease-in-out; }
+            .b13-spaet { transition: all 0.5s ease 0.5s; }   /* startet erst nach 0.5s */
+          </style>
+          <p>Fahr mit der Maus über die Kästen:</p>
+          <div class="b13-t b13-ohne">ohne</div>
+          <div class="b13-t b13-mit">0.5s</div>
+          <div class="b13-t b13-langsam">1.5s</div>
+          <div class="b13-t b13-spaet">verzögert</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="transform">
+        <h2>13.7 Transformationen (transform)</h2>
+        <p>Mit <code>transform</code> verschiebst, drehst, skalierst und neigst du ein Element, ohne dass sich das Layout drumherum verschiebt:</p>
+        <ul>
+          <li><code>translate(x, y)</code> – verschieben</li>
+          <li><code>rotate(45deg)</code> – drehen</li>
+          <li><code>scale(1.5)</code> – vergrößern / verkleinern</li>
+          <li><code>skew(10deg)</code> – neigen</li>
+          <li>Mehrere: <code>transform: rotate(10deg) scale(1.2);</code></li>
+          <li><code>transform-origin</code> – um welchen Punkt gedreht wird</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b13-tf { display: flex; flex-wrap: wrap; gap: 2rem; padding: 1rem; }
+            .b13-tf div { width: 90px; height: 90px; display: grid; place-items: center; background-color: #93c47d; color: #111; border-radius: 8px; font-size: 0.85rem; text-align: center; transition: transform 0.4s; }
+            .b13-tf div:hover { transform: none; }
+          </style>
+          <div class="b13-tf">
+            <div style="transform: translate(10px, 10px);">translate</div>
+            <div style="transform: rotate(20deg);">rotate</div>
+            <div style="transform: scale(0.8);">scale 0.8</div>
+            <div style="transform: skew(15deg);">skew</div>
+            <div style="transform: rotate(45deg); transform-origin: top left;">origin oben links</div>
+            <div style="transform: perspective(300px) rotateY(40deg);">3D rotateY</div>
+          </div>
+          <p>Fahr über ein Kästchen, dann wird die Transformation aufgehoben.</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="animation">
+        <h2>13.8 Animationen mit @keyframes</h2>
+        <p>
+          Eine Transition braucht einen Auslöser (z. B. hover). Eine <strong>Animation</strong>
+          läuft von selbst. In <code>@keyframes</code> legst du fest, wie es zu bestimmten
+          Zeitpunkten aussieht (<code>from</code>/<code>to</code> oder Prozente). Dann hängst du
+          die Animation an ein Element:
+        </p>
+        <table class="tabelle">
+          <tr><th>Eigenschaft</th><th>Bedeutung</th></tr>
+          <tr><td><code>animation-name</code></td><td>Name der @keyframes</td></tr>
+          <tr><td><code>animation-duration</code></td><td>Dauer, z. B. <code>2s</code></td></tr>
+          <tr><td><code>animation-iteration-count</code></td><td>Wiederholungen, <code>infinite</code> = endlos</td></tr>
+          <tr><td><code>animation-direction</code></td><td><code>alternate</code> = hin und zurück</td></tr>
+          <tr><td><code>animation-timing-function</code></td><td>Zeitkurve wie bei transition</td></tr>
+          <tr><td><code>animation-delay</code></td><td>Verzögerung</td></tr>
+          <tr><td><code>animation-fill-mode</code></td><td><code>forwards</code> = am Ende stehen bleiben</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            @keyframes b13-huepfen {
+              0%, 100% { transform: translateY(0); }
+              50%      { transform: translateY(-25px); }
+            }
+            @keyframes b13-farbe {
+              from { background-color: #326ece; }
+              to   { background-color: #e74c3c; }
+            }
+            @keyframes b13-reinfliegen {
+              from { opacity: 0; transform: translateX(-60px); }
+              to   { opacity: 1; transform: translateX(0); }
+            }
+            .b13-anim { display: inline-block; padding: 0.8rem 1rem; margin: 1.5rem 0.5rem 0.5rem; border-radius: 8px; color: white; background-color: #326ece; }
+            .b13-a1 { animation: b13-huepfen 1s ease-in-out infinite; }
+            .b13-a2 { animation: b13-farbe 2s linear infinite alternate; }
+            .b13-a3 { animation: b13-reinfliegen 1.2s ease-out infinite; }
+            /* Kurzform: animation: name dauer zeitkurve wiederholungen richtung; */
+          </style>
+          <div class="b13-anim b13-a1">hüpfen</div>
+          <div class="b13-anim b13-a2">Farbwechsel</div>
+          <div class="b13-anim b13-a3">reinfliegen</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>13.9 Praxis: Lade-Spinner, Karte zum Umdrehen</h2>
+        <div class="beispiel">
+          <style>
+            /* Lade-Spinner: ein Kreis mit einem farbigen Rand-Stück, das sich dreht */
+            @keyframes b13-drehen { to { transform: rotate(360deg); } }
+            .b13-spinner {
+              width: 48px; height: 48px;
+              border: 6px solid #ddd;
+              border-top-color: #326ece;
+              border-radius: 50%;
+              animation: b13-drehen 0.9s linear infinite;
+            }
+
+            /* Karte zum Umdrehen (3D) */
+            .b13-flip { width: 200px; height: 120px; perspective: 600px; margin-top: 1rem; }
+            .b13-flip-innen { position: relative; width: 100%; height: 100%; transition: transform 0.7s; transform-style: preserve-3d; }
+            .b13-flip:hover .b13-flip-innen { transform: rotateY(180deg); }
+            .b13-vorne, .b13-hinten {
+              position: absolute; inset: 0;
+              display: grid; place-items: center;
+              border-radius: 10px; color: white; font-weight: bold;
+              backface-visibility: hidden;        /* Rückseite nicht durchscheinen lassen */
+            }
+            .b13-vorne { background-color: #8e44ad; }
+            .b13-hinten { background-color: #16a085; transform: rotateY(180deg); }
+          </style>
+          <div class="b13-spinner" role="status" aria-label="Lädt …"></div>
+          <div class="b13-flip">
+            <div class="b13-flip-innen">
+              <div class="b13-vorne">Was ist CSS? (hover)</div>
+              <div class="b13-hinten">Cascading Style Sheets</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="extras">
+        <h2>13.10 Weitere nützliche Dinge</h2>
+        <div class="beispiel">
+          <style>
+            /* filter: Bildeffekte direkt im Browser */
+            .b13-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+            .b13-filter img { width: 110px; border-radius: 6px; }
+
+            /* scroll-snap: Karussell, das an jedem Bild einrastet */
+            .b13-snap { display: flex; gap: 0.5rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 0.4rem; margin-top: 1rem; }
+            .b13-snap div { flex: 0 0 70%; scroll-snap-align: center; height: 90px; border-radius: 8px; display: grid; place-items: center; color: white; font-weight: bold; }
+
+            /* accent-color: Farbe von Checkboxen, Radios, Reglern */
+            .b13-akzent { accent-color: #e67e22; }
+          </style>
+          <div class="b13-filter">
+            <img src="bilder/landschaft.svg" alt="normal">
+            <img src="bilder/landschaft.svg" alt="graustufen" style="filter: grayscale(100%);">
+            <img src="bilder/landschaft.svg" alt="unscharf" style="filter: blur(2px);">
+            <img src="bilder/landschaft.svg" alt="farbe gedreht" style="filter: hue-rotate(120deg);">
+            <img src="bilder/landschaft.svg" alt="hell" style="filter: brightness(1.4);">
+          </div>
+          <div class="b13-snap">
+            <div style="background-color: #c0392b;">1 → wischen</div>
+            <div style="background-color: #27ae60;">2</div>
+            <div style="background-color: #2980b9;">3</div>
+          </div>
+          <p class="b13-akzent">
+            <label><input type="checkbox" checked> orange Checkbox</label>
+            <input type="range" aria-label="Regler">
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Mach deine Übungsseite responsive: Navigation auf dem Handy untereinander, ab 600px nebeneinander.</li>
+          <li>Gib allen Buttons einen weichen Übergang bei hover (Farbe und leichte Vergrößerung).</li>
+          <li>Baue eine Animation, bei der ein Herz ❤️ pulsiert (scale von 1 auf 1.2 und zurück).</li>
+          <li>Lass Karten beim Laden der Seite nacheinander hereinfliegen (Tipp: unterschiedliche <code>animation-delay</code>).</li>
+          <li>Füge <code>prefers-reduced-motion</code> hinzu, damit deine Animationen bei Bedarf ausgeschaltet werden.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 13 · Damit ist CSS geschafft! Als Nächstes: JavaScript</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

@@ -17,7 +17,7 @@
 :root {
   --hintergrund: #f7f7fb;
   --text: #1f2330;
-  --akzent: #1a3197; /* Lila-Blau für Links und Button */
+  --akzent: #326ece; /* Lila-Blau für Links und Button */
   --karte: #7794d2;
 }
 
@@ -38,7 +38,7 @@ body {
 /* Kopfbereich: farbiger Hintergrund, Text zentriert. */
 header {
   background-color: var(--akzent);
-  color: white;
+  color: rgb(71, 163, 29);
   text-align: center;
   padding: 2rem 1rem; /* Innenabstand: 2rem oben/unten, 1rem links/rechts */
 }
@@ -52,7 +52,7 @@ nav {
 }
 
 nav a {
-  color: white;
+  color: rgb(198, 7, 7);
   text-decoration: none; /* Unterstreichung entfernen */
   font-weight: 600;
 }

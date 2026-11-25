@@ -33,6 +33,9 @@ button.addEventListener("click", function () {
 
   // Mit `Backticks` und ${...} kann man Variablen direkt in Text einsetzen.
   grussText.textContent = `Hallo! Du hast ${anzahlKlicks}-mal geklickt. 🎉`;
+  if (anzahlKlicks >= 5) {
+    grussText.textContent = "Wow, du bist ein Klick-Meister! 🏆";
+  }
 });
 
 /*

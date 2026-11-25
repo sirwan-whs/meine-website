@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  seite-02-quiz.html – Seite 2: ein kleines Quiz über HTML, CSS und JavaScript.
+  Das HTML ist fast leer. Fragen und Antworten erzeugt seite-02-quiz.js.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 2: Quiz – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 2: Web-Quiz 🧠</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section>
+        <!-- Fortschritt, z. B. "Frage 2 von 5". <progress> ist ein fertiger Fortschrittsbalken. -->
+        <p id="quiz-fortschritt" class="quiz-fortschritt"></p>
+        <progress id="quiz-balken" max="5" value="0"></progress>
+
+        <!-- Die aktuelle Frage -->
+        <h2 id="quiz-frage">Frage wird geladen …</h2>
+
+        <!-- Die Antwort-Buttons kommen hierhin. CSS Grid ordnet sie in zwei Spalten an. -->
+        <div id="quiz-antworten" class="quiz-antworten"></div>
+
+        <!-- Rückmeldung nach dem Antworten. aria-live sagt Screenreadern: "Lies Änderungen vor." -->
+        <p id="quiz-rueckmeldung" class="quiz-rueckmeldung" aria-live="polite"></p>
+
+        <!-- "hidden" versteckt ein Element. JavaScript blendet die Buttons bei Bedarf ein. -->
+        <button id="quiz-weiter" type="button" hidden>Nächste Frage →</button>
+        <button id="quiz-neustart" type="button" hidden>Nochmal spielen 🔁</button>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Tipp: Neue Fragen kannst du ganz einfach in seite-02-quiz.js ergänzen.</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="seite-02-quiz.js"></script>
+  </body>
+</html>

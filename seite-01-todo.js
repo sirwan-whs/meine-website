@@ -1,5 +1,5 @@
 /*
-  todo.js – die Logik der To-do-Liste.
+  seite-01-todo.js – die Logik der To-do-Liste.
 
   Neu hier:
   - Arrays: Listen von Werten, z. B. ["a", "b", "c"]. Wir speichern darin alle Aufgaben.

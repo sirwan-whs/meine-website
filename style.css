@@ -207,3 +207,93 @@ section {
   color: var(--text);
   border: 1px solid currentColor;
 }
+
+/* =========================================================
+   NEU: Navigation und Blättern (navigation.js)
+   ========================================================= */
+
+/* Link zur Seite, auf der man gerade ist */
+nav a.aktiv {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* "← vorherige" links, "nächste →" rechts */
+.blaettern {
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.blaettern a,
+.seiten-liste a {
+  color: var(--akzent);
+  font-weight: 600;
+}
+
+.seiten-liste li {
+  margin-bottom: 0.4rem;
+}
+
+/* =========================================================
+   NEU: Quiz (seite-02-quiz.html)
+   ========================================================= */
+
+.quiz-fortschritt {
+  margin: 0;
+  font-weight: 600;
+}
+
+progress {
+  width: 100%;
+  height: 0.6rem;
+  accent-color: var(--akzent); /* Farbe des Balkens */
+}
+
+/* CSS Grid: zwei gleich breite Spalten, auf dem Handy eine */
+.quiz-antworten {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 Spalten, jede 1 Teil ("fraction") breit */
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+/* @media: diese Regeln gelten nur, wenn der Bildschirm schmaler als 500px ist */
+@media (max-width: 500px) {
+  .quiz-antworten {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quiz-antwort {
+  text-align: left;
+  background-color: var(--hintergrund);
+  color: var(--text);
+  border: 2px solid var(--akzent);
+}
+
+/* Gesperrte Buttons nicht mehr vergrößern */
+.quiz-antwort:disabled {
+  cursor: default;
+  transform: none;
+}
+
+.quiz-antwort.richtig {
+  background-color: #1f9d55;
+  border-color: #1f9d55;
+  color: white;
+}
+
+.quiz-antwort.falsch {
+  background-color: #d33;
+  border-color: #d33;
+  color: white;
+}
+
+.quiz-rueckmeldung {
+  font-weight: 600;
+  min-height: 1.6em; /* Platz freihalten, damit nichts springt */
+}

@@ -24,6 +24,11 @@ const seiten = [
   { nummer: 11, datei: "seite-11-css-flexbox.html", bereich: "CSS", titel: "Flexbox", thema: "Achsen, justify-content, align-items, wrap, gap, flex-grow, Spielplatz" },
   { nummer: 12, datei: "seite-12-css-grid.html", bereich: "CSS", titel: "CSS Grid", thema: "Spalten, fr, auto-fill, minmax, span, grid-template-areas" },
   { nummer: 13, datei: "seite-13-css-responsive-animation.html", bereich: "CSS", titel: "Responsive und Animation", thema: "Media Queries, Mobile First, transition, transform, @keyframes" },
+  { nummer: 14, datei: "seite-14-js-grundlagen.html", bereich: "JavaScript", titel: "JavaScript Grundlagen", thema: "console.log, Variablen, Datentypen, Operatoren, Typumwandlung" },
+  { nummer: 15, datei: "seite-15-js-strings-zahlen.html", bereich: "JavaScript", titel: "Strings und Zahlen", thema: "Template Strings, String-Methoden, Zahlen formatieren, Math, Zufall" },
+  { nummer: 16, datei: "seite-16-js-bedingungen-schleifen.html", bereich: "JavaScript", titel: "Bedingungen und Schleifen", thema: "if/else, switch, truthy/falsy, ??, for, while, for…of" },
+  { nummer: 17, datei: "seite-17-js-funktionen.html", bereich: "JavaScript", titel: "Funktionen", thema: "Parameter, return, Pfeilfunktionen, Scope, Callbacks, Closures" },
+  { nummer: 18, datei: "seite-18-js-arrays.html", bereich: "JavaScript", titel: "Arrays", thema: "push/pop, splice, find, map, filter, reduce, sort, Spread" },
 ];
 
 // ----- Welche Seite ist gerade offen? -----

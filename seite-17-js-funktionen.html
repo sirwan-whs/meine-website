@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--
+  Seite 17: Funktionen
+  Funktionen sind wiederverwendbare Code-Blöcke mit einem Namen.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 17: Funktionen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 17: Funktionen 🧩</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#warum">Warum Funktionen?</a></li>
+          <li><a href="#deklaration">Funktion schreiben und aufrufen</a></li>
+          <li><a href="#parameter">Parameter und Argumente</a></li>
+          <li><a href="#return">return: Ergebnis zurückgeben</a></li>
+          <li><a href="#ausdruck">Funktionsausdrücke</a></li>
+          <li><a href="#pfeil">Pfeilfunktionen</a></li>
+          <li><a href="#scope">Gültigkeitsbereich (Scope)</a></li>
+          <li><a href="#callback">Funktionen als Werte: Callbacks</a></li>
+          <li><a href="#closure">Closures</a></li>
+          <li><a href="#rekursion">Rekursion</a></li>
+          <li><a href="#praxis">Praxis: BMI-Rechner</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="warum">
+        <h2>17.1 Warum Funktionen?</h2>
+        <ul>
+          <li><strong>Nicht wiederholen</strong> (DRY: „Don’t Repeat Yourself“): Code einmal schreiben, oft benutzen</li>
+          <li><strong>Übersicht</strong>: Ein guter Name erklärt, was der Code tut</li>
+          <li><strong>Einfacher ändern</strong>: Fehler nur an einer Stelle beheben</li>
+        </ul>
+        <p>Du kennst schon viele eingebaute Funktionen: <code>console.log()</code>, <code>Math.round()</code>, <code>alert()</code>. Jetzt schreibst du eigene.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="deklaration">
+        <h2>17.2 Funktion schreiben und aufrufen</h2>
+        <p>Eine <strong>Funktionsdeklaration</strong> beginnt mit <code>function</code>, dann Name, runde Klammern und der Code in geschweiften Klammern. Sie läuft erst, wenn man sie <strong>aufruft</strong>: <code>name()</code>.</p>
+        <div class="beispiel">
+          <script>
+            function begruessen() {
+              console.log("Hallo!");
+              console.log("Schön, dass du da bist.");
+            }
+
+            begruessen();   // Aufruf 1
+            begruessen();   // Aufruf 2: derselbe Code läuft nochmal
+          </script>
+        </div>
+        <p class="tipp">💡 Gute Funktionsnamen beginnen mit einem Verb: <code>berechneSumme</code>, <code>zeigeFehler</code>, <code>istGueltig</code>.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="parameter">
+        <h2>17.3 Parameter und Argumente</h2>
+        <p>
+          <strong>Parameter</strong> sind Platzhalter in der Definition. <strong>Argumente</strong>
+          sind die echten Werte beim Aufruf. Fehlt ein Argument, ist der Parameter
+          <code>undefined</code>, außer du gibst einen <strong>Standardwert</strong> mit <code>=</code> an.
+        </p>
+        <div class="beispiel">
+          <script>
+            //                  Parameter ↓      ↓ Standardwert
+            function gruss(name, tageszeit = "Tag") {
+              console.log(`Guten ${tageszeit}, ${name}!`);
+            }
+
+            gruss("Sirwan", "Morgen");   // Argumente
+            gruss("Lea");                // tageszeit nimmt den Standardwert
+            gruss();                     // name ist undefined
+
+            // Beliebig viele Argumente mit ... (Rest-Parameter)
+            function summeAller(...zahlen) {
+              let s = 0;
+              for (const z of zahlen) s += z;
+              return s;
+            }
+            console.log(summeAller(1, 2, 3, 4, 5));
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="return">
+        <h2>17.4 return: Ergebnis zurückgeben</h2>
+        <p>
+          Mit <code>return</code> gibt eine Funktion einen Wert zurück, mit dem man
+          weiterarbeiten kann. <code>return</code> beendet die Funktion sofort, Code danach läuft
+          nicht mehr. Ohne return gibt eine Funktion <code>undefined</code> zurück.
+        </p>
+        <div class="beispiel">
+          <script>
+            function quadrat(zahl) {
+              return zahl * zahl;
+            }
+
+            const ergebnisQuadrat = quadrat(7);
+            console.log(ergebnisQuadrat);                 // 49
+            console.log(quadrat(3) + quadrat(4));         // 9 + 16 = 25
+
+            function istVolljaehrigAlter(jahre) {
+              if (jahre >= 18) {
+                return true;      // hier ist sofort Schluss
+              }
+              return false;
+            }
+            console.log(istVolljaehrigAlter(20), istVolljaehrigAlter(15));
+
+            function ohneReturn() { const x = 1; }
+            console.log(ohneReturn());                    // undefined
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="ausdruck">
+        <h2>17.5 Funktionsausdrücke</h2>
+        <p>
+          Eine Funktion kann auch in einer Variablen gespeichert werden. Unterschied zur
+          Deklaration: Deklarationen kann man schon <strong>vor</strong> ihrer Zeile aufrufen
+          (das nennt man <em>Hoisting</em>), Ausdrücke erst <strong>danach</strong>.
+        </p>
+        <div class="beispiel">
+          <script>
+            console.log(verdoppeln(4));   // geht, weil Deklaration (Hoisting)
+
+            function verdoppeln(x) {
+              return x * 2;
+            }
+
+            const halbieren = function (x) {
+              return x / 2;
+            };
+            console.log(halbieren(10));   // geht erst NACH der Zeile oben
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="pfeil">
+        <h2>17.6 Pfeilfunktionen</h2>
+        <p>Die moderne Kurzschreibweise mit <code>=&gt;</code>. Sehr beliebt, vor allem für kleine Funktionen:</p>
+        <ul>
+          <li>Mehrere Parameter in Klammern: <code>(a, b) =&gt; a + b</code></li>
+          <li>Ein Parameter, Klammern optional: <code>x =&gt; x * 2</code></li>
+          <li>Kein Parameter: <code>() =&gt; console.log("Hi")</code></li>
+          <li>Nur ein Ausdruck: Ergebnis wird automatisch zurückgegeben, ohne <code>return</code> und ohne <code>{ }</code></li>
+          <li>Mehrere Zeilen: dann <code>{ }</code> und <code>return</code> wie gewohnt</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const addiere = (a, b) => a + b;
+            const mal3 = x => x * 3;
+            const hallo = () => "Hallo!";
+            const beschreibe = (name, alterJahre) => {
+              const satzTeil = alterJahre >= 18 ? "erwachsen" : "jugendlich";
+              return `${name} ist ${satzTeil}.`;
+            };
+
+            console.log(addiere(2, 3));
+            console.log(mal3(7));
+            console.log(hallo());
+            console.log(beschreibe("Sirwan", 20));
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="scope">
+        <h2>17.7 Gültigkeitsbereich (Scope)</h2>
+        <p>Wo ist eine Variable sichtbar?</p>
+        <ul>
+          <li><strong>Global</strong>: außerhalb jeder Funktion, überall sichtbar</li>
+          <li><strong>Funktion</strong>: innerhalb einer Funktion, nur dort sichtbar</li>
+          <li><strong>Block</strong>: <code>let</code> und <code>const</code> in <code>{ }</code> (z. B. in if oder for) gibt es nur in diesem Block</li>
+        </ul>
+        <p>Von innen sieht man nach außen, aber nicht von außen nach innen.</p>
+        <div class="beispiel">
+          <script>
+            const globalWert = "global";
+
+            function zeigeScope() {
+              const lokalWert = "lokal";
+              console.log("In der Funktion:", globalWert, lokalWert);   // beide sichtbar
+
+              if (true) {
+                const blockWert = "block";
+                console.log("Im Block:", blockWert);
+              }
+              console.log("Nach dem Block:", typeof blockWert);         // undefined
+            }
+
+            zeigeScope();
+            console.log("Außerhalb:", typeof lokalWert);                // undefined
+          </script>
+        </div>
+        <p class="tipp">💡 Benutze so wenige globale Variablen wie möglich. Lokale Variablen können sich nicht gegenseitig in die Quere kommen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="callback">
+        <h2>17.8 Funktionen als Werte: Callbacks</h2>
+        <p>
+          In JavaScript sind Funktionen ganz normale Werte. Man kann sie an andere Funktionen
+          übergeben. So eine übergebene Funktion heißt <strong>Callback</strong>
+          („Rückruf“): Sie wird später aufgerufen. Das kennst du schon von
+          <code>addEventListener("click", function () { … })</code>.
+        </p>
+        <div class="beispiel">
+          <button id="b17-knopf" type="button">Klick mich</button>
+          <script>
+            function dreimal(aktion) {
+              for (let i = 1; i <= 3; i++) {
+                aktion(i);           // den Callback aufrufen
+              }
+            }
+
+            dreimal(function (n) { console.log("Runde", n); });
+            dreimal(n => console.log("⭐".repeat(n)));
+
+            // Benannte Funktion als Callback: ohne () übergeben!
+            function beiKlick() {
+              console.log("Geklickt um", new Date().toLocaleTimeString("de-DE"));
+            }
+            document.getElementById("b17-knopf").addEventListener("click", beiKlick);
+          </script>
+        </div>
+        <p class="tipp">⚠️ Häufiger Fehler: <code>addEventListener("click", beiKlick())</code> mit Klammern ruft die Funktion <strong>sofort</strong> auf. Richtig ist <code>beiKlick</code> ohne Klammern.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="closure">
+        <h2>17.9 Closures</h2>
+        <p>
+          Eine Funktion „merkt“ sich die Variablen aus der Umgebung, in der sie erstellt wurde,
+          auch wenn diese Umgebung längst fertig ist. Das nennt man <strong>Closure</strong>.
+          Damit kann man private Zustände bauen:
+        </p>
+        <div class="beispiel">
+          <button id="b17-zaehl-a" type="button">Zähler A +1</button>
+          <button id="b17-zaehl-b" type="button">Zähler B +1</button>
+          <script>
+            function erstelleZaehler(name) {
+              let stand = 0;                       // nur für diesen Zähler sichtbar
+              return function () {
+                stand++;
+                console.log(`${name}: ${stand}`);
+              };
+            }
+
+            const zaehlerA = erstelleZaehler("A");
+            const zaehlerB = erstelleZaehler("B");
+            document.getElementById("b17-zaehl-a").addEventListener("click", zaehlerA);
+            document.getElementById("b17-zaehl-b").addEventListener("click", zaehlerB);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="rekursion">
+        <h2>17.10 Rekursion</h2>
+        <p>Eine Funktion, die sich selbst aufruft. Wichtig ist eine <strong>Abbruchbedingung</strong>, sonst läuft sie endlos.</p>
+        <div class="beispiel">
+          <script>
+            // Fakultät: 5! = 5 · 4 · 3 · 2 · 1
+            function fakultaet(n) {
+              if (n <= 1) return 1;          // Abbruchbedingung
+              return n * fakultaet(n - 1);   // ruft sich selbst mit kleinerem n auf
+            }
+            console.log("5! =", fakultaet(5));
+            console.log("10! =", fakultaet(10));
+
+            function countdownRek(n) {
+              if (n < 0) return;
+              console.log(n === 0 ? "🚀 Start!" : n);
+              countdownRek(n - 1);
+            }
+            countdownRek(3);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>17.11 Praxis: BMI-Rechner</h2>
+        <p>Mehrere kleine Funktionen, die jeweils genau eine Aufgabe haben, arbeiten zusammen.</p>
+        <div class="beispiel">
+          <form id="b17-bmi">
+            <label>Gewicht (kg) <input id="b17-kg" type="number" step="0.1" value="70" required></label>
+            <label>Größe (cm) <input id="b17-cm" type="number" value="178" required></label>
+            <button type="submit">Berechnen</button>
+          </form>
+          <p class="ergebnis" id="b17-bmi-ausgabe"></p>
+          <script>
+            // 1. Nur rechnen
+            function berechneBmi(kg, cm) {
+              const meter = cm / 100;
+              return kg / (meter * meter);
+            }
+
+            // 2. Nur einordnen
+            function bmiKategorie(bmi) {
+              if (bmi < 18.5) return "Untergewicht";
+              if (bmi < 25) return "Normalgewicht";
+              if (bmi < 30) return "Übergewicht";
+              return "Adipositas";
+            }
+
+            // 3. Nur anzeigen
+            function zeigeBmi(bmi) {
+              const text = `BMI ${bmi.toFixed(1)}: ${bmiKategorie(bmi)}`;
+              document.getElementById("b17-bmi-ausgabe").textContent = text;
+              console.log(text);
+            }
+
+            // Alles verbinden
+            document.getElementById("b17-bmi").addEventListener("submit", (event) => {
+              event.preventDefault();
+              const kg = Number(document.getElementById("b17-kg").value);
+              const cm = Number(document.getElementById("b17-cm").value);
+              zeigeBmi(berechneBmi(kg, cm));
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Schreib eine Funktion <code>celsiusZuFahrenheit(c)</code> (Formel: c · 9 / 5 + 32) und teste sie mit 0, 37 und 100.</li>
+          <li>Schreib <code>istGerade(zahl)</code>, die true oder false zurückgibt, einmal normal und einmal als Pfeilfunktion.</li>
+          <li>Schreib <code>groessteZahl(a, b, c)</code> ohne <code>Math.max</code>.</li>
+          <li>Schreib eine Funktion, die einen Namen bekommt und einen Gruß-String zurückgibt, und zeige ihn per Button auf der Seite.</li>
+          <li>Bonus: Berechne die Fibonacci-Zahlen (1, 1, 2, 3, 5, 8, …) rekursiv.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 17</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!--
+  Seite 16: Bedingungen und Schleifen
+  Damit trifft ein Programm Entscheidungen und wiederholt Dinge.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 16: Bedingungen und Schleifen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 16: Bedingungen und Schleifen 🔀🔁</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#if">if, else if, else</a></li>
+          <li><a href="#truthy">Truthy und falsy</a></li>
+          <li><a href="#ternaer">Der ternäre Operator</a></li>
+          <li><a href="#switch">switch</a></li>
+          <li><a href="#kurz">Kurzschluss, ?? und ?.</a></li>
+          <li><a href="#for">for-Schleife</a></li>
+          <li><a href="#while">while und do…while</a></li>
+          <li><a href="#for-of">for…of und for…in</a></li>
+          <li><a href="#break">break und continue</a></li>
+          <li><a href="#praxis">Praxis: Notenrechner und Einmaleins</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="if">
+        <h2>16.1 if, else if, else</h2>
+        <p>Der Code in <code>{ }</code> läuft nur, wenn die Bedingung in <code>( )</code> wahr ist. <code>else if</code> prüft weitere Fälle, <code>else</code> fängt alles andere.</p>
+        <div class="beispiel">
+          <script>
+            const stunde = new Date().getHours();   // aktuelle Stunde 0–23
+
+            if (stunde < 12) {
+              console.log("Guten Morgen! ☀️");
+            } else if (stunde < 18) {
+              console.log("Guten Tag! 🌤️");
+            } else {
+              console.log("Guten Abend! 🌙");
+            }
+            console.log("Es ist gerade", stunde, "Uhr.");
+          </script>
+        </div>
+        <p class="tipp">💡 Die Reihenfolge ist wichtig: Die erste zutreffende Bedingung gewinnt, die anderen werden übersprungen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="truthy">
+        <h2>16.2 Truthy und falsy</h2>
+        <p>
+          In einer Bedingung muss nicht unbedingt <code>true</code> oder <code>false</code> stehen.
+          JavaScript wandelt jeden Wert um. Diese sechs Werte gelten als <strong>falsy</strong>
+          (wie false): <code>false</code>, <code>0</code>, <code>""</code> (leerer Text),
+          <code>null</code>, <code>undefined</code>, <code>NaN</code>. Alles andere ist
+          <strong>truthy</strong>, auch <code>"0"</code>, <code>[]</code> und <code>{}</code>!
+        </p>
+        <div class="beispiel">
+          <script>
+            const werte = [0, 1, "", "Hallo", "0", null, undefined, NaN, [], {}];
+            for (const w of werte) {
+              // Texte mit Anführungszeichen zeigen, Arrays/Objekte als JSON, den Rest mit String()
+              let anzeige = String(w);
+              if (typeof w === "string") anzeige = `"${w}"`;
+              if (typeof w === "object" && w !== null) anzeige = JSON.stringify(w);
+              console.log(anzeige, "→", w ? "truthy" : "falsy");
+            }
+
+            const eingabe = "";
+            if (!eingabe) {
+              console.log("Das Feld ist leer!");   // typischer Einsatz
+            }
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="ternaer">
+        <h2>16.3 Der ternäre Operator</h2>
+        <p>Eine Kurzform für ein einfaches if/else, wenn man einen Wert auswählen will: <code>bedingung ? wennJa : wennNein</code></p>
+        <div class="beispiel">
+          <script>
+            const punkteZahl = 72;
+            const bestanden = punkteZahl >= 50 ? "bestanden ✅" : "nicht bestanden ❌";
+            console.log(`Mit ${punkteZahl} Punkten: ${bestanden}`);
+
+            const anzahl = 1;
+            console.log(`${anzahl} ${anzahl === 1 ? "Datei" : "Dateien"}`);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="switch">
+        <h2>16.4 switch</h2>
+        <p>Wenn ein Wert mit vielen festen Möglichkeiten verglichen wird, ist <code>switch</code> übersichtlicher. Wichtig: <code>break</code> beendet jeden Fall, sonst läuft der Code in den nächsten weiter. <code>default</code> ist wie else.</p>
+        <div class="beispiel">
+          <script>
+            const tagNummer = new Date().getDay();   // 0 = Sonntag, 1 = Montag, …
+            let tagName;
+            switch (tagNummer) {
+              case 0:
+                tagName = "Sonntag";
+                break;
+              case 1:
+                tagName = "Montag";
+                break;
+              case 2:
+                tagName = "Dienstag";
+                break;
+              case 3:
+                tagName = "Mittwoch";
+                break;
+              case 4:
+                tagName = "Donnerstag";
+                break;
+              case 5:
+                tagName = "Freitag";
+                break;
+              default:
+                tagName = "Samstag";
+            }
+            console.log("Heute ist", tagName);
+
+            // Mehrere Fälle mit gleichem Ergebnis: einfach untereinander schreiben
+            switch (tagName) {
+              case "Samstag":
+              case "Sonntag":
+                console.log("Wochenende! 🎉");
+                break;
+              default:
+                console.log("Werktag 💼");
+            }
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="kurz">
+        <h2>16.5 Kurzschluss, ?? und ?.</h2>
+        <ul>
+          <li><code>a || b</code> – nimmt a, wenn a truthy ist, sonst b (Standardwert)</li>
+          <li><code>a ?? b</code> – nimmt a, außer a ist <code>null</code> oder <code>undefined</code>. Besser als <code>||</code>, wenn 0 oder "" gültige Werte sind</li>
+          <li><code>a &amp;&amp; b</code> – macht b nur, wenn a truthy ist</li>
+          <li><code>objekt?.eigenschaft</code> – „optional chaining“: kein Fehler, wenn objekt leer ist</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const nutzerName = "";
+            console.log(nutzerName || "Gast");        // "Gast"
+
+            const lautstaerke = 0;
+            console.log(lautstaerke || 50);           // 50 (falsch! 0 ist gültig)
+            console.log(lautstaerke ?? 50);           // 0  (richtig)
+
+            const eingeloggt = true;
+            eingeloggt && console.log("Willkommen zurück!");
+
+            const profil = null;
+            console.log(profil?.stadt);               // undefined, statt Fehler
+            console.log(profil?.stadt ?? "unbekannt");
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="for">
+        <h2>16.6 for-Schleife</h2>
+        <p>Die klassische Zählschleife hat drei Teile: <code>for (start; bedingung; schritt) { … }</code></p>
+        <ol>
+          <li><strong>start</strong> – einmal am Anfang, z. B. <code>let i = 1</code></li>
+          <li><strong>bedingung</strong> – vor jeder Runde geprüft, z. B. <code>i &lt;= 5</code></li>
+          <li><strong>schritt</strong> – nach jeder Runde, z. B. <code>i++</code></li>
+        </ol>
+        <div class="beispiel">
+          <script>
+            for (let i = 1; i <= 5; i++) {
+              console.log("Runde", i);
+            }
+
+            // Rückwärts in Zweierschritten
+            let countdown = "";
+            for (let i = 10; i >= 0; i -= 2) {
+              countdown += i + " ";
+            }
+            console.log("Countdown:", countdown);
+
+            // Summe von 1 bis 100
+            let summe = 0;
+            for (let i = 1; i <= 100; i++) {
+              summe += i;
+            }
+            console.log("Summe 1 bis 100:", summe);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="while">
+        <h2>16.7 while und do…while</h2>
+        <p>
+          <code>while</code> wiederholt, <strong>solange</strong> eine Bedingung wahr ist. Gut,
+          wenn man vorher nicht weiß, wie viele Runden es werden.
+          <code>do…while</code> läuft mindestens <strong>einmal</strong>, weil erst am Ende
+          geprüft wird.
+        </p>
+        <div class="beispiel">
+          <script>
+            // Wie oft muss man würfeln, bis eine 6 kommt?
+            let wurf = 0;
+            let versuche = 0;
+            while (wurf !== 6) {
+              wurf = Math.floor(Math.random() * 6) + 1;
+              versuche++;
+            }
+            console.log(`Eine 6 nach ${versuche} Versuchen`);
+
+            let k = 100;
+            do {
+              console.log("do…while läuft einmal, obwohl k =", k);
+            } while (k < 10);
+          </script>
+        </div>
+        <p class="tipp">⚠️ Achtung vor <strong>Endlosschleifen</strong>: Wird die Bedingung nie falsch, friert der Browser-Tab ein. Dann den Tab schließen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="for-of">
+        <h2>16.8 for…of und for…in</h2>
+        <ul>
+          <li><code>for (const wert of liste)</code> – geht durch alle <strong>Werte</strong> eines Arrays oder Strings</li>
+          <li><code>for (const schluessel in objekt)</code> – geht durch alle <strong>Namen</strong> eines Objekts</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const sprachen = ["HTML", "CSS", "JavaScript"];
+            for (const sprache of sprachen) {
+              console.log("Ich lerne", sprache);
+            }
+
+            for (const buchstabe of "Hallo") {
+              console.log(buchstabe);
+            }
+
+            const auto = { marke: "VW", farbe: "blau", baujahr: 2020 };
+            for (const schluessel in auto) {
+              console.log(`${schluessel}: ${auto[schluessel]}`);
+            }
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="break">
+        <h2>16.9 break und continue</h2>
+        <ul>
+          <li><code>break</code> – Schleife sofort komplett beenden</li>
+          <li><code>continue</code> – diese Runde überspringen, mit der nächsten weitermachen</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            // Erste Zahl über 50, die durch 7 teilbar ist
+            for (let i = 50; i < 100; i++) {
+              if (i % 7 === 0) {
+                console.log("Gefunden:", i);
+                break;                 // fertig, nicht weitersuchen
+              }
+            }
+
+            // Nur ungerade Zahlen ausgeben
+            let ungerade = [];
+            for (let i = 1; i <= 10; i++) {
+              if (i % 2 === 0) continue;   // gerade? überspringen
+              ungerade.push(i);
+            }
+            console.log("Ungerade:", ungerade);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>16.10 Praxis: Notenrechner und Einmaleins</h2>
+        <div class="beispiel">
+          <p><label>Punkte (0–100): <input id="b16-punkte" type="number" min="0" max="100" value="83"></label>
+             <button id="b16-note" type="button">Note berechnen</button></p>
+          <p class="ergebnis" id="b16-ausgabe"></p>
+
+          <p><label>Einmaleins von: <input id="b16-reihe" type="number" min="1" max="20" value="7"></label>
+             <button id="b16-tabelle" type="button">Tabelle zeigen</button></p>
+          <ol id="b16-liste"></ol>
+          <script>
+            document.getElementById("b16-note").addEventListener("click", function () {
+              const p = Number(document.getElementById("b16-punkte").value);
+              let note;
+              if (Number.isNaN(p) || p < 0 || p > 100) {
+                note = "Ungültige Eingabe";
+              } else if (p >= 90) {
+                note = "1 – sehr gut";
+              } else if (p >= 75) {
+                note = "2 – gut";
+              } else if (p >= 60) {
+                note = "3 – befriedigend";
+              } else if (p >= 50) {
+                note = "4 – ausreichend";
+              } else {
+                note = "5 – nicht bestanden";
+              }
+              document.getElementById("b16-ausgabe").textContent = `${p} Punkte → ${note}`;
+            });
+
+            document.getElementById("b16-tabelle").addEventListener("click", function () {
+              const reihe = Number(document.getElementById("b16-reihe").value);
+              const liste = document.getElementById("b16-liste");
+              liste.innerHTML = "";
+              for (let i = 1; i <= 10; i++) {
+                const li = document.createElement("li");
+                li.textContent = `${i} × ${reihe} = ${i * reihe}`;
+                liste.append(li);
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li><strong>FizzBuzz:</strong> Gib die Zahlen 1 bis 30 aus. Bei Vielfachen von 3 stattdessen „Fizz“, bei Vielfachen von 5 „Buzz“, bei beiden „FizzBuzz“.</li>
+          <li>Gib alle Schaltjahre zwischen 1990 und 2030 aus (durch 4 teilbar, aber nicht durch 100, außer durch 400).</li>
+          <li>Baue ein Zahlenraten-Spiel: Der Computer denkt sich eine Zahl von 1 bis 50, ein Eingabefeld sagt „zu groß“ oder „zu klein“.</li>
+          <li>Zeichne mit einer Schleife eine Treppe aus <code>*</code> in die Konsole (1 Stern, 2 Sterne, … 5 Sterne).</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 16</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

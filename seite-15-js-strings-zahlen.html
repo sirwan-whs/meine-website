@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--
+  Seite 15: Strings (Texte), Zahlen und Math
+  console.log-Ausgaben erscheinen im schwarzen Kasten (konsole.js).
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 15: Strings und Zahlen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 15: Strings und Zahlen 🔤🔢</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#strings">Strings erstellen</a></li>
+          <li><a href="#template">Template Strings</a></li>
+          <li><a href="#zugriff">Länge und einzelne Zeichen</a></li>
+          <li><a href="#methoden">String-Methoden</a></li>
+          <li><a href="#suchen">Suchen und Ersetzen</a></li>
+          <li><a href="#zahlen">Zahlen</a></li>
+          <li><a href="#formatieren">Zahlen formatieren</a></li>
+          <li><a href="#math">Das Math-Objekt</a></li>
+          <li><a href="#zufall">Zufallszahlen</a></li>
+          <li><a href="#praxis">Praxis: Passwort-Prüfer</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="strings">
+        <h2>15.1 Strings erstellen</h2>
+        <p>Ein <strong>String</strong> ist Text. Er steht in Anführungszeichen: doppelt <code>"…"</code>, einfach <code>'…'</code> oder in Backticks <code>`…`</code>. Sonderzeichen schreibst du mit einem Backslash <code>\</code> (Escape):</p>
+        <ul>
+          <li><code>\n</code> – neue Zeile</li>
+          <li><code>\"</code> bzw. <code>\'</code> – Anführungszeichen im Text</li>
+          <li><code>\\</code> – ein Backslash</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const text1 = "Doppelte Anführungszeichen";
+            const text2 = 'Einfache Anführungszeichen';
+            const text3 = "Er sagte: \"Hallo!\"";       // Escape mit \
+            const text4 = 'It\'s fine';
+            const zweiZeilen = "Zeile 1\nZeile 2";
+            console.log(text1);
+            console.log(text2);
+            console.log(text3);
+            console.log(text4);
+            console.log(zweiZeilen);
+            console.log("Verbinden " + "mit " + "Plus");
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="template">
+        <h2>15.2 Template Strings</h2>
+        <p>Mit Backticks <code>`…`</code> kannst du Variablen und sogar Rechnungen direkt mit <code>${…}</code> einsetzen, und der Text darf über mehrere Zeilen gehen. Viel lesbarer als <code>+</code>!</p>
+        <div class="beispiel">
+          <script>
+            const stadt = "Gelsenkirchen";
+            const grad = 7;
+            console.log("In " + stadt + " sind es " + grad + " Grad.");   // alt
+            console.log(`In ${stadt} sind es ${grad} Grad.`);             // modern
+            console.log(`Morgen werden es ${grad + 2} Grad.`);            // Rechnung darin
+            console.log(`Mehrere
+Zeilen gehen
+auch.`);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zugriff">
+        <h2>15.3 Länge und einzelne Zeichen</h2>
+        <p>Die Position eines Zeichens heißt <strong>Index</strong> und beginnt bei <strong>0</strong>!</p>
+        <div class="beispiel">
+          <script>
+            const wort = "JavaScript";
+            console.log("Länge:", wort.length);            // 10
+            console.log("Erstes Zeichen:", wort[0]);       // J
+            console.log("Zweites Zeichen:", wort[1]);      // a
+            console.log("Letztes Zeichen:", wort[wort.length - 1]);  // t
+            console.log("Letztes mit at(-1):", wort.at(-1));         // t (modern)
+          </script>
+        </div>
+        <p class="tipp">💡 Strings sind unveränderlich. Methoden wie <code>toUpperCase()</code> ändern nie das Original, sondern geben einen <strong>neuen</strong> String zurück.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="methoden">
+        <h2>15.4 String-Methoden</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Ergebnis</th></tr>
+          <tr><td><code>toUpperCase()</code> / <code>toLowerCase()</code></td><td>GROSS / klein</td></tr>
+          <tr><td><code>trim()</code></td><td>Leerzeichen vorne und hinten entfernen</td></tr>
+          <tr><td><code>slice(start, ende)</code></td><td>Ausschnitt (ende nicht mit dabei); negativ zählt von hinten</td></tr>
+          <tr><td><code>split(trenner)</code></td><td>in ein Array zerlegen</td></tr>
+          <tr><td><code>padStart(länge, zeichen)</code></td><td>vorne auffüllen, z. B. "7" → "07"</td></tr>
+          <tr><td><code>repeat(n)</code></td><td>n-mal wiederholen</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            const satz = "  Ich lerne JavaScript  ";
+            console.log(satz.toUpperCase());
+            console.log(satz.toLowerCase());
+            console.log(`[${satz.trim()}]`);                // Klammern zeigen: Leerzeichen sind weg
+            const sauber = satz.trim();
+            console.log(sauber.slice(0, 3));                // "Ich"
+            console.log(sauber.slice(-10));                 // "JavaScript"
+            console.log(sauber.split(" "));                 // ["Ich","lerne","JavaScript"]
+            console.log("7".padStart(2, "0"));              // "07"
+            console.log("ha".repeat(3));                    // "hahaha"
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="suchen">
+        <h2>15.5 Suchen und Ersetzen</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Ergebnis</th></tr>
+          <tr><td><code>includes("x")</code></td><td>true, wenn enthalten</td></tr>
+          <tr><td><code>startsWith("x")</code> / <code>endsWith("x")</code></td><td>beginnt / endet mit</td></tr>
+          <tr><td><code>indexOf("x")</code></td><td>Position des ersten Vorkommens, sonst -1</td></tr>
+          <tr><td><code>replace("alt", "neu")</code></td><td>ersetzt das erste Vorkommen</td></tr>
+          <tr><td><code>replaceAll("alt", "neu")</code></td><td>ersetzt alle</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            const mail = "sirwan@beispiel.de";
+            console.log(mail.includes("@"));               // true
+            console.log(mail.endsWith(".de"));             // true
+            console.log(mail.indexOf("@"));                // 6
+            console.log(mail.slice(0, mail.indexOf("@"))); // "sirwan"
+
+            const liedText = "la la la";
+            console.log(liedText.replace("la", "na"));      // "na la la"
+            console.log(liedText.replaceAll("la", "na"));   // "na na na"
+
+            // Groß/klein egal machen: beides vorher klein schreiben
+            console.log("HTML".toLowerCase() === "html");   // true
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zahlen">
+        <h2>15.6 Zahlen</h2>
+        <p>In JavaScript gibt es nur einen Zahlentyp <code>number</code> für ganze und Kommazahlen. Besondere Werte:</p>
+        <ul>
+          <li><code>NaN</code> – „Not a Number“, Ergebnis einer ungültigen Rechnung. Prüfen mit <code>Number.isNaN(x)</code></li>
+          <li><code>Infinity</code> – unendlich, z. B. bei <code>1 / 0</code></li>
+          <li><code>Number.isInteger(x)</code> – ist es eine ganze Zahl?</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            console.log(7, 7.5, -3, 1e6);         // 1e6 = 1 000 000
+            console.log("abc" * 2);               // NaN
+            console.log(Number.isNaN("abc" * 2)); // true
+            console.log(NaN === NaN);             // false! NaN ist mit nichts gleich
+            console.log(1 / 0);                   // Infinity
+            console.log(Number.isInteger(4), Number.isInteger(4.2));
+            console.log(Number.MAX_SAFE_INTEGER); // größte sichere ganze Zahl
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="formatieren">
+        <h2>15.7 Zahlen formatieren</h2>
+        <ul>
+          <li><code>zahl.toFixed(2)</code> – auf 2 Nachkommastellen runden (ergibt einen String)</li>
+          <li><code>zahl.toLocaleString("de-DE")</code> – deutsches Format mit Punkt und Komma</li>
+          <li><code>Intl.NumberFormat</code> – z. B. als Währung</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const preis = 1234.5678;
+            console.log(preis.toFixed(2));                       // "1234.57"
+            console.log(preis.toLocaleString("de-DE"));          // "1.234,568"
+            const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+            console.log(euro.format(preis));                     // "1.234,57 €"
+            console.log((0.256).toLocaleString("de-DE", { style: "percent" }));  // "26 %"
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="math">
+        <h2>15.8 Das Math-Objekt</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Ergebnis</th></tr>
+          <tr><td><code>Math.round(x)</code></td><td>kaufmännisch runden</td></tr>
+          <tr><td><code>Math.floor(x)</code> / <code>Math.ceil(x)</code></td><td>abrunden / aufrunden</td></tr>
+          <tr><td><code>Math.trunc(x)</code></td><td>Nachkommastellen abschneiden</td></tr>
+          <tr><td><code>Math.max(...)</code> / <code>Math.min(...)</code></td><td>größte / kleinste Zahl</td></tr>
+          <tr><td><code>Math.abs(x)</code></td><td>Betrag (ohne Minus)</td></tr>
+          <tr><td><code>Math.sqrt(x)</code>, <code>Math.pow(x, y)</code></td><td>Wurzel, Potenz</td></tr>
+          <tr><td><code>Math.PI</code></td><td>3.14159…</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            console.log(Math.round(4.5), Math.round(4.4));   // 5 4
+            console.log(Math.floor(4.9), Math.ceil(4.1));    // 4 5
+            console.log(Math.trunc(-4.7));                   // -4
+            console.log(Math.max(3, 9, 2), Math.min(3, 9, 2));
+            console.log(Math.abs(-12));
+            console.log(Math.sqrt(81), Math.pow(2, 8));
+            const radius = 3;
+            console.log("Kreisfläche:", (Math.PI * radius ** 2).toFixed(2));
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zufall">
+        <h2>15.9 Zufallszahlen</h2>
+        <p><code>Math.random()</code> gibt eine Kommazahl zwischen 0 (inklusive) und 1 (exklusive). Für eine ganze Zahl von 1 bis 6:</p>
+        <pre><code>Math.floor(Math.random() * 6) + 1
+//         0 … 5.999   → 0 … 5  → 1 … 6</code></pre>
+        <div class="beispiel">
+          <p class="ergebnis" style="font-size: 3rem;" id="b15-wuerfel">🎲</p>
+          <button id="b15-wurf" type="button">Würfeln</button>
+          <script>
+            const augen = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+            document.getElementById("b15-wurf").addEventListener("click", function () {
+              const zahl = Math.floor(Math.random() * 6) + 1;
+              document.getElementById("b15-wuerfel").textContent = augen[zahl - 1];
+              console.log("Gewürfelt:", zahl);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>15.10 Praxis: Passwort-Prüfer</h2>
+        <p>Viele String-Methoden auf einmal. Tipp etwas ein, die Prüfung läuft bei jeder Taste (Ereignis <code>input</code>).</p>
+        <div class="beispiel">
+          <p><label>Passwort: <input id="b15-pw" type="text" autocomplete="off"></label></p>
+          <ul id="b15-regeln"></ul>
+          <script>
+            const pwFeld = document.getElementById("b15-pw");
+            const regelListe = document.getElementById("b15-regeln");
+
+            pwFeld.addEventListener("input", function () {
+              const pw = pwFeld.value;
+              // Jede Regel ist [Text, erfüllt?]
+              const regeln = [
+                ["mindestens 8 Zeichen", pw.length >= 8],
+                ["enthält eine Ziffer", /[0-9]/.test(pw)],          // regulärer Ausdruck
+                ["enthält einen Großbuchstaben", pw !== pw.toLowerCase()],
+                ["enthält kein Leerzeichen", !pw.includes(" ")],
+                ["ist nicht 'passwort'", pw.toLowerCase() !== "passwort"],
+              ];
+              regelListe.innerHTML = "";
+              for (const [text, ok] of regeln) {
+                const li = document.createElement("li");
+                li.textContent = `${ok ? "✅" : "❌"} ${text}`;
+                regelListe.append(li);
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Schreib eine Funktion (oder nur Code), die aus „max mustermann“ „Max Mustermann“ macht.</li>
+          <li>Zähle, wie oft der Buchstabe „a“ in einem Satz vorkommt (Tipp: <code>split("a").length - 1</code>).</li>
+          <li>Gib eine Uhrzeit mit <code>padStart</code> immer zweistellig aus, z. B. „09:05“.</li>
+          <li>Baue einen Button, der eine Zufallszahl von 1 bis 100 zeigt.</li>
+          <li>Berechne den Bruttopreis aus 49,99 € netto plus 19 % und gib ihn als Euro-Betrag aus.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 15</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

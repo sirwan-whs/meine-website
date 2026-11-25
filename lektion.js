@@ -32,8 +32,11 @@ function einrueckungEntfernen(text) {
 }
 
 document.querySelectorAll(".beispiel").forEach(function (beispiel) {
-  // Den Code lesen, BEVOR andere Skripte das Beispiel verändern
-  const code = einrueckungEntfernen(beispiel.innerHTML);
+  // Eine Kopie machen und den Konsolen-Kasten (von konsole.js) entfernen,
+  // damit nur der echte Code angezeigt wird
+  const kopie = beispiel.cloneNode(true);
+  kopie.querySelectorAll(".konsole").forEach(function (k) { k.remove(); });
+  const code = einrueckungEntfernen(kopie.innerHTML);
 
   // <details open> ist anfangs aufgeklappt, mit einem Klick auf <summary> geht es zu
   const details = document.createElement("details");

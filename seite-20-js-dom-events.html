@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+  Seite 20: DOM und Events
+  Der DOM (Document Object Model) ist die Seite als Baum von Objekten,
+  den JavaScript lesen und verändern kann.
+  Die Beispiele verändern die Seite erst nach einem Klick, damit der angezeigte Code
+  dem Original entspricht.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 20: DOM und Events – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 20: DOM und Events 🌳🖱️</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#dom">Was ist der DOM?</a></li>
+          <li><a href="#auswaehlen">Elemente auswählen</a></li>
+          <li><a href="#inhalt-aendern">Inhalt ändern</a></li>
+          <li><a href="#attribute">Attribute und data-*</a></li>
+          <li><a href="#stil">Stil und Klassen ändern</a></li>
+          <li><a href="#erzeugen">Elemente erzeugen und entfernen</a></li>
+          <li><a href="#navigieren">Im Baum navigieren</a></li>
+          <li><a href="#events">Events: addEventListener</a></li>
+          <li><a href="#event-objekt">Das Event-Objekt</a></li>
+          <li><a href="#tastatur">Tastatur, Maus und Formulare</a></li>
+          <li><a href="#delegation">Event-Delegation und Bubbling</a></li>
+          <li><a href="#praxis">Praxis: Modales Fenster und Tabs</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="dom">
+        <h2>20.1 Was ist der DOM?</h2>
+        <p>
+          Wenn der Browser HTML lädt, baut er daraus einen <strong>Baum</strong>. Jedes Element
+          ist ein <strong>Knoten</strong> (Node) mit Eltern, Kindern und Geschwistern. Ganz oben
+          steht <code>document</code>. JavaScript kann jeden Knoten finden, lesen, ändern,
+          löschen und neue hinzufügen.
+        </p>
+        <pre><code>document
+└── html
+    ├── head
+    │   └── title
+    └── body
+        ├── header
+        │   └── h1
+        └── main
+            └── section
+                ├── h2
+                └── p</code></pre>
+        <p class="tipp">💡 F12 → Reiter „Elemente“ zeigt dir genau diesen Baum, und zwar den aktuellen Stand, auch nach Änderungen durch JavaScript.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="auswaehlen">
+        <h2>20.2 Elemente auswählen</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Ergebnis</th></tr>
+          <tr><td><code>document.getElementById("id")</code></td><td>ein Element (oder null)</td></tr>
+          <tr><td><code>document.querySelector("css")</code></td><td>das <strong>erste</strong> passende Element; nimmt jeden CSS-Selektor</td></tr>
+          <tr><td><code>document.querySelectorAll("css")</code></td><td><strong>alle</strong> passenden als NodeList (mit forEach)</td></tr>
+          <tr><td><code>element.querySelector(...)</code></td><td>sucht nur <strong>innerhalb</strong> dieses Elements</td></tr>
+        </table>
+        <div class="beispiel">
+          <ul id="b20-liste">
+            <li class="b20-obst">Apfel</li>
+            <li class="b20-obst">Banane</li>
+            <li class="b20-gemuese">Karotte</li>
+          </ul>
+          <button id="b20-suchen" type="button">Elemente suchen</button>
+          <script>
+            document.getElementById("b20-suchen").addEventListener("click", () => {
+              const liste = document.getElementById("b20-liste");
+              console.log("getElementById:", liste);
+
+              const erstesObst = document.querySelector("#b20-liste .b20-obst");
+              console.log("querySelector:", erstesObst.textContent);
+
+              const alleLi = liste.querySelectorAll("li");
+              console.log("querySelectorAll:", alleLi.length, "Einträge");
+              alleLi.forEach(li => console.log(" -", li.textContent));
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="inhalt-aendern">
+        <h2>20.3 Inhalt ändern</h2>
+        <ul>
+          <li><code>textContent</code> – nur Text. <strong>Sicher</strong>, weil HTML nicht ausgeführt wird. Erste Wahl!</li>
+          <li><code>innerHTML</code> – liest/schreibt HTML. ⚠️ Nie mit Eingaben von Nutzern füllen, sonst kann fremder Code ausgeführt werden (XSS).</li>
+          <li><code>value</code> – Inhalt von Eingabefeldern</li>
+        </ul>
+        <div class="beispiel">
+          <p id="b20-text">Ursprünglicher Text</p>
+          <p><input id="b20-eingabe" type="text" value="<b>fett?</b>"></p>
+          <button id="b20-text-knopf" type="button">Mit textContent setzen</button>
+          <button id="b20-html-knopf" type="button">Mit innerHTML setzen</button>
+          <script>
+            const textZiel = document.getElementById("b20-text");
+            const textEingabe = document.getElementById("b20-eingabe");
+
+            document.getElementById("b20-text-knopf").addEventListener("click", () => {
+              textZiel.textContent = textEingabe.value;      // Tags erscheinen als Text
+            });
+            document.getElementById("b20-html-knopf").addEventListener("click", () => {
+              textZiel.innerHTML = textEingabe.value;        // Tags werden ausgeführt
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="attribute">
+        <h2>20.4 Attribute und data-*</h2>
+        <ul>
+          <li><code>getAttribute("name")</code>, <code>setAttribute("name", "wert")</code>, <code>removeAttribute("name")</code>, <code>hasAttribute("name")</code></li>
+          <li>Viele Attribute direkt als Eigenschaft: <code>img.src</code>, <code>a.href</code>, <code>input.disabled</code></li>
+          <li>Eigene Daten mit <code>data-irgendwas="…"</code>, lesen mit <code>element.dataset.irgendwas</code></li>
+        </ul>
+        <div class="beispiel">
+          <img id="b20-bild" src="bilder/logo.svg" alt="Logo" width="80" height="80" data-anderes="bilder/landschaft.svg">
+          <p>
+            <button id="b20-bild-knopf" type="button">Bild tauschen</button>
+            <button id="b20-sperren" type="button">Bild-Button sperren</button>
+          </p>
+          <script>
+            const bild = document.getElementById("b20-bild");
+            const bildKnopf = document.getElementById("b20-bild-knopf");
+
+            bildKnopf.addEventListener("click", () => {
+              const aktuell = bild.getAttribute("src");
+              bild.setAttribute("src", bild.dataset.anderes);   // data-anderes lesen
+              bild.dataset.anderes = aktuell;                    // und tauschen
+              console.log("Neues Bild:", bild.getAttribute("src"));
+            });
+            document.getElementById("b20-sperren").addEventListener("click", () => {
+              bildKnopf.disabled = !bildKnopf.disabled;
+              console.log("Gesperrt:", bildKnopf.disabled);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="stil">
+        <h2>20.5 Stil und Klassen ändern</h2>
+        <ul>
+          <li><code>element.style.backgroundColor = "red"</code> – einzelne Stile (CSS-Namen in camelCase)</li>
+          <li><code>classList.add("x")</code>, <code>remove("x")</code>, <code>toggle("x")</code>, <code>contains("x")</code> – besser: Aussehen im CSS festlegen und nur Klassen wechseln</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b20-box { padding: 1rem; border-radius: 8px; background-color: #ddd; color: #222; transition: all 0.3s; }
+            .b20-box.b20-aktiv { background-color: #27ae60; color: white; transform: scale(1.02); }
+          </style>
+          <div id="b20-box" class="b20-box">Ich bin eine Box</div>
+          <p>
+            <button id="b20-toggle" type="button">Klasse umschalten</button>
+            <button id="b20-farbe" type="button">Zufallsfarbe per style</button>
+          </p>
+          <script>
+            const box = document.getElementById("b20-box");
+            document.getElementById("b20-toggle").addEventListener("click", () => {
+              box.classList.toggle("b20-aktiv");
+              console.log("Hat Klasse b20-aktiv:", box.classList.contains("b20-aktiv"));
+            });
+            document.getElementById("b20-farbe").addEventListener("click", () => {
+              const farbton = Math.floor(Math.random() * 360);
+              box.style.backgroundColor = `hsl(${farbton} 70% 60%)`;
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="erzeugen">
+        <h2>20.6 Elemente erzeugen und entfernen</h2>
+        <ul>
+          <li><code>document.createElement("li")</code> – neues Element (noch nicht auf der Seite)</li>
+          <li><code>eltern.append(kind)</code> / <code>prepend(kind)</code> – hinten / vorne einfügen</li>
+          <li><code>element.before(x)</code> / <code>after(x)</code> – davor / dahinter</li>
+          <li><code>element.remove()</code> – entfernen</li>
+          <li><code>element.cloneNode(true)</code> – kopieren</li>
+        </ul>
+        <div class="beispiel">
+          <ol id="b20-ol"><li>Erster Eintrag</li></ol>
+          <p>
+            <button id="b20-hinten" type="button">Hinten anfügen</button>
+            <button id="b20-vorne" type="button">Vorne einfügen</button>
+            <button id="b20-weg" type="button">Letzten entfernen</button>
+          </p>
+          <script>
+            const ol = document.getElementById("b20-ol");
+            let eintragNummer = 1;
+
+            function neuerEintrag() {
+              eintragNummer++;
+              const li = document.createElement("li");
+              li.textContent = `Eintrag ${eintragNummer}`;
+              return li;
+            }
+
+            document.getElementById("b20-hinten").addEventListener("click", () => ol.append(neuerEintrag()));
+            document.getElementById("b20-vorne").addEventListener("click", () => ol.prepend(neuerEintrag()));
+            document.getElementById("b20-weg").addEventListener("click", () => {
+              ol.lastElementChild?.remove();      // ?. falls die Liste leer ist
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="navigieren">
+        <h2>20.7 Im Baum navigieren</h2>
+        <ul>
+          <li><code>parentElement</code> – Eltern</li>
+          <li><code>children</code> – alle Kind-Elemente, <code>firstElementChild</code> / <code>lastElementChild</code></li>
+          <li><code>nextElementSibling</code> / <code>previousElementSibling</code> – Geschwister</li>
+          <li><code>closest("selektor")</code> – nächster passender Vorfahre (oder das Element selbst)</li>
+        </ul>
+        <div class="beispiel">
+          <div id="b20-familie">
+            <p>Ältestes Kind</p>
+            <p id="b20-mitte">Mittleres Kind (Start)</p>
+            <p>Jüngstes Kind</p>
+          </div>
+          <button id="b20-navi" type="button">Navigieren</button>
+          <script>
+            document.getElementById("b20-navi").addEventListener("click", () => {
+              const mitte = document.getElementById("b20-mitte");
+              console.log("Eltern-id:", mitte.parentElement.id);
+              console.log("Geschwister davor:", mitte.previousElementSibling.textContent);
+              console.log("Geschwister danach:", mitte.nextElementSibling.textContent);
+              console.log("Anzahl Kinder der Eltern:", mitte.parentElement.children.length);
+              console.log("closest section:", mitte.closest("section").id);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="events">
+        <h2>20.8 Events: addEventListener</h2>
+        <p>
+          Ein <strong>Event</strong> (Ereignis) ist etwas, das passiert: ein Klick, ein
+          Tastendruck, das Absenden eines Formulars. Mit
+          <code>element.addEventListener("typ", funktion)</code> reagierst du darauf.
+          <code>removeEventListener</code> entfernt die Reaktion wieder.
+        </p>
+        <table class="tabelle">
+          <tr><th>Event</th><th>Wann?</th></tr>
+          <tr><td><code>click</code>, <code>dblclick</code></td><td>Klick, Doppelklick</td></tr>
+          <tr><td><code>mouseenter</code>, <code>mouseleave</code></td><td>Maus kommt / geht</td></tr>
+          <tr><td><code>keydown</code>, <code>keyup</code></td><td>Taste gedrückt / losgelassen</td></tr>
+          <tr><td><code>input</code></td><td>bei jeder Änderung in einem Feld</td></tr>
+          <tr><td><code>change</code></td><td>wenn ein Feld fertig geändert ist (z. B. select, checkbox)</td></tr>
+          <tr><td><code>submit</code></td><td>Formular wird abgeschickt</td></tr>
+          <tr><td><code>focus</code>, <code>blur</code></td><td>Feld bekommt / verliert den Fokus</td></tr>
+          <tr><td><code>DOMContentLoaded</code>, <code>load</code></td><td>HTML fertig / alles inklusive Bilder fertig</td></tr>
+          <tr><td><code>scroll</code>, <code>resize</code></td><td>Seite scrollt / Fenstergröße ändert sich</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b20-feld { padding: 1.2rem; border-radius: 8px; background-color: #6fa8dc; color: #111; text-align: center; user-select: none; }
+          </style>
+          <div id="b20-feld" class="b20-feld">Klick, Doppelklick, Maus rein und raus</div>
+          <script>
+            const feld = document.getElementById("b20-feld");
+            feld.addEventListener("click", () => console.log("click"));
+            feld.addEventListener("dblclick", () => console.log("dblclick"));
+            feld.addEventListener("mouseenter", () => { feld.style.backgroundColor = "#93c47d"; });
+            feld.addEventListener("mouseleave", () => { feld.style.backgroundColor = ""; });
+
+            // { once: true }: reagiert nur beim ersten Mal
+            feld.addEventListener("click", () => console.log("Das erscheint nur beim ersten Klick"), { once: true });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="event-objekt">
+        <h2>20.9 Das Event-Objekt</h2>
+        <p>Die Funktion bekommt automatisch ein <strong>Event-Objekt</strong> mit allen Infos:</p>
+        <ul>
+          <li><code>event.target</code> – das Element, auf dem es passiert ist</li>
+          <li><code>event.type</code> – der Typ, z. B. "click"</li>
+          <li><code>event.clientX</code> / <code>clientY</code> – Mausposition</li>
+          <li><code>event.key</code> – welche Taste</li>
+          <li><code>event.preventDefault()</code> – Standardverhalten verhindern (Link folgen, Formular absenden)</li>
+        </ul>
+        <div class="beispiel">
+          <p><a id="b20-link" href="https://www.w3.org/">Dieser Link öffnet nichts</a></p>
+          <div id="b20-flaeche" class="b20-feld" style="height: 100px;">Klick irgendwo hier hinein</div>
+          <script>
+            document.getElementById("b20-link").addEventListener("click", (event) => {
+              event.preventDefault();      // Link wird nicht geöffnet
+              console.log("Link verhindert. Ziel wäre:", event.target.href);
+            });
+
+            document.getElementById("b20-flaeche").addEventListener("click", (e) => {
+              const rahmen = e.target.getBoundingClientRect();
+              const x = Math.round(e.clientX - rahmen.left);
+              const y = Math.round(e.clientY - rahmen.top);
+              console.log(`${e.type} bei x=${x}, y=${y} im Feld`);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="tastatur">
+        <h2>20.10 Tastatur, Maus und Formulare</h2>
+        <div class="beispiel">
+          <p><label>Tipp etwas: <input id="b20-tippen" type="text" placeholder="Enter oder Escape probieren"></label></p>
+          <p>Live-Zeichenzähler: <span id="b20-zaehler" class="ergebnis">0</span> / 40</p>
+          <p>
+            <label>Farbe wählen:
+              <select id="b20-auswahl">
+                <option value="">bitte wählen</option>
+                <option value="#c0392b">Rot</option>
+                <option value="#27ae60">Grün</option>
+                <option value="#2980b9">Blau</option>
+              </select>
+            </label>
+          </p>
+          <script>
+            const tippFeld = document.getElementById("b20-tippen");
+
+            tippFeld.addEventListener("input", () => {
+              const laenge = tippFeld.value.length;
+              const zaehlerEl = document.getElementById("b20-zaehler");
+              zaehlerEl.textContent = laenge;
+              zaehlerEl.style.color = laenge > 40 ? "crimson" : "";
+            });
+
+            tippFeld.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") console.log("Enter! Text:", tippFeld.value);
+              if (e.key === "Escape") {
+                tippFeld.value = "";
+                console.log("Escape: Feld geleert");
+              }
+            });
+
+            document.getElementById("b20-auswahl").addEventListener("change", (e) => {
+              tippFeld.style.borderColor = e.target.value;
+              tippFeld.style.borderWidth = "3px";
+              console.log("Farbe gewählt:", e.target.value || "keine");
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="delegation">
+        <h2>20.11 Event-Delegation und Bubbling</h2>
+        <p>
+          Events „blubbern“ nach oben (<strong>Bubbling</strong>): Ein Klick auf ein
+          <code>li</code> ist auch ein Klick auf das <code>ul</code>, das <code>section</code> und
+          so weiter. Das nutzt die <strong>Delegation</strong>: Statt jedem Eintrag einen Listener
+          zu geben, bekommt nur das Eltern-Element einen. Vorteil: Funktioniert auch für Einträge,
+          die erst später hinzukommen. <code>event.stopPropagation()</code> stoppt das Blubbern.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b20-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; }
+            .b20-chips li { padding: 0.3rem 0.8rem; border-radius: 1rem; background-color: #326ece; color: white; cursor: pointer; }
+          </style>
+          <ul id="b20-chips" class="b20-chips">
+            <li>HTML ✕</li><li>CSS ✕</li><li>JavaScript ✕</li>
+          </ul>
+          <button id="b20-chip-neu" type="button">Neuen Chip hinzufügen</button>
+          <script>
+            const chips = document.getElementById("b20-chips");
+            let chipZaehler = 0;
+
+            // EIN Listener für alle (auch künftige) Chips
+            chips.addEventListener("click", (e) => {
+              const chip = e.target.closest("li");   // auf welchen Chip wurde geklickt?
+              if (!chip) return;                    // Klick daneben
+              console.log("Entfernt:", chip.textContent);
+              chip.remove();
+            });
+
+            document.getElementById("b20-chip-neu").addEventListener("click", () => {
+              chipZaehler++;
+              const li = document.createElement("li");
+              li.textContent = `Neu ${chipZaehler} ✕`;
+              chips.append(li);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>20.12 Praxis: Modales Fenster und Tabs</h2>
+        <div class="beispiel">
+          <style>
+            .b20-tabs { display: flex; gap: 0.3rem; border-bottom: 2px solid #326ece; }
+            .b20-tabs button { border-radius: 8px 8px 0 0; background-color: #ccc; color: #222; }
+            .b20-tabs button[aria-selected="true"] { background-color: #326ece; color: white; }
+            .b20-panel { padding: 1rem; border: 2px solid #326ece; border-top: none; }
+            .b20-dialog { border: none; border-radius: 12px; padding: 1.5rem; max-width: 320px; box-shadow: 0 10px 30px rgb(0 0 0 / 40%); }
+            .b20-dialog::backdrop { background-color: rgb(0 0 0 / 50%); }   /* abgedunkelter Hintergrund */
+          </style>
+
+          <!-- Tabs -->
+          <div class="b20-tabs" role="tablist">
+            <button type="button" role="tab" aria-selected="true" data-panel="b20-p1">HTML</button>
+            <button type="button" role="tab" aria-selected="false" data-panel="b20-p2">CSS</button>
+            <button type="button" role="tab" aria-selected="false" data-panel="b20-p3">JS</button>
+          </div>
+          <div id="b20-p1" class="b20-panel" role="tabpanel">HTML gibt der Seite Struktur.</div>
+          <div id="b20-p2" class="b20-panel" role="tabpanel" hidden>CSS gibt der Seite Aussehen.</div>
+          <div id="b20-p3" class="b20-panel" role="tabpanel" hidden>JavaScript gibt der Seite Verhalten.</div>
+
+          <!-- Modales Fenster mit dem eingebauten <dialog>-Element -->
+          <p><button id="b20-oeffnen" type="button">Fenster öffnen</button></p>
+          <dialog id="b20-dialog" class="b20-dialog">
+            <h3>Hallo! 👋</h3>
+            <p>Ich bin ein modales Fenster. Schließen mit dem Button oder Escape.</p>
+            <button id="b20-schliessen" type="button">Schließen</button>
+          </dialog>
+
+          <script>
+            const tabKnoepfe = document.querySelectorAll(".b20-tabs button");
+            tabKnoepfe.forEach(knopf => {
+              knopf.addEventListener("click", () => {
+                tabKnoepfe.forEach(k => {
+                  const ausgewaehlt = k === knopf;
+                  k.setAttribute("aria-selected", ausgewaehlt);
+                  document.getElementById(k.dataset.panel).hidden = !ausgewaehlt;
+                });
+              });
+            });
+
+            const dialog = document.getElementById("b20-dialog");
+            document.getElementById("b20-oeffnen").addEventListener("click", () => dialog.showModal());
+            document.getElementById("b20-schliessen").addEventListener("click", () => dialog.close());
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue einen Button, der beim Klick seinen eigenen Text auf „Danke!“ ändert.</li>
+          <li>Baue einen Like-Button mit Zähler und Herz, das bei jedem Klick rot ⇄ grau wechselt (classList.toggle).</li>
+          <li>Baue eine Eingabe + Button, die neue Einträge in eine Liste schreibt, und lösche Einträge per Klick (Delegation).</li>
+          <li>Mach einen „Nach oben“-Button, der erst erscheint, wenn man mehr als 300px gescrollt hat (Event <code>scroll</code>, <code>window.scrollY</code>).</li>
+          <li>Baue ein FAQ-Akkordeon, bei dem immer nur eine Antwort offen ist.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 20</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--
+  Seite 22: Fehler, Datum, Speicher, RegExp und Module
+  Die letzte Seite des Kurses: Werkzeuge, die man in fast jedem echten Projekt braucht.
+  Beispiele, die die Seite verändern oder etwas speichern, starten erst nach einem Klick.
+  Alle localStorage-Schlüssel beginnen mit "b22-", damit sie nichts anderes überschreiben
+  (theme.js speichert z. B. unter "modus", die To-do-Liste unter "aufgaben").
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 22: Fehler, Datum, Speicher – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 22: Fehler, Datum und Speicher 🛠️📅💾</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#fehlerarten">Fehlerarten</a></li>
+          <li><a href="#try-catch">try, catch und finally</a></li>
+          <li><a href="#throw">throw und eigene Fehler</a></li>
+          <li><a href="#debugging">Debugging mit den DevTools</a></li>
+          <li><a href="#datum">Date: Datum und Uhrzeit</a></li>
+          <li><a href="#datum-rechnen">Mit Datum rechnen und formatieren</a></li>
+          <li><a href="#localstorage">localStorage und sessionStorage</a></li>
+          <li><a href="#notizblock">Praxis: Notizblock, der sich alles merkt</a></li>
+          <li><a href="#regex">Reguläre Ausdrücke (RegExp)</a></li>
+          <li><a href="#module">Module: import und export</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fehlerarten">
+        <h2>22.1 Fehlerarten</h2>
+        <p>
+          Wenn JavaScript etwas nicht ausführen kann, wirft es einen <strong>Fehler</strong> (Error).
+          Ohne Behandlung bricht das Skript an dieser Stelle ab. Jeder Fehler hat einen
+          <code>name</code> (die Art) und eine <code>message</code> (die Beschreibung).
+        </p>
+        <table class="tabelle">
+          <thead><tr><th>Name</th><th>Wann?</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td><code>ReferenceError</code></td><td>Variable gibt es nicht</td><td><code>console.log(gibtsNicht)</code></td></tr>
+            <tr><td><code>TypeError</code></td><td>falscher Typ, z. B. Eigenschaft von null</td><td><code>null.laenge</code></td></tr>
+            <tr><td><code>SyntaxError</code></td><td>Code oder JSON ist falsch geschrieben</td><td><code>JSON.parse("{kaputt")</code></td></tr>
+            <tr><td><code>RangeError</code></td><td>Zahl außerhalb des erlaubten Bereichs</td><td><code>(5).toFixed(200)</code></td></tr>
+          </tbody>
+        </table>
+        <div class="beispiel">
+          <button id="b22-fehlerarten" type="button">Alle vier Fehler auslösen (abgefangen)</button>
+          <script>
+            const fehlerTests = [
+              () => console.log(gibtsNicht),
+              () => null.laenge,
+              () => JSON.parse("{kaputt"),
+              () => (5).toFixed(200),
+            ];
+
+            document.getElementById("b22-fehlerarten").addEventListener("click", () => {
+              for (const test of fehlerTests) {
+                try {
+                  test();
+                } catch (fehler) {
+                  console.warn(fehler.name + ":", fehler.message);
+                }
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="try-catch">
+        <h2>22.2 try, catch und finally</h2>
+        <ul>
+          <li><code>try { … }</code> – Code, bei dem etwas schiefgehen kann.</li>
+          <li><code>catch (fehler) { … }</code> – läuft nur, wenn im try ein Fehler passiert. Das Skript läuft danach weiter.</li>
+          <li><code>finally { … }</code> – läuft <strong>immer</strong>, z. B. zum Aufräumen.</li>
+        </ul>
+        <div class="beispiel">
+          <label for="b22-json">JSON eingeben:</label>
+          <textarea id="b22-json" rows="2" style="width: 100%;">{"name": "Sirwan", "alter": 20}</textarea>
+          <button id="b22-parsen" type="button">Umwandeln</button>
+          <script>
+            document.getElementById("b22-parsen").addEventListener("click", () => {
+              const text = document.getElementById("b22-json").value;
+              try {
+                const objekt = JSON.parse(text);
+                console.log("✅ Gültig:", objekt);
+              } catch (fehler) {
+                console.error("❌ Kein gültiges JSON:", fehler.message);
+              } finally {
+                console.log("(Prüfung fertig, Tipp: lösche mal ein Anführungszeichen)");
+              }
+            });
+          </script>
+        </div>
+        <p class="tipp">
+          💡 Fang Fehler nur dort ab, wo du sinnvoll reagieren kannst (Meldung zeigen, Standardwert nehmen).
+          Ein leerer <code>catch {}</code> versteckt Fehler, und du suchst später stundenlang.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="throw">
+        <h2>22.3 throw und eigene Fehler</h2>
+        <p>
+          Mit <code>throw new Error("Text")</code> wirfst du selbst einen Fehler, z. B. wenn eine Eingabe
+          ungültig ist. Für eigene Fehlerarten erweitert man die Klasse <code>Error</code> (Klassen: Seite 19).
+        </p>
+        <div class="beispiel">
+          <label for="b22-alter">Alter:</label>
+          <input id="b22-alter" type="text" value="abc" />
+          <button id="b22-pruefen" type="button">Prüfen</button>
+          <script>
+            // Eigene Fehlerart: erkennt man später mit instanceof
+            class EingabeFehler extends Error {
+              constructor(nachricht) {
+                super(nachricht);
+                this.name = "EingabeFehler";
+              }
+            }
+
+            function pruefeAlter(eingabe) {
+              const alter = Number(eingabe);
+              if (eingabe.trim() === "" || Number.isNaN(alter)) {
+                throw new EingabeFehler(`"${eingabe}" ist keine Zahl`);
+              }
+              if (alter < 0 || alter > 130) {
+                throw new EingabeFehler("Alter muss zwischen 0 und 130 liegen");
+              }
+              return alter;
+            }
+
+            document.getElementById("b22-pruefen").addEventListener("click", () => {
+              try {
+                const alter = pruefeAlter(document.getElementById("b22-alter").value);
+                console.log("Alles gut, Alter:", alter);
+              } catch (fehler) {
+                if (fehler instanceof EingabeFehler) {
+                  console.warn("Bitte korrigieren:", fehler.message);
+                } else {
+                  throw fehler;   // unbekannter Fehler: weiterwerfen
+                }
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="debugging">
+        <h2>22.4 Debugging mit den DevTools</h2>
+        <p>Die Entwicklerwerkzeuge öffnest du mit <kbd>F12</kbd> oder <kbd>Strg</kbd> + <kbd>Umschalt</kbd> + <kbd>I</kbd>.</p>
+        <table class="tabelle">
+          <thead><tr><th>Werkzeug</th><th>Wofür?</th></tr></thead>
+          <tbody>
+            <tr><td><code>console.log(a, b)</code></td><td>Werte ausgeben</td></tr>
+            <tr><td><code>console.table(array)</code></td><td>Arrays von Objekten als Tabelle zeigen (nur in den echten DevTools)</td></tr>
+            <tr><td><code>console.warn</code> / <code>console.error</code></td><td>gelb / rot markieren</td></tr>
+            <tr><td><code>debugger;</code></td><td>hält das Programm an dieser Zeile an, wenn die DevTools offen sind</td></tr>
+            <tr><td>Tab „Sources“ → Zeilennummer klicken</td><td>Haltepunkt (Breakpoint) setzen, dann Schritt für Schritt weiter</td></tr>
+            <tr><td>Tab „Network“</td><td>sehen, was <code>fetch</code> lädt, und ob es 200 oder 404 war</td></tr>
+            <tr><td>Tab „Application“ → Local Storage</td><td>gespeicherte Werte ansehen und löschen</td></tr>
+          </tbody>
+        </table>
+        <p class="hinweis">
+          ⚠️ Eine rote Fehlermeldung in der Konsole zeigt rechts Datei und Zeile, z. B. <code>seite-22….html:120</code>.
+          Klick darauf, dann springt der Browser genau zur Stelle.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="datum">
+        <h2>22.5 Date: Datum und Uhrzeit</h2>
+        <p>Ein <code>Date</code>-Objekt ist ein Zeitpunkt. Erzeugen kann man es so:</p>
+        <ul>
+          <li><code>new Date()</code> – jetzt</li>
+          <li><code>new Date(2026, 11, 24)</code> – 24. Dezember 2026 (<strong>Achtung:</strong> Monate zählen ab 0, also 11 = Dezember!)</li>
+          <li><code>new Date("2026-12-24T18:00")</code> – aus einem Text im ISO-Format</li>
+        </ul>
+        <table class="tabelle">
+          <thead><tr><th>Methode</th><th>liefert</th></tr></thead>
+          <tbody>
+            <tr><td><code>getFullYear()</code></td><td>Jahr, z. B. 2026</td></tr>
+            <tr><td><code>getMonth()</code></td><td>Monat 0 bis 11</td></tr>
+            <tr><td><code>getDate()</code></td><td>Tag im Monat 1 bis 31</td></tr>
+            <tr><td><code>getDay()</code></td><td>Wochentag 0 (Sonntag) bis 6 (Samstag)</td></tr>
+            <tr><td><code>getHours()</code>, <code>getMinutes()</code>, <code>getSeconds()</code></td><td>Uhrzeit</td></tr>
+            <tr><td><code>getTime()</code></td><td>Millisekunden seit 1.1.1970 (gut zum Rechnen)</td></tr>
+            <tr><td><code>setDate(…)</code>, <code>setMonth(…)</code> …</td><td>ändern</td></tr>
+          </tbody>
+        </table>
+        <div class="beispiel">
+          <button id="b22-jetzt" type="button">Jetzt zerlegen</button>
+          <script>
+            const wochentage = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+
+            document.getElementById("b22-jetzt").addEventListener("click", () => {
+              const jetzt = new Date();
+              console.log("Jahr:", jetzt.getFullYear());
+              console.log("Monat:", jetzt.getMonth() + 1, "(getMonth() liefert", jetzt.getMonth() + ")");
+              console.log("Tag:", jetzt.getDate(), "·", wochentage[jetzt.getDay()]);
+              const stunde = String(jetzt.getHours()).padStart(2, "0");
+              const minute = String(jetzt.getMinutes()).padStart(2, "0");
+              console.log(`Uhrzeit: ${stunde}:${minute}`);
+              console.log("ISO-Text:", jetzt.toISOString());
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="datum-rechnen">
+        <h2>22.6 Mit Datum rechnen und formatieren</h2>
+        <p>
+          Zieht man zwei Daten voneinander ab, bekommt man die Differenz in <strong>Millisekunden</strong>.
+          Für schöne deutsche Ausgaben gibt es <code>toLocaleDateString("de-DE", optionen)</code>
+          bzw. <code>Intl.DateTimeFormat</code>.
+        </p>
+        <div class="beispiel">
+          <label for="b22-ziel">Zieldatum:</label>
+          <input id="b22-ziel" type="date" value="2026-12-24" />
+          <button id="b22-countdown" type="button">Wie lange noch?</button>
+          <button id="b22-uhr" type="button">🕒 Live-Uhr starten</button>
+          <p class="ergebnis" id="b22-uhrzeit">–</p>
+          <script>
+            const EIN_TAG = 24 * 60 * 60 * 1000;   // Millisekunden pro Tag
+
+            document.getElementById("b22-countdown").addEventListener("click", () => {
+              const ziel = new Date(document.getElementById("b22-ziel").value + "T00:00");
+              const heute = new Date();
+              heute.setHours(0, 0, 0, 0);             // Uhrzeit auf Mitternacht setzen
+
+              const tage = Math.round((ziel - heute) / EIN_TAG);
+              const schoen = ziel.toLocaleDateString("de-DE", {
+                weekday: "long", day: "numeric", month: "long", year: "numeric",
+              });
+              if (tage > 0) console.log(`Noch ${tage} Tage bis ${schoen}`);
+              else if (tage === 0) console.log("Das ist heute! 🎉");
+              else console.log(`${schoen} war vor ${-tage} Tagen`);
+            });
+
+            // Formatierer einmal anlegen, dann oft benutzen
+            const uhrFormat = new Intl.DateTimeFormat("de-DE", { dateStyle: "full", timeStyle: "medium" });
+            let liveUhr = null;
+
+            document.getElementById("b22-uhr").addEventListener("click", () => {
+              if (liveUhr !== null) return;
+              const zeigeUhr = () => {
+                document.getElementById("b22-uhrzeit").textContent = uhrFormat.format(new Date());
+              };
+              zeigeUhr();
+              liveUhr = setInterval(zeigeUhr, 1000);   // setInterval: Seite 21
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="localstorage">
+        <h2>22.7 localStorage und sessionStorage</h2>
+        <p>
+          Der Browser hat einen kleinen Speicher pro Website (etwa 5 MB). Er speichert nur <strong>Texte</strong>
+          als Paare aus Schlüssel und Wert.
+        </p>
+        <table class="tabelle">
+          <thead><tr><th></th><th><code>localStorage</code></th><th><code>sessionStorage</code></th></tr></thead>
+          <tbody>
+            <tr><td>Wie lange?</td><td>für immer (bis gelöscht)</td><td>bis der Tab geschlossen wird</td></tr>
+            <tr><td>Speichern</td><td colspan="2"><code>setItem("schluessel", "wert")</code></td></tr>
+            <tr><td>Lesen</td><td colspan="2"><code>getItem("schluessel")</code> → Text oder <code>null</code></td></tr>
+            <tr><td>Löschen</td><td colspan="2"><code>removeItem("schluessel")</code>, alles: <code>clear()</code></td></tr>
+          </tbody>
+        </table>
+        <p>
+          Arrays und Objekte muss man mit <code>JSON.stringify</code> in Text umwandeln und beim Lesen mit
+          <code>JSON.parse</code> zurück. Genau so speichern unsere To-do-Liste (Seite 1) und der Dunkelmodus.
+        </p>
+        <div class="beispiel">
+          <button id="b22-besuch" type="button">Besuch zählen</button>
+          <button id="b22-profil" type="button">Objekt speichern und lesen</button>
+          <button id="b22-loeschen" type="button">Meine b22-Werte löschen</button>
+          <script>
+            document.getElementById("b22-besuch").addEventListener("click", () => {
+              // getItem liefert Text oder null → Number(null) wäre 0
+              const dauerhaft = Number(localStorage.getItem("b22-zaehler")) + 1;
+              localStorage.setItem("b22-zaehler", dauerhaft);
+              const nurTab = Number(sessionStorage.getItem("b22-zaehler")) + 1;
+              sessionStorage.setItem("b22-zaehler", nurTab);
+              console.log(`localStorage: ${dauerhaft} · sessionStorage: ${nurTab}`);
+              console.log("Lade die Seite neu oder öffne sie in einem neuen Tab und vergleiche!");
+            });
+
+            document.getElementById("b22-profil").addEventListener("click", () => {
+              const profil = { name: "Sirwan", lieblingsfarbe: "#326ece", fertig: [3, 4, 5] };
+              localStorage.setItem("b22-profil", JSON.stringify(profil));
+
+              const gespeichert = localStorage.getItem("b22-profil");
+              console.log("Gespeicherter Text:", gespeichert);
+              console.log("Zurück als Objekt:", JSON.parse(gespeichert));
+            });
+
+            document.getElementById("b22-loeschen").addEventListener("click", () => {
+              // Nicht clear(): das würde auch Dunkelmodus und To-dos löschen
+              for (const schluessel of ["b22-zaehler", "b22-profil", "b22-notiz"]) {
+                localStorage.removeItem(schluessel);
+                sessionStorage.removeItem(schluessel);
+              }
+              console.log("b22-Werte gelöscht. Andere Daten bleiben erhalten.");
+            });
+          </script>
+        </div>
+        <p class="wichtig">
+          ❗ Speichere niemals Passwörter oder geheime Daten im localStorage. Jedes Skript auf der Seite kann sie lesen.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="notizblock">
+        <h2>22.8 Praxis: Notizblock, der sich alles merkt</h2>
+        <p>
+          Schreib etwas hinein und lade die Seite neu: Der Text ist noch da. Das Event <code>input</code>
+          speichert bei jedem Tastendruck.
+        </p>
+        <div class="beispiel">
+          <textarea id="b22-notiz" rows="4" style="width: 100%;" placeholder="Deine Notiz …"></textarea>
+          <p class="ergebnis"><small id="b22-notiz-info">Noch nichts gespeichert</small></p>
+          <script>
+            const notizFeld = document.getElementById("b22-notiz");
+            const notizInfo = document.getElementById("b22-notiz-info");
+
+            // Beim Laden: alten Text holen (value ändert den angezeigten Code nicht)
+            notizFeld.value = localStorage.getItem("b22-notiz") ?? "";
+
+            notizFeld.addEventListener("input", () => {
+              localStorage.setItem("b22-notiz", notizFeld.value);
+              const zeit = new Date().toLocaleTimeString("de-DE");
+              notizInfo.textContent = `Gespeichert um ${zeit} · ${notizFeld.value.length} Zeichen`;
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="regex">
+        <h2>22.9 Reguläre Ausdrücke (RegExp)</h2>
+        <p>
+          Ein regulärer Ausdruck ist ein <strong>Suchmuster</strong> für Texte. Er steht zwischen Schrägstrichen:
+          <code>/muster/flags</code>.
+        </p>
+        <table class="tabelle">
+          <thead><tr><th>Zeichen</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td><code>\d</code></td><td>eine Ziffer 0-9</td><td><code>/\d\d/</code> findet „42“</td></tr>
+            <tr><td><code>\w</code></td><td>Buchstabe, Ziffer oder _</td><td><code>/\w+/</code></td></tr>
+            <tr><td><code>\s</code></td><td>Leerzeichen, Tab, Zeilenumbruch</td><td><code>/\s+/</code></td></tr>
+            <tr><td><code>.</code></td><td>irgendein Zeichen</td><td><code>/h.t/</code> findet „hat“, „hut“</td></tr>
+            <tr><td><code>[abc]</code></td><td>eines der Zeichen</td><td><code>/[äöü]/</code></td></tr>
+            <tr><td><code>+</code> <code>*</code> <code>?</code></td><td>1+ mal, 0+ mal, 0 oder 1 mal</td><td><code>/colou?r/</code></td></tr>
+            <tr><td><code>{5}</code></td><td>genau 5 mal</td><td><code>/\d{5}/</code> = PLZ</td></tr>
+            <tr><td><code>^</code> <code>$</code></td><td>Anfang / Ende des Texts</td><td><code>/^\d{5}$/</code></td></tr>
+            <tr><td>Flags <code>g</code> <code>i</code></td><td>alle Treffer / Groß-klein egal</td><td><code>/hallo/gi</code></td></tr>
+          </tbody>
+        </table>
+        <div class="beispiel">
+          <label for="b22-plz">Postleitzahl:</label>
+          <input id="b22-plz" type="text" value="1234" />
+          <button id="b22-plz-pruefen" type="button">PLZ prüfen</button>
+          <button id="b22-regex-demo" type="button">match und replace zeigen</button>
+          <script>
+            const plzMuster = /^\d{5}$/;     // genau 5 Ziffern, nichts davor oder danach
+
+            document.getElementById("b22-plz-pruefen").addEventListener("click", () => {
+              const plz = document.getElementById("b22-plz").value;
+              console.log(`"${plz}" ist`, plzMuster.test(plz) ? "✅ eine gültige PLZ" : "❌ keine gültige PLZ");
+            });
+
+            document.getElementById("b22-regex-demo").addEventListener("click", () => {
+              const satz = "Ruf an: 0176 1234567 oder 030 998877. Hallo hallo HALLO!";
+              console.log("Alle Zahlen:", satz.match(/\d+/g));
+              console.log("Wie oft hallo?", satz.match(/hallo/gi).length);
+              console.log("Nummern versteckt:", satz.replace(/\d/g, "•"));
+              console.log("Wörter:", "eins  zwei   drei".split(/\s+/));
+            });
+          </script>
+        </div>
+        <p class="tipp">
+          💡 Für Formulare geht es oft ohne JavaScript: <code>&lt;input pattern="\d{5}"&gt;</code> (Seite 5) benutzt dieselben Muster.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="module">
+        <h2>22.10 Module: import und export</h2>
+        <p>
+          Wird ein Projekt groß, teilt man den Code in mehrere Dateien auf. Ein <strong>Modul</strong> gibt mit
+          <code>export</code> frei, was andere benutzen dürfen, und holt sich mit <code>import</code>, was es braucht.
+          Variablen eines Moduls sind nicht global, also gibt es keine Namenskonflikte mehr.
+        </p>
+        <p><strong>Datei <code>mathe.js</code>:</strong></p>
+        <pre><code>// Benannte Exporte: beliebig viele
+export const PI = 3.14159;
+export function kreisFlaeche(r) {
+  return PI * r * r;
+}
+
+// Standard-Export: höchstens einer pro Datei
+export default function begruesse(name) {
+  return `Hallo ${name}!`;
+}</code></pre>
+        <p><strong>Datei <code>app.js</code>:</strong></p>
+        <pre><code>// Benannte Exporte in geschweiften Klammern, Standard-Export ohne
+import begruesse, { kreisFlaeche, PI } from "./mathe.js";
+
+console.log(begruesse("Sirwan"));
+console.log(kreisFlaeche(2).toFixed(2));
+
+// await geht in Modulen auch ohne async-Funktion
+const antwort = await fetch("daten/kurse.json");</code></pre>
+        <p><strong>Im HTML</strong> braucht das Skript <code>type="module"</code>:</p>
+        <pre><code>&lt;script type="module" src="app.js"&gt;&lt;/script&gt;</code></pre>
+        <ul>
+          <li>Module werden automatisch erst nach dem HTML ausgeführt (wie <code>defer</code>).</li>
+          <li>Wie <code>fetch</code> brauchen Module einen Server: <strong>Live Server</strong> oder GitHub Pages, nicht <code>file://</code>.</li>
+          <li>Der Pfad muss mit <code>./</code> oder <code>../</code> beginnen und die Endung <code>.js</code> haben.</li>
+        </ul>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Schreibe eine Funktion <code>teile(a, b)</code>, die bei <code>b === 0</code> einen Fehler wirft, und fange ihn ab.</li>
+          <li>Zeige auf der Startseite „Guten Morgen“, „Guten Tag“ oder „Guten Abend“ je nach Uhrzeit.</li>
+          <li>Berechne, wie viele Tage du schon alt bist.</li>
+          <li>Speichere im Quiz (Seite 2) den besten Punktestand im localStorage.</li>
+          <li>Prüfe eine E-Mail-Adresse grob mit <code>/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i</code> und erkläre jedes Teil.</li>
+          <li>Großes Abschlussprojekt: Teile die To-do-Liste in Module auf (<code>speicher.js</code>, <code>anzeige.js</code>, <code>app.js</code>).</li>
+        </ol>
+        <p class="tipp">
+          🎓 Geschafft! Das war die letzte Seite des Kurses. Am besten lernst du jetzt mit eigenen kleinen Projekten weiter:
+          ein Rechner, eine Wetter-App mit fetch, ein Memory-Spiel oder eine eigene Portfolio-Seite.
+        </p>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 22</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

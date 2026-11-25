@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<!--
+  Seite 21: Asynchrones JavaScript und fetch
+  "Asynchron" heißt: Etwas dauert (Timer, Netzwerk), und JavaScript wartet nicht
+  darauf, sondern macht weiter und reagiert später auf das Ergebnis.
+  Alle Beispiele starten erst nach einem Klick, damit die Ausgaben in der richtigen
+  Konsole-Box landen.
+  Wichtig: fetch funktioniert nicht, wenn du die Datei direkt per Doppelklick öffnest
+  (file://). Nutze in VS Code die Erweiterung "Live Server" oder GitHub Pages.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 21: Async und fetch – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 21: Async, Promises und fetch ⏳🌐</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#synchron">Synchron und asynchron</a></li>
+          <li><a href="#timeout">setTimeout und clearTimeout</a></li>
+          <li><a href="#interval">setInterval: Wiederholen</a></li>
+          <li><a href="#callbacks">Callbacks</a></li>
+          <li><a href="#promises">Promises: then, catch, finally</a></li>
+          <li><a href="#async-await">async und await</a></li>
+          <li><a href="#parallel">Mehrere Promises: Promise.all</a></li>
+          <li><a href="#fetch">fetch: Daten laden</a></li>
+          <li><a href="#fetch-fehler">Fehler bei fetch behandeln</a></li>
+          <li><a href="#praxis">Praxis: Kursliste aus JSON</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="synchron">
+        <h2>21.1 Synchron und asynchron</h2>
+        <p>
+          Normaler Code läuft <strong>synchron</strong>: Zeile für Zeile, jede wartet auf die vorige.
+          Manche Dinge dauern aber (ein Timer, eine Antwort vom Server). Würde JavaScript darauf warten,
+          wäre die Seite so lange eingefroren. Deshalb laufen sie <strong>asynchron</strong>:
+          JavaScript startet sie, macht sofort weiter und kümmert sich um das Ergebnis, wenn es da ist.
+        </p>
+        <p class="tipp">
+          💡 Klick auf den Button und achte auf die Reihenfolge: „3“ kommt vor „2“, obwohl die Wartezeit 0 ist.
+          Asynchroner Code kommt immer erst dran, wenn der aktuelle Code fertig ist (Stichwort <em>Event Loop</em>).
+        </p>
+        <div class="beispiel">
+          <button id="b21-reihenfolge" type="button">Reihenfolge testen</button>
+          <script>
+            document.getElementById("b21-reihenfolge").addEventListener("click", () => {
+              console.log("1: Start");
+              setTimeout(() => console.log("2: aus dem Timer (0 ms)"), 0);
+              console.log("3: Ende vom normalen Code");
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="timeout">
+        <h2>21.2 setTimeout und clearTimeout</h2>
+        <p>
+          <code>setTimeout(funktion, millisekunden)</code> führt die Funktion <strong>einmal</strong> nach der
+          Wartezeit aus. 1000 ms = 1 Sekunde. Der Rückgabewert ist eine Nummer, mit der man den Timer
+          über <code>clearTimeout(nummer)</code> wieder abbrechen kann.
+        </p>
+        <div class="beispiel">
+          <button id="b21-start" type="button">In 2 Sekunden melden</button>
+          <button id="b21-abbrechen" type="button">Abbrechen</button>
+          <script>
+            let timerNummer = null;
+
+            document.getElementById("b21-start").addEventListener("click", () => {
+              console.log("Timer gestartet …");
+              timerNummer = setTimeout(() => {
+                console.log("⏰ 2 Sekunden sind um!");
+                timerNummer = null;
+              }, 2000);
+            });
+
+            document.getElementById("b21-abbrechen").addEventListener("click", () => {
+              if (timerNummer !== null) {
+                clearTimeout(timerNummer);
+                timerNummer = null;
+                console.log("Timer abgebrochen.");
+              } else {
+                console.log("Es läuft gerade kein Timer.");
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="interval">
+        <h2>21.3 setInterval: Wiederholen</h2>
+        <p>
+          <code>setInterval(funktion, ms)</code> führt die Funktion <strong>immer wieder</strong> aus, bis
+          <code>clearInterval(nummer)</code> sie stoppt. Typisch für Uhren, Stoppuhren und Countdowns.
+        </p>
+        <div class="beispiel">
+          <p class="ergebnis">Stoppuhr: <strong id="b21-zeit">0.0</strong> s</p>
+          <button id="b21-uhr-start" type="button">▶ Start</button>
+          <button id="b21-uhr-stopp" type="button">⏸ Stopp</button>
+          <button id="b21-uhr-null" type="button">↺ Zurücksetzen</button>
+          <script>
+            const zeitAnzeige = document.getElementById("b21-zeit");
+            let zehntel = 0;         // vergangene Zehntelsekunden
+            let uhrNummer = null;    // Nummer des Intervalls, null = steht
+
+            document.getElementById("b21-uhr-start").addEventListener("click", () => {
+              if (uhrNummer !== null) return;          // läuft schon, nicht doppelt starten
+              uhrNummer = setInterval(() => {
+                zehntel++;
+                zeitAnzeige.textContent = (zehntel / 10).toFixed(1);
+              }, 100);
+            });
+
+            document.getElementById("b21-uhr-stopp").addEventListener("click", () => {
+              clearInterval(uhrNummer);
+              uhrNummer = null;
+              console.log("Gestoppt bei", (zehntel / 10).toFixed(1), "Sekunden");
+            });
+
+            document.getElementById("b21-uhr-null").addEventListener("click", () => {
+              zehntel = 0;
+              zeitAnzeige.textContent = "0.0";
+            });
+          </script>
+        </div>
+        <p class="hinweis">
+          ⚠️ Vergiss nie <code>clearInterval</code>. Startest du ein Intervall mehrfach, laufen mehrere
+          gleichzeitig und die Uhr wird doppelt so schnell. Deshalb die Prüfung <code>if (uhrNummer !== null)</code>.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="callbacks">
+        <h2>21.4 Callbacks</h2>
+        <p>
+          Ein <strong>Callback</strong> ist eine Funktion, die man einer anderen Funktion übergibt, damit sie
+          „später zurückgerufen“ wird. Du kennst das schon: <code>addEventListener("click", callback)</code>
+          und <code>setTimeout(callback, 1000)</code>.
+        </p>
+        <p>
+          Das Problem: Wenn mehrere Schritte nacheinander passieren sollen, rutscht der Code immer weiter
+          nach rechts. Das nennt man <strong>Callback-Hölle</strong>. Promises lösen das.
+        </p>
+        <div class="beispiel">
+          <button id="b21-callback" type="button">Frühstück machen (Callbacks)</button>
+          <script>
+            // Simuliert eine Arbeit, die dauert, und ruft danach "fertig" auf
+            function arbeite(name, ms, fertig) {
+              setTimeout(() => {
+                console.log("✓", name);
+                fertig();
+              }, ms);
+            }
+
+            document.getElementById("b21-callback").addEventListener("click", () => {
+              // Jeder Schritt wartet auf den vorigen: Verschachtelung wird tief
+              arbeite("Wasser kochen", 500, () => {
+                arbeite("Kaffee aufgießen", 300, () => {
+                  arbeite("Brot toasten", 400, () => {
+                    console.log("🍳 Frühstück fertig!");
+                  });
+                });
+              });
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="promises">
+        <h2>21.5 Promises: then, catch, finally</h2>
+        <p>
+          Ein <strong>Promise</strong> („Versprechen“) ist ein Objekt für ein Ergebnis, das erst später da ist.
+          Es hat drei Zustände:
+        </p>
+        <table class="tabelle">
+          <thead><tr><th>Zustand</th><th>Bedeutung</th><th>Reaktion mit</th></tr></thead>
+          <tbody>
+            <tr><td><code>pending</code></td><td>wartet noch</td><td>–</td></tr>
+            <tr><td><code>fulfilled</code></td><td>erfolgreich, mit <code>resolve(wert)</code></td><td><code>.then(wert =&gt; …)</code></td></tr>
+            <tr><td><code>rejected</code></td><td>fehlgeschlagen, mit <code>reject(fehler)</code></td><td><code>.catch(fehler =&gt; …)</code></td></tr>
+          </tbody>
+        </table>
+        <p><code>.finally()</code> läuft in beiden Fällen, z. B. um eine Ladeanzeige auszublenden.</p>
+        <div class="beispiel">
+          <button id="b21-wuerfeln" type="button">🎲 Würfeln (6 gewinnt nicht immer …)</button>
+          <script>
+            // Eine Funktion, die ein Promise zurückgibt
+            function wuerfleLangsam() {
+              return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const zahl = Math.floor(Math.random() * 6) + 1;
+                  if (zahl >= 3) {
+                    resolve(zahl);                               // Erfolg
+                  } else {
+                    reject(new Error("Nur eine " + zahl + " gewürfelt"));  // Fehler
+                  }
+                }, 700);
+              });
+            }
+
+            document.getElementById("b21-wuerfeln").addEventListener("click", () => {
+              console.log("Würfel rollt …");
+              wuerfleLangsam()
+                .then((zahl) => console.log("Erfolg! Gewürfelt:", zahl))
+                .catch((fehler) => console.warn("Pech:", fehler.message))
+                .finally(() => console.log("(Würfeln beendet)"));
+            });
+          </script>
+        </div>
+        <p>
+          Promises lassen sich <strong>verketten</strong>: Was ein <code>then</code> zurückgibt, bekommt das
+          nächste <code>then</code>. So wird aus der Callback-Hölle eine flache Liste:
+        </p>
+        <div class="beispiel">
+          <button id="b21-kette" type="button">Frühstück machen (Promises)</button>
+          <script>
+            // Wie "arbeite" oben, aber mit Promise statt Callback
+            function arbeitePromise(name, ms) {
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  console.log("✓", name);
+                  resolve();
+                }, ms);
+              });
+            }
+
+            document.getElementById("b21-kette").addEventListener("click", () => {
+              arbeitePromise("Wasser kochen", 500)
+                .then(() => arbeitePromise("Kaffee aufgießen", 300))
+                .then(() => arbeitePromise("Brot toasten", 400))
+                .then(() => console.log("🍳 Frühstück fertig!"));
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="async-await">
+        <h2>21.6 async und await</h2>
+        <p>
+          <code>async</code>/<code>await</code> ist eine schönere Schreibweise für Promises. Der Code sieht aus wie
+          normaler Code von oben nach unten:
+        </p>
+        <ul>
+          <li><code>async function</code> markiert eine Funktion, in der man <code>await</code> benutzen darf. Sie gibt selbst immer ein Promise zurück.</li>
+          <li><code>await promise</code> wartet, bis das Promise fertig ist, und liefert den Wert. Die Seite friert dabei <em>nicht</em> ein.</li>
+          <li>Fehler fängt man mit <code>try … catch</code> (mehr dazu auf Seite 22).</li>
+        </ul>
+        <div class="beispiel">
+          <button id="b21-await" type="button">Frühstück machen (async/await)</button>
+          <button id="b21-await-wuerfel" type="button">🎲 Würfeln mit await</button>
+          <script>
+            // Kleine Hilfsfunktion: wartet ms Millisekunden
+            const warte = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            async function fruehstueck() {
+              await arbeitePromise("Wasser kochen", 500);
+              await arbeitePromise("Kaffee aufgießen", 300);
+              await warte(200);                    // kurze Pause
+              await arbeitePromise("Brot toasten", 400);
+              return "🍳 Frühstück fertig!";
+            }
+
+            document.getElementById("b21-await").addEventListener("click", async () => {
+              const meldung = await fruehstueck();
+              console.log(meldung);
+            });
+
+            document.getElementById("b21-await-wuerfel").addEventListener("click", async () => {
+              try {
+                const zahl = await wuerfleLangsam();
+                console.log("Gewürfelt:", zahl);
+              } catch (fehler) {
+                console.warn("Pech:", fehler.message);
+              }
+            });
+          </script>
+        </div>
+        <p class="tipp">
+          💡 <code>await</code> funktioniert nur in <code>async</code>-Funktionen (und in Modulen, Seite 22).
+          Vergisst du das <code>await</code>, bekommst du statt des Werts ein <code>Promise { &lt;pending&gt; }</code>.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="parallel">
+        <h2>21.7 Mehrere Promises: Promise.all</h2>
+        <p>
+          Mit <code>await</code> nacheinander dauert es so lange wie alle Schritte zusammen.
+          Sind die Aufgaben unabhängig, startet man sie <strong>gleichzeitig</strong>:
+        </p>
+        <table class="tabelle">
+          <thead><tr><th>Methode</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td><code>Promise.all([…])</code></td><td>wartet auf alle; ein Fehler → alles fehlgeschlagen</td></tr>
+            <tr><td><code>Promise.allSettled([…])</code></td><td>wartet auf alle, egal ob Erfolg oder Fehler</td></tr>
+            <tr><td><code>Promise.race([…])</code></td><td>das erste, das fertig ist (Erfolg oder Fehler)</td></tr>
+            <tr><td><code>Promise.any([…])</code></td><td>der erste Erfolg</td></tr>
+          </tbody>
+        </table>
+        <div class="beispiel">
+          <button id="b21-all" type="button">Nacheinander vs. gleichzeitig</button>
+          <script>
+            document.getElementById("b21-all").addEventListener("click", async () => {
+              let start = Date.now();
+              await warte(500);
+              await warte(500);
+              await warte(500);
+              console.log("Nacheinander:", Date.now() - start, "ms");
+
+              start = Date.now();
+              await Promise.all([warte(500), warte(500), warte(500)]);
+              console.log("Gleichzeitig mit Promise.all:", Date.now() - start, "ms");
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fetch">
+        <h2>21.8 fetch: Daten laden</h2>
+        <p>
+          <code>fetch(adresse)</code> lädt Daten von einem Server und gibt ein Promise zurück.
+          Meist sind die Daten <strong>JSON</strong> (siehe Seite 19). Das Laden passiert in zwei Schritten:
+        </p>
+        <ol>
+          <li><code>const antwort = await fetch(url)</code> – die Antwort (Status, Kopfzeilen) ist da.</li>
+          <li><code>const daten = await antwort.json()</code> – der Inhalt wird gelesen und in ein Objekt umgewandelt.</li>
+        </ol>
+        <p>
+          Dieses Beispiel lädt die Datei <a href="daten/kurse.json"><code>daten/kurse.json</code></a> aus unserem eigenen Repo.
+        </p>
+        <p class="wichtig">
+          ❗ <code>fetch</code> klappt nicht, wenn du die HTML-Datei per Doppelklick öffnest (Adresse beginnt mit
+          <code>file://</code>). Der Browser verbietet das aus Sicherheitsgründen. Öffne die Seite in VS Code mit
+          <strong>Live Server</strong> (Rechtsklick → „Open with Live Server“) oder auf GitHub Pages.
+        </p>
+        <div class="beispiel">
+          <button id="b21-laden" type="button">📥 kurse.json laden</button>
+          <script>
+            document.getElementById("b21-laden").addEventListener("click", async () => {
+              const antwort = await fetch("daten/kurse.json");
+              console.log("Status:", antwort.status, antwort.ok ? "(ok)" : "(Fehler)");
+
+              const kurse = await antwort.json();     // Text → Array von Objekten
+              console.log("Anzahl Kurse:", kurse.length);
+              console.log("Erster Kurs:", kurse[0]);
+            });
+          </script>
+        </div>
+        <p>
+          Man kann auch Daten <strong>senden</strong>. Dafür gibt man ein zweites Argument mit
+          (dieses Beispiel ist nur zum Lesen, unser GitHub-Pages-Server nimmt nichts an):
+        </p>
+        <pre><code>const antwort = await fetch("https://example.com/api/nachrichten", {
+  method: "POST",                                   // GET = holen, POST = senden
+  headers: { "Content-Type": "application/json" },  // wir schicken JSON
+  body: JSON.stringify({ text: "Hallo!" })          // Objekt → JSON-Text
+});</code></pre>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="fetch-fehler">
+        <h2>21.9 Fehler bei fetch behandeln</h2>
+        <p>Es gibt zwei Arten von Fehlern:</p>
+        <ul>
+          <li><strong>Netzwerkfehler</strong> (kein Internet, falsche Domain): Das Promise wird <em>rejected</em> → <code>catch</code>.</li>
+          <li><strong>HTTP-Fehler</strong> wie 404 (nicht gefunden) oder 500 (Serverfehler): fetch gilt trotzdem als erfolgreich!
+            Man muss selbst <code>antwort.ok</code> prüfen und einen Fehler werfen.</li>
+        </ul>
+        <div class="beispiel">
+          <button id="b21-gut" type="button">Vorhandene Datei laden</button>
+          <button id="b21-schlecht" type="button">Fehlende Datei laden (404)</button>
+          <script>
+            // Eine wiederverwendbare Funktion, die beide Fehlerarten behandelt
+            async function ladeJson(url) {
+              const antwort = await fetch(url);
+              if (!antwort.ok) {
+                throw new Error(`HTTP-Fehler ${antwort.status} bei ${url}`);
+              }
+              return antwort.json();
+            }
+
+            async function testeLaden(url) {
+              try {
+                const daten = await ladeJson(url);
+                console.log("Geladen:", daten.length, "Einträge");
+              } catch (fehler) {
+                console.error("Konnte nicht laden:", fehler.message);
+              } finally {
+                console.log("(Ladeversuch beendet)");
+              }
+            }
+
+            document.getElementById("b21-gut").addEventListener("click", () => testeLaden("daten/kurse.json"));
+            document.getElementById("b21-schlecht").addEventListener("click", () => testeLaden("daten/gibt-es-nicht.json"));
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>21.10 Praxis: Kursliste aus JSON</h2>
+        <p>
+          Alles zusammen: Daten laden, Ladeanzeige zeigen, Fehler abfangen und mit dem DOM (Seite 20)
+          eine Liste bauen. Die künstliche Pause von 600 ms zeigt die Ladeanzeige.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b21-karten { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 0.8rem; }
+            .b21-karte { padding: 0.8rem; border-radius: 8px; background-color: var(--karte); color: #111; }
+            .b21-karte h4 { margin: 0 0 0.3rem; }
+          </style>
+          <button id="b21-kurse" type="button">Kurse anzeigen</button>
+          <p id="b21-status" class="ergebnis"></p>
+          <div id="b21-karten" class="b21-karten"></div>
+          <script>
+            const kursStatus = document.getElementById("b21-status");
+            const kursKarten = document.getElementById("b21-karten");
+            const kursKnopf = document.getElementById("b21-kurse");
+
+            kursKnopf.addEventListener("click", async () => {
+              kursKnopf.disabled = true;                 // nicht doppelt klicken
+              kursStatus.textContent = "⏳ Lade …";
+              kursKarten.replaceChildren();              // alte Karten entfernen
+
+              try {
+                await warte(600);
+                const kurse = await ladeJson("daten/kurse.json");
+
+                for (const kurs of kurse) {
+                  const karte = document.createElement("article");
+                  karte.className = "b21-karte";
+                  const titel = document.createElement("h4");
+                  titel.textContent = kurs.titel;
+                  const info = document.createElement("p");
+                  info.textContent = `Seiten ${kurs.seiten[0]} bis ${kurs.seiten.at(-1)} · ${kurs.schwierigkeit}`;
+                  karte.append(titel, info);
+                  kursKarten.append(karte);
+                }
+                kursStatus.textContent = `✅ ${kurse.length} Kurse geladen`;
+              } catch (fehler) {
+                kursStatus.textContent = "❌ " + fehler.message;
+              } finally {
+                kursKnopf.disabled = false;
+              }
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Baue einen Countdown von 10 bis 0 mit <code>setInterval</code>, der bei 0 „🚀 Start!“ zeigt und sich selbst stoppt.</li>
+          <li>Schreibe eine Funktion <code>warte(ms)</code> selbst und nutze sie, um drei Texte im Abstand von 1 Sekunde anzuzeigen.</li>
+          <li>Ergänze <code>daten/kurse.json</code> um einen vierten Kurs und prüfe, ob er in 21.10 erscheint.</li>
+          <li>Lade mit <code>fetch</code> öffentliche Testdaten, z. B. von <a href="https://jsonplaceholder.typicode.com/users">jsonplaceholder.typicode.com/users</a>, und zeige die Namen als Liste.</li>
+          <li>Teste <code>Promise.race</code>: Wer gewinnt zwischen <code>warte(300)</code> und <code>warte(500)</code>?</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 21</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

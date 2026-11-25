@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!--
+  Seite 18: Arrays
+  Ein Array ist eine geordnete Liste von Werten. Hier lernst du alle wichtigen Methoden.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 18: Arrays – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 18: Arrays 📚</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#erstellen">Arrays erstellen und lesen</a></li>
+          <li><a href="#aendern">Hinzufügen und entfernen</a></li>
+          <li><a href="#splice-slice">splice und slice</a></li>
+          <li><a href="#suchen">Suchen: includes, indexOf, find</a></li>
+          <li><a href="#durchlaufen">Durchlaufen: for…of und forEach</a></li>
+          <li><a href="#map-filter">map und filter</a></li>
+          <li><a href="#reduce">reduce</a></li>
+          <li><a href="#some-every">some und every</a></li>
+          <li><a href="#sortieren">Sortieren und umdrehen</a></li>
+          <li><a href="#spread">Spread, Destructuring und mehr</a></li>
+          <li><a href="#praxis">Praxis: Notenstatistik</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="erstellen">
+        <h2>18.1 Arrays erstellen und lesen</h2>
+        <p>Ein Array steht in eckigen Klammern <code>[ ]</code>, die Werte sind durch Kommas getrennt. Jeder Wert hat einen <strong>Index</strong> ab <strong>0</strong>. Ein Array darf verschiedene Typen enthalten, auch andere Arrays.</p>
+        <div class="beispiel">
+          <script>
+            const fruechte = ["Apfel", "Banane", "Kirsche"];
+            console.log(fruechte);
+            console.log("Anzahl:", fruechte.length);        // 3
+            console.log("Erstes:", fruechte[0]);            // Apfel
+            console.log("Letztes:", fruechte.at(-1));       // Kirsche
+            console.log("Gibt es nicht:", fruechte[10]);    // undefined
+
+            fruechte[1] = "Birne";                          // Wert ändern (geht auch bei const!)
+            console.log(fruechte);
+
+            const gemischt = [42, "Text", true, null, [1, 2]];
+            console.log(gemischt[4][1]);                    // 2: Array im Array
+            console.log(Array.isArray(gemischt));           // so prüft man auf Array
+          </script>
+        </div>
+        <p class="tipp">💡 <code>const</code> verhindert nur, dass die Variable ein <strong>anderes</strong> Array bekommt. Den <strong>Inhalt</strong> darf man ändern.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="aendern">
+        <h2>18.2 Hinzufügen und entfernen</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Wirkung</th><th>Gibt zurück</th></tr>
+          <tr><td><code>push(x)</code></td><td>hinten anhängen</td><td>neue Länge</td></tr>
+          <tr><td><code>pop()</code></td><td>hinten entfernen</td><td>das entfernte Element</td></tr>
+          <tr><td><code>unshift(x)</code></td><td>vorne einfügen</td><td>neue Länge</td></tr>
+          <tr><td><code>shift()</code></td><td>vorne entfernen</td><td>das entfernte Element</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            const stapel = ["B", "C"];
+            stapel.push("D");          // ["B","C","D"]
+            stapel.unshift("A");       // ["A","B","C","D"]
+            console.log(stapel);
+
+            const hinten = stapel.pop();     // "D"
+            const vorne = stapel.shift();    // "A"
+            console.log("entfernt:", vorne, hinten, "übrig:", stapel);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="splice-slice">
+        <h2>18.3 splice und slice</h2>
+        <ul>
+          <li><code>slice(start, ende)</code> – gibt eine <strong>Kopie</strong> eines Ausschnitts zurück, das Original bleibt</li>
+          <li><code>splice(start, anzahl, ...neu)</code> – <strong>ändert</strong> das Original: entfernt und/oder fügt ein</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const tage = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+            console.log("slice(0, 5):", tage.slice(0, 5));   // Werktage
+            console.log("slice(-2):", tage.slice(-2));       // Wochenende
+            console.log("Original bleibt:", tage);
+
+            const farben = ["rot", "grün", "blau"];
+            farben.splice(1, 1);                 // ab Index 1, 1 Element entfernen
+            console.log(farben);                 // ["rot","blau"]
+            farben.splice(1, 0, "gelb", "lila"); // ab Index 1, nichts entfernen, 2 einfügen
+            console.log(farben);                 // ["rot","gelb","lila","blau"]
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="suchen">
+        <h2>18.4 Suchen: includes, indexOf, find</h2>
+        <table class="tabelle">
+          <tr><th>Methode</th><th>Ergebnis</th></tr>
+          <tr><td><code>includes(x)</code></td><td>true oder false</td></tr>
+          <tr><td><code>indexOf(x)</code></td><td>Position oder -1</td></tr>
+          <tr><td><code>find(fn)</code></td><td>erstes Element, für das fn true ergibt, sonst undefined</td></tr>
+          <tr><td><code>findIndex(fn)</code></td><td>Position davon, sonst -1</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            const zahlenReihe = [4, 8, 15, 16, 23, 42];
+            console.log(zahlenReihe.includes(15));               // true
+            console.log(zahlenReihe.indexOf(23));                // 4
+            console.log(zahlenReihe.indexOf(99));                // -1
+            console.log(zahlenReihe.find(z => z > 10));          // 15
+            console.log(zahlenReihe.findIndex(z => z > 10));     // 2
+
+            const personen = [
+              { name: "Ali", alter: 17 },
+              { name: "Ben", alter: 22 },
+              { name: "Cem", alter: 30 },
+            ];
+            console.log(personen.find(p => p.alter >= 18));     // erstes volljähriges Objekt
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="durchlaufen">
+        <h2>18.5 Durchlaufen: for…of und forEach</h2>
+        <div class="beispiel">
+          <script>
+            const einkauf = ["Milch", "Brot", "Eier"];
+
+            // 1. klassische for-Schleife mit Index
+            for (let i = 0; i < einkauf.length; i++) {
+              console.log(i, einkauf[i]);
+            }
+
+            // 2. for…of: am einfachsten, wenn man nur die Werte braucht
+            for (const ding of einkauf) {
+              console.log("-", ding);
+            }
+
+            // 3. forEach mit Callback: bekommt Wert und Index
+            einkauf.forEach((ding, index) => {
+              console.log(`${index + 1}. ${ding}`);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="map-filter">
+        <h2>18.6 map und filter</h2>
+        <p>Die beiden wichtigsten Methoden. Beide geben ein <strong>neues</strong> Array zurück und ändern das Original nicht.</p>
+        <ul>
+          <li><code>map(fn)</code> – <strong>verwandelt</strong> jedes Element. Gleich viele Elemente rein wie raus.</li>
+          <li><code>filter(fn)</code> – <strong>siebt</strong>: behält nur Elemente, für die fn true ergibt.</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const preise = [10, 25, 3, 48, 7];
+
+            const mitSteuer = preise.map(p => p * 1.19);
+            console.log("map ×1.19:", mitSteuer.map(p => p.toFixed(2)));
+
+            const teuer = preise.filter(p => p > 9);
+            console.log("filter > 9:", teuer);
+
+            // Verketten: erst filtern, dann umwandeln
+            const texte = preise.filter(p => p < 20).map(p => `${p} €`);
+            console.log("verkettet:", texte);
+
+            const namenListe = ["anna", "ben", "carla"];
+            console.log(namenListe.map(n => n[0].toUpperCase() + n.slice(1)));
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="reduce">
+        <h2>18.7 reduce</h2>
+        <p>
+          <code>reduce</code> fasst ein ganzes Array zu <strong>einem</strong> Wert zusammen
+          (z. B. eine Summe). Der Callback bekommt den bisherigen Zwischenstand (Akkumulator) und
+          das aktuelle Element. Der zweite Parameter ist der Startwert.
+        </p>
+        <div class="beispiel">
+          <script>
+            const umsaetze = [120, 80, 200, 50];
+
+            const gesamt = umsaetze.reduce((zwischenstand, wert) => zwischenstand + wert, 0);
+            console.log("Summe:", gesamt);
+
+            // Schritt für Schritt sichtbar gemacht
+            umsaetze.reduce((acc, wert) => {
+              console.log(`${acc} + ${wert} = ${acc + wert}`);
+              return acc + wert;
+            }, 0);
+
+            const maximum = umsaetze.reduce((max, wert) => (wert > max ? wert : max));
+            console.log("Maximum:", maximum);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="some-every">
+        <h2>18.8 some und every</h2>
+        <ul>
+          <li><code>some(fn)</code> – true, wenn <strong>mindestens ein</strong> Element passt</li>
+          <li><code>every(fn)</code> – true, wenn <strong>alle</strong> Elemente passen</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const noten = [2, 1, 3, 2, 4];
+            console.log("Eine 1 dabei?", noten.some(n => n === 1));     // true
+            console.log("Alle bestanden?", noten.every(n => n <= 4));   // true
+            console.log("Alle sehr gut?", noten.every(n => n === 1));   // false
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="sortieren">
+        <h2>18.9 Sortieren und umdrehen</h2>
+        <p>
+          <code>sort()</code> sortiert standardmäßig <strong>als Text</strong>, auch Zahlen! Für
+          Zahlen gibst du eine Vergleichsfunktion mit: <code>(a, b) =&gt; a - b</code> (aufsteigend).
+          <code>sort</code> und <code>reverse</code> ändern das Original. Die neuen Varianten
+          <code>toSorted()</code> und <code>toReversed()</code> geben eine Kopie zurück.
+        </p>
+        <div class="beispiel">
+          <script>
+            const werteListe = [10, 1, 5, 100, 25];
+            console.log("sort() falsch:", [...werteListe].sort());               // [1,10,100,25,5]
+            console.log("aufsteigend:", [...werteListe].sort((a, b) => a - b));
+            console.log("absteigend:", [...werteListe].sort((a, b) => b - a));
+
+            const woerter = ["Zebra", "apfel", "Mango", "ähre"];
+            console.log("Text deutsch:", woerter.toSorted((a, b) => a.localeCompare(b, "de")));
+
+            console.log("reverse:", [1, 2, 3].toReversed());
+            console.log("join:", ["2026", "11", "25"].join("-"));   // Array → String
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="spread">
+        <h2>18.10 Spread, Destructuring und mehr</h2>
+        <ul>
+          <li><strong>Spread</strong> <code>...</code> – „packt aus“: Arrays kopieren und verbinden</li>
+          <li><strong>Destructuring</strong> – Werte direkt in Variablen auspacken</li>
+          <li><code>Array.from()</code>, <code>flat()</code>, <code>fill()</code>, <code>new Set()</code> für Duplikate</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const teilA = [1, 2];
+            const teilB = [3, 4];
+            const alleTeile = [...teilA, ...teilB, 5];   // verbinden
+            const kopie = [...alleTeile];                 // echte Kopie
+            console.log(alleTeile, kopie);
+            console.log("Max mit Spread:", Math.max(...alleTeile));
+
+            const [erster, zweiter, ...rest] = ["Gold", "Silber", "Bronze", "4.", "5."];
+            console.log(erster, zweiter, rest);
+
+            let links = "L", rechts = "R";
+            [links, rechts] = [rechts, links];            // Werte tauschen
+            console.log(links, rechts);
+
+            console.log(Array.from({ length: 5 }, (_, i) => i * i));  // [0,1,4,9,16]
+            console.log([[1, 2], [3, [4]]].flat(2));                  // [1,2,3,4]
+            console.log([...new Set([1, 1, 2, 3, 3, 3])]);            // Duplikate weg
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>18.11 Praxis: Notenstatistik</h2>
+        <p>Gib Noten mit Komma getrennt ein. Alles wird mit Array-Methoden ausgewertet.</p>
+        <div class="beispiel">
+          <p><label>Noten: <input id="b18-noten" type="text" value="1.7, 2.3, 1.0, 3.7, 2.0, 5.0"></label>
+             <button id="b18-auswerten" type="button">Auswerten</button></p>
+          <ul id="b18-ergebnis"></ul>
+          <script>
+            document.getElementById("b18-auswerten").addEventListener("click", () => {
+              const eingabeText = document.getElementById("b18-noten").value;
+
+              const liste = eingabeText
+                .split(",")                         // "1.7, 2.3" → ["1.7", " 2.3"]
+                .map(t => Number(t.trim().replace(",", ".")))
+                .filter(n => !Number.isNaN(n) && n >= 1 && n <= 5);
+
+              if (liste.length === 0) {
+                console.warn("Keine gültigen Noten gefunden");
+                return;
+              }
+
+              const schnitt = liste.reduce((s, n) => s + n, 0) / liste.length;
+              const besteNote = Math.min(...liste);
+              const bestandenAnzahl = liste.filter(n => n <= 4).length;
+
+              const zeilen = [
+                `Anzahl: ${liste.length}`,
+                `Durchschnitt: ${schnitt.toFixed(2)}`,
+                `Beste Note: ${besteNote.toFixed(1)}`,
+                `Bestanden: ${bestandenAnzahl} von ${liste.length}`,
+                `Sortiert: ${liste.toSorted((a, b) => a - b).join(" · ")}`,
+              ];
+              const ul = document.getElementById("b18-ergebnis");
+              ul.innerHTML = "";
+              zeilen.forEach(z => {
+                const li = document.createElement("li");
+                li.textContent = z;
+                ul.append(li);
+              });
+              console.log("Noten:", liste);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Leg ein Array mit 5 Lieblingsfilmen an, füge vorne und hinten einen hinzu und entferne den mittleren.</li>
+          <li>Verdopple mit <code>map</code> alle Zahlen in <code>[3, 6, 9]</code>.</li>
+          <li>Filtere aus <code>["Anna", "Bob", "Alex", "Clara"]</code> alle Namen, die mit „A“ beginnen.</li>
+          <li>Berechne mit <code>reduce</code> das Produkt aller Zahlen von 1 bis 6.</li>
+          <li>Erweitere deine To-do-Liste (Seite 1) um einen Button „Alphabetisch sortieren“.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 18</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

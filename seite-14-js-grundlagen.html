@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<!--
+  Seite 14: JavaScript Grundlagen
+  Jedes Beispiel enthält ein <script>. Was mit console.log() ausgegeben wird,
+  erscheint durch konsole.js im schwarzen Kasten direkt im Beispiel.
+  Wichtig: Alle Skripte einer Seite teilen sich ihre Variablen. Deshalb hat jede
+  Variable auf dieser Seite einen eigenen Namen.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 14: JavaScript Grundlagen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- konsole.js muss VOR den Beispielen geladen werden -->
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 14: JavaScript Grundlagen ⚡</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#was-ist-js">Was ist JavaScript?</a></li>
+          <li><a href="#einbinden">JavaScript einbinden</a></li>
+          <li><a href="#ausgabe">Ausgabe: console.log und Co.</a></li>
+          <li><a href="#syntax">Syntax und Kommentare</a></li>
+          <li><a href="#variablen">Variablen: let, const, var</a></li>
+          <li><a href="#datentypen">Datentypen und typeof</a></li>
+          <li><a href="#rechnen">Rechen-Operatoren</a></li>
+          <li><a href="#zuweisung">Zuweisungs-Operatoren</a></li>
+          <li><a href="#vergleich">Vergleiche: == und ===</a></li>
+          <li><a href="#logik">Logische Operatoren</a></li>
+          <li><a href="#umwandlung">Typumwandlung</a></li>
+          <li><a href="#dialoge">alert, confirm, prompt</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="was-ist-js">
+        <h2>14.1 Was ist JavaScript?</h2>
+        <p>
+          <strong>JavaScript</strong> (kurz JS) ist eine echte <strong>Programmiersprache</strong>.
+          Sie läuft direkt im Browser und macht Webseiten interaktiv: auf Klicks reagieren,
+          Inhalte ändern, rechnen, Daten laden. Mit <em>Node.js</em> läuft JavaScript auch auf
+          Servern. Trotz des Namens hat es mit Java nichts zu tun.
+        </p>
+        <p class="tipp">💡 Die beste Spielwiese: F12 drücken, Reiter <strong>Konsole</strong> öffnen und dort direkt JavaScript eintippen, z. B. <code>2 + 3</code> und Enter.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="einbinden">
+        <h2>14.2 JavaScript einbinden</h2>
+        <ol>
+          <li><strong>Extern</strong> (empfohlen): <code>&lt;script src="skript.js"&gt;&lt;/script&gt;</code>, am besten am Ende des body oder im head mit <code>defer</code></li>
+          <li><strong>Intern</strong>: Code direkt zwischen <code>&lt;script&gt;</code> und <code>&lt;/script&gt;</code> (so wie in den Beispielen hier)</li>
+        </ol>
+        <pre><code>&lt;head&gt;
+  &lt;!-- defer: erst ausführen, wenn das HTML fertig geladen ist --&gt;
+  &lt;script src="skript.js" defer&gt;&lt;/script&gt;
+&lt;/head&gt;</code></pre>
+        <p class="tipp">💡 Steht ein Skript ohne defer im head, ist das HTML darunter noch nicht geladen. Dann findet <code>document.getElementById</code> nichts. Deshalb stehen deine Skripte am Ende des body.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="ausgabe">
+        <h2>14.3 Ausgabe: console.log und Co.</h2>
+        <ul>
+          <li><code>console.log(...)</code> – Ausgabe in der Konsole, das wichtigste Werkzeug zum Testen</li>
+          <li><code>console.warn(...)</code> / <code>console.error(...)</code> – Warnung / Fehler (gelb / rot)</li>
+          <li><code>element.textContent = ...</code> – Text in die Seite schreiben</li>
+          <li><code>alert(...)</code> – Meldungsfenster (siehe 14.12)</li>
+        </ul>
+        <div class="beispiel">
+          <p id="b14-ziel">Dieser Text wird beim Klick ersetzt.</p>
+          <button id="b14-knopf" type="button">Text ändern</button>
+          <script>
+            console.log("Hallo Welt!");
+            console.log("Mehrere Werte:", 42, true);
+            console.warn("Das ist eine Warnung");
+            console.error("Das ist ein Fehler");
+
+            document.getElementById("b14-knopf").addEventListener("click", function () {
+              document.getElementById("b14-ziel").textContent = "Geändert durch JavaScript! 🎉";
+              console.log("Button wurde geklickt");
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="syntax">
+        <h2>14.4 Syntax und Kommentare</h2>
+        <ul>
+          <li>Eine <strong>Anweisung</strong> endet mit einem Semikolon <code>;</code> (es ist oft optional, aber schreib es immer).</li>
+          <li>JavaScript unterscheidet <strong>Groß- und Kleinschreibung</strong>: <code>name</code> und <code>Name</code> sind verschieden.</li>
+          <li><code>// …</code> ist ein einzeiliger Kommentar, <code>/* … */</code> ein mehrzeiliger.</li>
+          <li>Code-Blöcke stehen in geschweiften Klammern <code>{ }</code>.</li>
+          <li>Namen schreibt man in <strong>camelCase</strong>: <code>anzahlKlicks</code>, <code>meinErsterWert</code>.</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            // Einzeiliger Kommentar: wird nicht ausgeführt
+            /*
+              Mehrzeiliger Kommentar
+              für längere Erklärungen
+            */
+            console.log("Kommentare sieht man nicht"); // Kommentar am Zeilenende
+            // console.log("Diese Zeile ist auskommentiert");
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="variablen">
+        <h2>14.5 Variablen: let, const, var</h2>
+        <p>Eine <strong>Variable</strong> ist eine beschriftete Schachtel für einen Wert.</p>
+        <table class="tabelle">
+          <tr><th>Schlüsselwort</th><th>Neu zuweisen?</th><th>Benutzen?</th></tr>
+          <tr><td><code>const</code></td><td>nein</td><td>✅ Standard. Immer zuerst const nehmen.</td></tr>
+          <tr><td><code>let</code></td><td>ja</td><td>✅ wenn sich der Wert ändern muss (Zähler …)</td></tr>
+          <tr><td><code>var</code></td><td>ja</td><td>❌ alte Schreibweise mit Tücken, nicht mehr benutzen</td></tr>
+        </table>
+        <p>Regeln für Namen: Buchstaben, Ziffern, <code>_</code> und <code>$</code>; nicht mit einer Ziffer anfangen; keine reservierten Wörter wie <code>let</code> oder <code>if</code>. Umlaute gehen, sind aber unüblich.</p>
+        <div class="beispiel">
+          <script>
+            const vorname = "Sirwan";      // const: bleibt gleich
+            let alter = 20;                // let: darf sich ändern
+            console.log(vorname, alter);
+
+            alter = alter + 1;             // neuer Wert
+            console.log("Ein Jahr später:", alter);
+
+            let leer;                      // ohne Wert
+            console.log("Ohne Wert:", leer);
+
+            // vorname = "Max";  ← würde einen Fehler geben, weil const
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="datentypen">
+        <h2>14.6 Datentypen und typeof</h2>
+        <table class="tabelle">
+          <tr><th>Typ</th><th>Beispiel</th><th>Bedeutung</th></tr>
+          <tr><td><code>string</code></td><td><code>"Hallo"</code>, <code>'Hi'</code>, <code>`Text`</code></td><td>Text</td></tr>
+          <tr><td><code>number</code></td><td><code>42</code>, <code>3.14</code>, <code>-7</code></td><td>Zahl (ganz oder mit Komma, Punkt als Dezimaltrenner!)</td></tr>
+          <tr><td><code>boolean</code></td><td><code>true</code>, <code>false</code></td><td>wahr oder falsch</td></tr>
+          <tr><td><code>undefined</code></td><td><code>undefined</code></td><td>noch kein Wert</td></tr>
+          <tr><td><code>null</code></td><td><code>null</code></td><td>bewusst „leer“</td></tr>
+          <tr><td><code>bigint</code></td><td><code>123n</code></td><td>sehr große ganze Zahlen</td></tr>
+          <tr><td><code>object</code></td><td><code>{ name: "Sirwan" }</code>, <code>[1, 2, 3]</code></td><td>Objekte und Arrays (Seiten 18 und 19)</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            console.log(typeof "Hallo");     // string
+            console.log(typeof 42);          // number
+            console.log(typeof 3.14);        // number
+            console.log(typeof true);        // boolean
+            console.log(typeof undefined);   // undefined
+            console.log(typeof null);        // object  ← berühmter alter Fehler in JS!
+            console.log(typeof [1, 2, 3]);   // object
+            console.log(typeof { a: 1 });    // object
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="rechnen">
+        <h2>14.7 Rechen-Operatoren</h2>
+        <table class="tabelle">
+          <tr><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td><code>+ - * /</code></td><td>plus, minus, mal, geteilt</td></tr>
+          <tr><td><code>%</code></td><td>Rest der Division (Modulo): <code>7 % 3</code> ist 1</td></tr>
+          <tr><td><code>**</code></td><td>hoch: <code>2 ** 3</code> ist 8</td></tr>
+          <tr><td><code>++</code> / <code>--</code></td><td>um 1 erhöhen / verringern</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            console.log("10 + 3 =", 10 + 3);
+            console.log("10 - 3 =", 10 - 3);
+            console.log("10 * 3 =", 10 * 3);
+            console.log("10 / 3 =", 10 / 3);
+            console.log("10 % 3 =", 10 % 3);      // Rest: 1
+            console.log("2 ** 10 =", 2 ** 10);
+            console.log("Punkt vor Strich:", 2 + 3 * 4, "aber", (2 + 3) * 4);
+
+            let zaehler = 5;
+            zaehler++;                             // jetzt 6
+            console.log("Nach ++:", zaehler);
+
+            // Vorsicht: + mit Text klebt zusammen!
+            console.log("5" + 3);                  // "53"
+            console.log("5" - 3);                  // 2 (bei - wird umgewandelt)
+            console.log(0.1 + 0.2);                // 0.30000000000000004 (Rundungsfehler bei Kommazahlen)
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zuweisung">
+        <h2>14.8 Zuweisungs-Operatoren</h2>
+        <p><code>=</code> heißt in JavaScript nicht „ist gleich“, sondern „bekommt den Wert“. Kurzformen sparen Tipparbeit:</p>
+        <div class="beispiel">
+          <script>
+            let punkte = 10;
+            punkte += 5;    // wie punkte = punkte + 5  → 15
+            console.log(punkte);
+            punkte -= 3;    // → 12
+            console.log(punkte);
+            punkte *= 2;    // → 24
+            console.log(punkte);
+            punkte /= 4;    // → 6
+            console.log(punkte);
+
+            let satz = "Hallo";
+            satz += " Welt"; // klappt auch mit Text
+            console.log(satz);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="vergleich">
+        <h2>14.9 Vergleiche: == und ===</h2>
+        <p>Vergleiche ergeben immer <code>true</code> oder <code>false</code>.</p>
+        <table class="tabelle">
+          <tr><th>Operator</th><th>Bedeutung</th></tr>
+          <tr><td><code>===</code></td><td>gleich (Wert UND Typ) ✅ immer diesen nehmen</td></tr>
+          <tr><td><code>!==</code></td><td>ungleich (Wert oder Typ)</td></tr>
+          <tr><td><code>==</code> / <code>!=</code></td><td>gleich / ungleich, wandelt Typen vorher um ❌ vermeiden</td></tr>
+          <tr><td><code>&lt; &gt; &lt;= &gt;=</code></td><td>kleiner, größer, kleiner gleich, größer gleich</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            console.log(5 === 5);      // true
+            console.log(5 === "5");    // false: Zahl ist nicht Text
+            console.log(5 == "5");     // true: == wandelt um. Verwirrend!
+            console.log(0 == false);   // true  ← deshalb === benutzen
+            console.log(0 === false);  // false
+            console.log(7 > 3, 7 <= 3);
+            console.log("Apfel" < "Birne");  // Texte werden alphabetisch verglichen
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="logik">
+        <h2>14.10 Logische Operatoren</h2>
+        <table class="tabelle">
+          <tr><th>Operator</th><th>Name</th><th>Ergebnis</th></tr>
+          <tr><td><code>&amp;&amp;</code></td><td>UND</td><td>true, wenn <strong>beide</strong> true sind</td></tr>
+          <tr><td><code>||</code></td><td>ODER</td><td>true, wenn <strong>mindestens einer</strong> true ist</td></tr>
+          <tr><td><code>!</code></td><td>NICHT</td><td>dreht um: aus true wird false</td></tr>
+        </table>
+        <div class="beispiel">
+          <script>
+            const istVolljaehrig = true;
+            const hatTicket = false;
+
+            console.log("Darf rein (UND):", istVolljaehrig && hatTicket);  // false
+            console.log("Eins von beiden (ODER):", istVolljaehrig || hatTicket);  // true
+            console.log("Kein Ticket (NICHT):", !hatTicket);  // true
+
+            const temperatur = 22;
+            console.log("Angenehm?", temperatur >= 18 && temperatur <= 25);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="umwandlung">
+        <h2>14.11 Typumwandlung</h2>
+        <p>Eingaben aus Formularen sind immer <strong>Text</strong>. Zum Rechnen musst du sie in Zahlen umwandeln:</p>
+        <ul>
+          <li><code>Number("42")</code> → 42 (bei Unsinn: <code>NaN</code> = „Not a Number“)</li>
+          <li><code>parseInt("42px")</code> → 42, <code>parseFloat("3.5kg")</code> → 3.5</li>
+          <li><code>String(42)</code> oder <code>(42).toString()</code> → "42"</li>
+          <li><code>Boolean(wert)</code> → true oder false</li>
+        </ul>
+        <div class="beispiel">
+          <p>
+            <label>Zahl 1 <input id="b14-z1" type="number" value="5"></label>
+            <label>Zahl 2 <input id="b14-z2" type="number" value="3"></label>
+            <button id="b14-plus" type="button">Addieren</button>
+          </p>
+          <script>
+            console.log(Number("42") + 1);      // 43
+            console.log(Number("hallo"));       // NaN
+            console.log(parseInt("42px"));      // 42
+            console.log(String(99) + 1);        // "991"
+
+            document.getElementById("b14-plus").addEventListener("click", function () {
+              const a = document.getElementById("b14-z1").value;   // Text!
+              const b = document.getElementById("b14-z2").value;
+              console.log("Ohne Umwandlung:", a + b);              // klebt zusammen
+              console.log("Mit Number():", Number(a) + Number(b)); // rechnet richtig
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="dialoge">
+        <h2>14.12 alert, confirm, prompt</h2>
+        <p>Drei eingebaute Fenster. Sie blockieren die Seite, deshalb nutzt man sie heute nur zum schnellen Ausprobieren.</p>
+        <ul>
+          <li><code>alert("Text")</code> – zeigt eine Meldung</li>
+          <li><code>confirm("Frage?")</code> – OK oder Abbrechen, ergibt true oder false</li>
+          <li><code>prompt("Frage?")</code> – Eingabefeld, ergibt den Text (oder null bei Abbrechen)</li>
+        </ul>
+        <div class="beispiel">
+          <button id="b14-alert" type="button">alert</button>
+          <button id="b14-confirm" type="button">confirm</button>
+          <button id="b14-prompt" type="button">prompt</button>
+          <script>
+            document.getElementById("b14-alert").addEventListener("click", function () {
+              alert("Hallo! Ich bin ein alert.");
+            });
+            document.getElementById("b14-confirm").addEventListener("click", function () {
+              const antwort = confirm("Magst du JavaScript?");
+              console.log("confirm ergab:", antwort);
+            });
+            document.getElementById("b14-prompt").addEventListener("click", function () {
+              const name = prompt("Wie heißt du?");
+              console.log("prompt ergab:", name);
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Leg Variablen für deinen Namen, dein Alter und deinen Studiengang an und gib einen Satz damit aus.</li>
+          <li>Rechne aus, wie viele Sekunden ein Tag hat, und gib es aus.</li>
+          <li>Prüfe mit <code>%</code>, ob die Zahl 17 gerade ist (Ergebnis true oder false).</li>
+          <li>Baue zwei Eingabefelder und einen Button, der die Zahlen multipliziert und das Ergebnis in einen Absatz schreibt.</li>
+          <li>Probiere in der Browser-Konsole (F12) <code>"3" * "4"</code>, <code>"3" + 4</code> und <code>true + 1</code> aus. Kannst du die Ergebnisse erklären?</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 14</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

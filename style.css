@@ -503,3 +503,43 @@ img {
   max-width: 100%; /* Bilder nie breiter als ihr Behälter */
   height: auto;
 }
+
+/* =========================================================
+   NEU: JavaScript-Seiten (konsole.js)
+   ========================================================= */
+
+/* Der schwarze Kasten mit der Ausgabe von console.log */
+.konsole {
+  background-color: #0d1117;
+  color: #7ee787;
+  margin: 0.8rem 0 0;
+  padding: 0.6rem 0.8rem;
+  min-height: 1.5rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.beispiel pre.konsole {
+  background-color: #0d1117;
+  color: #7ee787;
+  padding: 0.6rem 0.8rem;
+}
+
+.konsole::before {
+  content: "Konsole ›";
+  display: block;
+  color: #8b949e;
+  font-size: 0.75rem;
+  margin-bottom: 0.2rem;
+}
+
+.konsole-warn { color: #e3b341; }
+.konsole-error { color: #ff7b72; }
+.konsole-info { color: #79c0ff; }
+
+/* Ausgabe-Bereich für Ergebnisse auf der Seite */
+.ergebnis {
+  font-weight: 600;
+  min-height: 1.6em;
+}

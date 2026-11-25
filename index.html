@@ -30,14 +30,11 @@
       <!-- <h1> ist die wichtigste Überschrift. Pro Seite gibt es nur eine. -->
       <h1>Hallo, ich bin Sirwan 👋</h1>
 
-      <!-- <nav> enthält Links. href="#ueber-mich" springt zum Element mit id="ueber-mich". -->
-      <nav>
-        <a href="#ueber-mich">Über mich</a>
-        <a href="#lernziele">Lernziele</a>
-        <a href="#kontakt">Kontakt</a>
-        <!-- Ein Link auf eine ANDERE Datei: so verbindet man mehrere Seiten. -->
-        <a href="todo.html">To-do-Liste</a>
-      </nav>
+      <!--
+        Die Navigation ist leer: navigation.js füllt sie automatisch.
+        So muss man eine neue Seite nur an EINER Stelle eintragen.
+      -->
+      <nav id="navigation"></nav>
 
       <!-- Schalter für den Dunkelmodus. Die Logik steckt in theme.js. -->
       <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
@@ -54,6 +51,12 @@
           Ich lerne gerade Webentwicklung mit HTML, CSS und JavaScript.
           Diese Seite ist mein erstes eigenes Projekt.
         </p>
+      </section>
+
+      <!-- Übersicht aller nummerierten Seiten. navigation.js füllt die leere Liste. -->
+      <section id="seiten">
+        <h2>Meine Seiten</h2>
+        <ol id="seiten-liste" class="seiten-liste"></ol>
       </section>
 
       <section id="lernziele">
@@ -91,6 +94,7 @@
       und das Skript findet alle Elemente (z. B. den Button).
     -->
     <script src="theme.js"></script>
+    <script src="navigation.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

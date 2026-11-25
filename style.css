@@ -106,3 +106,104 @@ footer {
   font-size: 0.9rem;
   color: #666;
 }
+
+/* =========================================================
+   NEU: Dunkelmodus
+   theme.js setzt data-theme="dark" an das <html>-Element.
+   Diese Regel überschreibt dann nur die Farbvariablen von oben,
+   alle anderen Regeln passen sich automatisch an.
+   ========================================================= */
+[data-theme="dark"] {
+  --hintergrund: #12151f;
+  --text: #e8eaf2;
+  --karte: #1f2433;
+}
+
+/* Weicher Übergang beim Umschalten */
+body,
+section {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Der Schalter oben im Header */
+.theme-button {
+  margin-top: 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* =========================================================
+   NEU: To-do-Liste (todo.html)
+   ========================================================= */
+
+/* Eingabefeld und Button nebeneinander */
+.todo-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo-form input {
+  flex: 1; /* Das Feld nimmt den restlichen Platz ein */
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: var(--hintergrund);
+  color: var(--text);
+}
+
+/* Versteckt das Label optisch, Screenreader lesen es aber trotzdem vor */
+.unsichtbar {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.todo-zaehler {
+  font-weight: 600;
+}
+
+.todo-liste {
+  list-style: none; /* keine Aufzählungspunkte */
+  padding: 0;
+}
+
+.todo-liste li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.todo-liste li span {
+  flex: 1;
+}
+
+/* Erledigte Aufgaben: durchgestrichen und blasser */
+.todo-liste li.erledigt span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.todo-liste input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+/* Kleiner roter ✕-Button */
+.entfernen {
+  background-color: transparent;
+  color: #d33;
+  padding: 0.2rem 0.5rem;
+}
+
+/* Unauffälligerer Button */
+.zweitrangig {
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid currentColor;
+}

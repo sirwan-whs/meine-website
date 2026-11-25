@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+  todo.html – eine ZWEITE Seite deiner Website.
+  Jede .html-Datei ist eine eigene Seite. Verbunden werden sie über Links (<a href="...">).
+  Diese Seite nutzt dieselbe style.css wie index.html, damit alles gleich aussieht.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do-Liste – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Meine To-do-Liste ✅</h1>
+
+      <!-- Die Links zeigen jetzt auf index.html#..., weil die Abschnitte auf der Startseite liegen. -->
+      <nav>
+        <a href="index.html">Startseite</a>
+        <a href="index.html#lernziele">Lernziele</a>
+        <a href="todo.html">To-do-Liste</a>
+      </nav>
+
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section>
+        <h2>Neue Aufgabe</h2>
+
+        <!--
+          <form> fasst Eingabefelder zusammen. Drückt man Enter oder den Button,
+          wird das Formular "abgeschickt". In todo.js fangen wir das ab.
+        -->
+        <form id="todo-form" class="todo-form">
+          <!-- <label> beschreibt ein Eingabefeld. "for" verbindet es mit der id des Feldes. -->
+          <label for="todo-eingabe" class="unsichtbar">Aufgabe</label>
+
+          <!-- <input> ist ein Textfeld. placeholder ist der graue Hinweistext. -->
+          <input
+            id="todo-eingabe"
+            type="text"
+            placeholder="z. B. HTML-Übung machen"
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Hinzufügen</button>
+        </form>
+      </section>
+
+      <section>
+        <h2>Aufgaben</h2>
+
+        <!-- Hier steht, wie viele Aufgaben noch offen sind. todo.js füllt den Text. -->
+        <p id="todo-zaehler" class="todo-zaehler"></p>
+
+        <!-- Die Liste ist anfangs leer. todo.js erzeugt die <li>-Einträge. -->
+        <ul id="todo-liste" class="todo-liste"></ul>
+
+        <button id="erledigte-loeschen" type="button" class="zweitrangig">
+          Erledigte löschen
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <p>Deine Aufgaben werden in deinem Browser gespeichert und bleiben nach dem Neuladen erhalten.</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="todo.js"></script>
+  </body>
+</html>

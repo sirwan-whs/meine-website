@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!--
+  Seite 19: Objekte, JSON und Klassen
+  Objekte fassen zusammengehörige Daten (und Funktionen) unter einem Namen zusammen.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 19: Objekte und Klassen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="konsole.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 19: Objekte, JSON und Klassen 🗂️</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#objekte">Objekte erstellen und lesen</a></li>
+          <li><a href="#aendern">Eigenschaften ändern, hinzufügen, löschen</a></li>
+          <li><a href="#methoden">Methoden und this</a></li>
+          <li><a href="#durchlaufen">Objekte durchlaufen</a></li>
+          <li><a href="#verschachtelt">Verschachtelte Objekte und Arrays von Objekten</a></li>
+          <li><a href="#destructuring">Destructuring und Spread</a></li>
+          <li><a href="#referenz">Kopie oder Referenz?</a></li>
+          <li><a href="#json">JSON</a></li>
+          <li><a href="#klassen">Klassen</a></li>
+          <li><a href="#vererbung">Vererbung</a></li>
+          <li><a href="#praxis">Praxis: Warenkorb</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="objekte">
+        <h2>19.1 Objekte erstellen und lesen</h2>
+        <p>
+          Ein Objekt steht in geschweiften Klammern und besteht aus
+          <strong>Schlüssel-Wert-Paaren</strong> (Eigenschaften): <code>schluessel: wert</code>,
+          getrennt durch Kommas. Lesen mit Punkt <code>objekt.name</code> oder eckigen Klammern
+          <code>objekt["name"]</code>.
+        </p>
+        <div class="beispiel">
+          <script>
+            const student = {
+              vorname: "Sirwan",
+              semester: 1,
+              studiengang: "Informatik",
+              aktiv: true,
+            };
+
+            console.log(student);
+            console.log(student.vorname);              // Punkt-Schreibweise
+            console.log(student["studiengang"]);       // Klammer-Schreibweise
+
+            const feldName = "semester";
+            console.log(student[feldName]);            // Klammern gehen auch mit Variablen
+            console.log(student.gibtsNicht);           // undefined
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="aendern">
+        <h2>19.2 Eigenschaften ändern, hinzufügen, löschen</h2>
+        <div class="beispiel">
+          <script>
+            const handy = { marke: "Fairphone", speicherGB: 128 };
+            handy.speicherGB = 256;          // ändern
+            handy.farbe = "grün";            // hinzufügen
+            delete handy.marke;              // löschen
+            console.log(handy);
+
+            console.log("farbe" in handy);              // true: gibt es die Eigenschaft?
+            console.log(Object.hasOwn(handy, "marke"));  // false
+
+            // Kurzschreibweise: Variable mit gleichem Namen
+            const titelText = "Notizen";
+            const seitenAnzahl = 12;
+            const heft = { titelText, seitenAnzahl };    // wie { titelText: titelText, … }
+            console.log(heft);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="methoden">
+        <h2>19.3 Methoden und this</h2>
+        <p>
+          Eine Funktion in einem Objekt heißt <strong>Methode</strong>. Mit
+          <code>this</code> greift sie auf ihr eigenes Objekt zu.
+        </p>
+        <div class="beispiel">
+          <script>
+            const konto = {
+              inhaber: "Sirwan",
+              stand: 100,
+              einzahlen(betrag) {                 // Kurzschreibweise für Methoden
+                this.stand += betrag;
+                console.log(`${this.inhaber} zahlt ${betrag} € ein → ${this.stand} €`);
+              },
+              abheben(betrag) {
+                if (betrag > this.stand) {
+                  console.warn("Nicht genug Geld!");
+                  return;
+                }
+                this.stand -= betrag;
+                console.log(`Abgehoben: ${betrag} € → ${this.stand} €`);
+              },
+            };
+
+            konto.einzahlen(50);
+            konto.abheben(30);
+            konto.abheben(500);
+          </script>
+        </div>
+        <p class="tipp">💡 Pfeilfunktionen haben kein eigenes <code>this</code>. Für Methoden deshalb die normale Schreibweise nehmen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="durchlaufen">
+        <h2>19.4 Objekte durchlaufen</h2>
+        <ul>
+          <li><code>Object.keys(obj)</code> – Array aller Schlüssel</li>
+          <li><code>Object.values(obj)</code> – Array aller Werte</li>
+          <li><code>Object.entries(obj)</code> – Array von <code>[schluessel, wert]</code>-Paaren</li>
+          <li><code>for…in</code> – Schleife über die Schlüssel (Seite 16)</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const wochenStunden = { HTML: 4, CSS: 3, JavaScript: 6 };
+
+            console.log(Object.keys(wochenStunden));
+            console.log(Object.values(wochenStunden));
+            for (const [fach, std] of Object.entries(wochenStunden)) {
+              console.log(`${fach}: ${std} Stunden`);
+            }
+            const gesamtStunden = Object.values(wochenStunden).reduce((a, b) => a + b, 0);
+            console.log("Gesamt:", gesamtStunden);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="verschachtelt">
+        <h2>19.5 Verschachtelte Objekte und Arrays von Objekten</h2>
+        <p>Echte Daten sind fast immer so aufgebaut: Listen von Objekten, die selbst Objekte und Listen enthalten.</p>
+        <div class="beispiel">
+          <script>
+            const firma = {
+              name: "WebStudio",
+              adresse: { strasse: "Neidenburger Str. 43", ort: "Gelsenkirchen" },
+              mitarbeiter: [
+                { name: "Ali", rolle: "Frontend", gehalt: 3800 },
+                { name: "Bea", rolle: "Backend", gehalt: 4200 },
+                { name: "Can", rolle: "Frontend", gehalt: 3600 },
+              ],
+            };
+
+            console.log(firma.adresse.ort);
+            console.log(firma.mitarbeiter[1].name);
+            console.log(firma.mitarbeiter.length, "Mitarbeiter");
+
+            const frontend = firma.mitarbeiter.filter(m => m.rolle === "Frontend").map(m => m.name);
+            console.log("Frontend:", frontend);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="destructuring">
+        <h2>19.6 Destructuring und Spread</h2>
+        <div class="beispiel">
+          <script>
+            const buch = { titel: "Clean Code", autor: "R. Martin", jahr: 2008, seitenZahl: 464 };
+
+            // Eigenschaften direkt in Variablen auspacken
+            const { titel, autor } = buch;
+            console.log(titel, "von", autor);
+
+            // Umbenennen und Standardwert
+            const { jahr: erscheinungsjahr, sprache = "Englisch" } = buch;
+            console.log(erscheinungsjahr, sprache);
+
+            // Auch in Funktions-Parametern sehr beliebt
+            function zeigeBuch({ titel, seitenZahl }) {
+              console.log(`${titel} hat ${seitenZahl} Seiten`);
+            }
+            zeigeBuch(buch);
+
+            // Spread: kopieren und dabei ändern/ergänzen
+            const neueAuflage = { ...buch, jahr: 2025, gelesen: true };
+            console.log(neueAuflage);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="referenz">
+        <h2>19.7 Kopie oder Referenz?</h2>
+        <p>
+          Zahlen und Strings werden beim Zuweisen <strong>kopiert</strong>. Objekte und Arrays
+          nicht: Die Variable enthält nur einen <strong>Verweis</strong> (Referenz) auf dasselbe
+          Objekt. Ändert man es über die eine Variable, sieht man es auch über die andere!
+        </p>
+        <div class="beispiel">
+          <script>
+            let zahlA = 5;
+            let zahlB = zahlA;
+            zahlB = 10;
+            console.log("Zahlen:", zahlA, zahlB);          // 5 10: unabhängig
+
+            const original = { farbe: "rot" };
+            const verweis = original;                       // KEINE Kopie!
+            verweis.farbe = "blau";
+            console.log("Original:", original.farbe);       // blau 😱
+
+            const flacheKopie = { ...original };            // echte (flache) Kopie
+            flacheKopie.farbe = "gelb";
+            console.log("Original bleibt:", original.farbe);
+
+            const tief = { a: { b: 1 } };
+            const tiefeKopie = structuredClone(tief);        // kopiert auch Verschachteltes
+            tiefeKopie.a.b = 99;
+            console.log("tief.a.b ist immer noch", tief.a.b);
+
+            console.log({ x: 1 } === { x: 1 });             // false: zwei verschiedene Objekte
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="json">
+        <h2>19.8 JSON</h2>
+        <p>
+          <strong>JSON</strong> (JavaScript Object Notation) ist ein <strong>Textformat</strong>,
+          um Daten zu speichern und zwischen Programmen auszutauschen, z. B. mit einem Server.
+          Es sieht aus wie ein JS-Objekt, aber: Schlüssel und Strings immer in doppelten
+          Anführungszeichen, keine Funktionen, keine Kommentare, kein Komma am Ende.
+        </p>
+        <ul>
+          <li><code>JSON.stringify(objekt)</code> – Objekt → JSON-Text</li>
+          <li><code>JSON.parse(text)</code> – JSON-Text → Objekt</li>
+        </ul>
+        <div class="beispiel">
+          <script>
+            const einstellungen = { modus: "dunkel", schrift: 16, sprachen: ["de", "en"] };
+
+            const alsText = JSON.stringify(einstellungen);
+            console.log(alsText, "←", typeof alsText);
+
+            console.log(JSON.stringify(einstellungen, null, 2));   // schön eingerückt
+
+            const zurueck = JSON.parse(alsText);
+            console.log(zurueck.sprachen[1], "←", typeof zurueck);
+          </script>
+        </div>
+        <p class="tipp">💡 So speichert deine To-do-Liste (Seite 1) ihre Aufgaben im localStorage: Der kann nur Text, deshalb JSON.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="klassen">
+        <h2>19.9 Klassen</h2>
+        <p>
+          Eine <strong>Klasse</strong> ist ein Bauplan für viele gleichartige Objekte.
+          <code>constructor</code> läuft beim Erzeugen mit <code>new</code> und setzt die
+          Startwerte. Klassennamen schreibt man groß. <code>#name</code> ist ein
+          <strong>privates</strong> Feld, das man von außen nicht ändern kann. <code>get</code>
+          macht eine berechnete Eigenschaft, <code>static</code> eine Methode der Klasse selbst.
+        </p>
+        <div class="beispiel">
+          <script>
+            class Rechteck {
+              #id;                                   // privates Feld
+
+              constructor(breite, hoehe) {
+                this.breite = breite;
+                this.hoehe = hoehe;
+                this.#id = Rechteck.anzahl++;
+              }
+
+              get flaeche() {                        // wie eine Eigenschaft lesen, ohne ()
+                return this.breite * this.hoehe;
+              }
+
+              beschreiben() {
+                return `Rechteck #${this.#id}: ${this.breite} × ${this.hoehe} = ${this.flaeche}`;
+              }
+
+              static quadrat(seite) {                // Rechteck.quadrat(…)
+                return new Rechteck(seite, seite);
+              }
+
+              static anzahl = 1;
+            }
+
+            const r1 = new Rechteck(3, 4);
+            const r2 = Rechteck.quadrat(5);
+            console.log(r1.beschreiben());
+            console.log(r2.beschreiben());
+            console.log("Fläche r1:", r1.flaeche);
+            console.log(r1 instanceof Rechteck);
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="vererbung">
+        <h2>19.10 Vererbung</h2>
+        <p>Mit <code>extends</code> übernimmt eine Klasse alles von einer anderen und kann es erweitern. <code>super(...)</code> ruft den Konstruktor der Eltern-Klasse auf.</p>
+        <div class="beispiel">
+          <script>
+            class Tier {
+              constructor(name) {
+                this.name = name;
+              }
+              sprechen() {
+                return `${this.name} macht ein Geräusch.`;
+              }
+            }
+
+            class Hund extends Tier {
+              constructor(name, rasse) {
+                super(name);                // erst den Tier-Teil einrichten
+                this.rasse = rasse;
+              }
+              sprechen() {                  // Methode überschreiben
+                return `${this.name} (${this.rasse}) bellt: Wuff!`;
+              }
+            }
+
+            const tiere = [new Tier("Tier"), new Hund("Bello", "Labrador")];
+            for (const t of tiere) {
+              console.log(t.sprechen());
+            }
+            console.log(tiere[1] instanceof Tier);   // true: ein Hund ist auch ein Tier
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="praxis">
+        <h2>19.11 Praxis: Warenkorb</h2>
+        <p>Eine Klasse verwaltet die Daten, eine Funktion zeigt sie an. Diese Trennung macht Programme übersichtlich.</p>
+        <div class="beispiel">
+          <p>
+            <button type="button" data-produkt="Tastatur" data-preis="49.99">+ Tastatur (49,99 €)</button>
+            <button type="button" data-produkt="Maus" data-preis="24.90">+ Maus (24,90 €)</button>
+            <button type="button" data-produkt="Monitor" data-preis="199">+ Monitor (199 €)</button>
+            <button type="button" id="b19-leeren" class="zweitrangig">Leeren</button>
+          </p>
+          <ul id="b19-korb"></ul>
+          <p class="ergebnis" id="b19-summe"></p>
+          <script>
+            class Warenkorb {
+              constructor() {
+                this.positionen = {};                 // { "Maus": { preis: 24.9, menge: 2 } }
+              }
+              hinzufuegen(name, preis) {
+                if (!this.positionen[name]) {
+                  this.positionen[name] = { preis, menge: 0 };
+                }
+                this.positionen[name].menge++;
+              }
+              leeren() {
+                this.positionen = {};
+              }
+              get summe() {
+                return Object.values(this.positionen).reduce((s, p) => s + p.preis * p.menge, 0);
+              }
+            }
+
+            const korb = new Warenkorb();
+            const euroFormat = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+
+            function korbAnzeigen() {
+              const ul = document.getElementById("b19-korb");
+              ul.innerHTML = "";
+              for (const [name, p] of Object.entries(korb.positionen)) {
+                const li = document.createElement("li");
+                li.textContent = `${p.menge} × ${name} = ${euroFormat.format(p.preis * p.menge)}`;
+                ul.append(li);
+              }
+              document.getElementById("b19-summe").textContent = `Summe: ${euroFormat.format(korb.summe)}`;
+            }
+
+            // Alle Buttons mit data-produkt finden. dataset liest data-*-Attribute.
+            document.querySelectorAll("[data-produkt]").forEach(knopf => {
+              knopf.addEventListener("click", () => {
+                korb.hinzufuegen(knopf.dataset.produkt, Number(knopf.dataset.preis));
+                korbAnzeigen();
+              });
+            });
+            document.getElementById("b19-leeren").addEventListener("click", () => {
+              korb.leeren();
+              korbAnzeigen();
+            });
+          </script>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Leg ein Objekt für dich an (Name, Alter, Hobbys als Array) und gib jedes Hobby einzeln aus.</li>
+          <li>Schreib eine Methode <code>vorstellen()</code> in dieses Objekt, die einen Satz mit <code>this</code> zurückgibt.</li>
+          <li>Wandle das Objekt in JSON um und wieder zurück.</li>
+          <li>Schreib eine Klasse <code>Auto</code> mit Marke und Kilometerstand und einer Methode <code>fahren(km)</code>.</li>
+          <li>Erweitere den Warenkorb um einen „−“-Button pro Position.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 19</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

@@ -29,6 +29,10 @@ const seiten = [
   { nummer: 16, datei: "seite-16-js-bedingungen-schleifen.html", bereich: "JavaScript", titel: "Bedingungen und Schleifen", thema: "if/else, switch, truthy/falsy, ??, for, while, for…of" },
   { nummer: 17, datei: "seite-17-js-funktionen.html", bereich: "JavaScript", titel: "Funktionen", thema: "Parameter, return, Pfeilfunktionen, Scope, Callbacks, Closures" },
   { nummer: 18, datei: "seite-18-js-arrays.html", bereich: "JavaScript", titel: "Arrays", thema: "push/pop, splice, find, map, filter, reduce, sort, Spread" },
+  { nummer: 19, datei: "seite-19-js-objekte-klassen.html", bereich: "JavaScript", titel: "Objekte und Klassen", thema: "Objekte, this, Destructuring, JSON, class, extends" },
+  { nummer: 20, datei: "seite-20-js-dom-events.html", bereich: "JavaScript", titel: "DOM und Events", thema: "querySelector, classList, Elemente erzeugen, Events, Delegation" },
+  { nummer: 21, datei: "seite-21-js-async-fetch.html", bereich: "JavaScript", titel: "Async und fetch", thema: "setTimeout, setInterval, Promises, async/await, fetch" },
+  { nummer: 22, datei: "seite-22-js-fehler-datum-speicher.html", bereich: "JavaScript", titel: "Fehler, Datum, Speicher", thema: "try/catch, Date, localStorage, RegExp, Module" },
 ];
 
 // ----- Welche Seite ist gerade offen? -----

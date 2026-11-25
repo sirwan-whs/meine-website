@@ -17,6 +17,10 @@ const seiten = [
   { nummer: 4, datei: "seite-04-html-links-bilder-listen-tabellen.html", bereich: "HTML", titel: "Links, Bilder, Listen, Tabellen", thema: "a, img, ul/ol/dl, table" },
   { nummer: 5, datei: "seite-05-html-formulare.html", bereich: "HTML", titel: "HTML Formulare", thema: "form, input-Typen, select, textarea, Validierung" },
   { nummer: 6, datei: "seite-06-html-semantik-medien.html", bereich: "HTML", titel: "Semantik und Medien", thema: "header/main/footer, Block/Inline, Audio, Video, iframe, Entities" },
+  { nummer: 7, datei: "seite-07-css-grundlagen.html", bereich: "CSS", titel: "CSS Grundlagen", thema: "Einbinden, Selektoren, Farben, Hintergründe, Einheiten, Kaskade, Variablen" },
+  { nummer: 8, datei: "seite-08-css-boxmodell.html", bereich: "CSS", titel: "Box-Modell", thema: "padding, margin, border, Größen, box-sizing, display, overflow, Schatten" },
+  { nummer: 9, datei: "seite-09-css-text-schrift.html", bereich: "CSS", titel: "Text und Schrift", thema: "Text, Schriften, Web Fonts, Links, Listen, Tabellen, Cursor" },
+  { nummer: 10, datei: "seite-10-css-position-pseudo.html", bereich: "CSS", titel: "Position und Pseudo-Klassen", thema: "position, z-index, float, :hover, :nth-child, ::before, ::after" },
 ];
 
 // ----- Welche Seite ist gerade offen? -----

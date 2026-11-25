@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<!--
+  Seite 7: CSS Grundlagen
+  In jedem Beispiel steht ein <style>-Block mit eigenen Klassen (beginnen mit "b7-").
+  So beeinflussen sich die Beispiele nicht gegenseitig.
+  lektion.js zeigt unter jedem Beispiel den CSS- und HTML-Code an.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 7: CSS Grundlagen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 7: CSS Grundlagen 🎨</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#was-ist-css">Was ist CSS?</a></li>
+          <li><a href="#einbinden">CSS einbinden: drei Wege</a></li>
+          <li><a href="#syntax">Syntax</a></li>
+          <li><a href="#selektoren">Selektoren</a></li>
+          <li><a href="#kombinatoren">Kombinatoren und Attribut-Selektoren</a></li>
+          <li><a href="#farben">Farben</a></li>
+          <li><a href="#hintergruende">Hintergründe</a></li>
+          <li><a href="#einheiten">Einheiten</a></li>
+          <li><a href="#kaskade">Kaskade, Spezifität und Vererbung</a></li>
+          <li><a href="#variablen">CSS-Variablen</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="was-ist-css">
+        <h2>7.1 Was ist CSS?</h2>
+        <p>
+          <strong>CSS</strong> heißt <em>Cascading Style Sheets</em>. Damit legst du fest, wie
+          HTML-Elemente aussehen: Farben, Schriften, Abstände, Größen, Anordnung und Animationen.
+          Der große Vorteil: Eine CSS-Datei kann das Aussehen von beliebig vielen Seiten steuern.
+          Alle Seiten dieser Website nutzen dieselbe <code>style.css</code>.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="einbinden">
+        <h2>7.2 CSS einbinden: drei Wege</h2>
+        <ol>
+          <li><strong>Extern</strong> (empfohlen): eine eigene Datei, eingebunden im head mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code></li>
+          <li><strong>Intern</strong>: ein <code>&lt;style&gt;</code>-Block im HTML (so wie in den Beispielen auf dieser Seite)</li>
+          <li><strong>Inline</strong>: direkt am Element mit <code>style="..."</code></li>
+        </ol>
+        <div class="beispiel">
+          <!-- Interner Stil: gilt für alle Elemente mit class="b7-intern" -->
+          <style>
+            .b7-intern {
+              color: darkorange;
+            }
+          </style>
+          <p class="b7-intern">Ich werde durch einen internen style-Block orange.</p>
+          <p style="color: seagreen;">Ich werde durch ein inline style-Attribut grün.</p>
+        </div>
+        <p class="tipp">💡 Gibt es mehrere Regeln für dasselbe Element, gewinnt inline vor intern/extern. Deshalb ist inline schwer zu überschreiben und sollte selten benutzt werden.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="syntax">
+        <h2>7.3 Syntax</h2>
+        <p>Eine CSS-Regel besteht aus einem <strong>Selektor</strong> und einem <strong>Deklarationsblock</strong> in geschweiften Klammern. Jede Deklaration ist <code>eigenschaft: wert;</code> mit Semikolon am Ende.</p>
+        <pre><code>h2 {                    /* Selektor: alle h2-Elemente */
+  color: navy;          /* Eigenschaft: Wert; */
+  font-size: 1.5rem;    /* jede Zeile endet mit ; */
+}
+
+/* So schreibt man in CSS einen Kommentar (auch über mehrere Zeilen) */</code></pre>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="selektoren">
+        <h2>7.4 Selektoren</h2>
+        <p>Der Selektor sagt, <strong>welche</strong> Elemente gemeint sind.</p>
+        <table class="tabelle">
+          <tr><th>Selektor</th><th>Beispiel</th><th>Wählt aus</th></tr>
+          <tr><td>Element</td><td><code>p</code></td><td>alle <code>&lt;p&gt;</code></td></tr>
+          <tr><td>Klasse</td><td><code>.karte</code></td><td>alle mit <code>class="karte"</code></td></tr>
+          <tr><td>ID</td><td><code>#kopf</code></td><td>das eine mit <code>id="kopf"</code></td></tr>
+          <tr><td>Universal</td><td><code>*</code></td><td>alle Elemente</td></tr>
+          <tr><td>Gruppe</td><td><code>h1, h2, h3</code></td><td>alle h1 UND h2 UND h3</td></tr>
+          <tr><td>Kombiniert</td><td><code>p.wichtig</code></td><td>nur <code>p</code>, die auch Klasse „wichtig“ haben</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            /* Klasse */
+            .b7-blau { color: royalblue; }
+            /* ID */
+            #b7-einzig { background-color: khaki; color: #222; }
+            /* Gruppe: beide Klassen bekommen dieselbe Regel */
+            .b7-a, .b7-b { font-style: italic; }
+            /* Element + Klasse: nur <span> mit Klasse b7-fett */
+            span.b7-fett { font-weight: bold; }
+          </style>
+          <p class="b7-blau">Klasse b7-blau</p>
+          <p id="b7-einzig">ID b7-einzig</p>
+          <p class="b7-a">Gruppe (b7-a)</p>
+          <p class="b7-b">Gruppe (b7-b)</p>
+          <p class="b7-fett">p mit b7-fett: <span class="b7-fett">nur dieser span ist fett</span></p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="kombinatoren">
+        <h2>7.5 Kombinatoren und Attribut-Selektoren</h2>
+        <table class="tabelle">
+          <tr><th>Schreibweise</th><th>Name</th><th>Bedeutung</th></tr>
+          <tr><td><code>div p</code></td><td>Nachfahre (Leerzeichen)</td><td>jedes p irgendwo in einem div</td></tr>
+          <tr><td><code>div &gt; p</code></td><td>Kind</td><td>nur p direkt im div</td></tr>
+          <tr><td><code>h3 + p</code></td><td>Nachbar</td><td>das p direkt nach einem h3</td></tr>
+          <tr><td><code>h3 ~ p</code></td><td>Geschwister</td><td>alle p nach einem h3 (gleiche Ebene)</td></tr>
+          <tr><td><code>[type="email"]</code></td><td>Attribut</td><td>Elemente mit genau diesem Attributwert</td></tr>
+          <tr><td><code>a[href^="https"]</code></td><td>beginnt mit</td><td>Links, deren href mit https beginnt</td></tr>
+          <tr><td><code>a[href$=".pdf"]</code></td><td>endet mit</td><td>Links auf PDF-Dateien</td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b7-box p { color: gray; }                 /* alle p in .b7-box */
+            .b7-box > p { color: crimson; }            /* nur direkte Kinder: rot */
+            .b7-box h4 + p { text-decoration: underline; }  /* p direkt nach h4 */
+            .b7-links a[href^="https"]::after { content: " 🌍"; }   /* externe Links */
+            .b7-links a[href$=".svg"]::after { content: " 🖼️"; }    /* Bilddateien */
+          </style>
+          <div class="b7-box">
+            <p>Ich bin ein direktes Kind (rot).</p>
+            <div><p>Ich bin tiefer verschachtelt (grau).</p></div>
+            <h4>Eine Überschrift</h4>
+            <p>Ich stehe direkt nach dem h4 (unterstrichen).</p>
+          </div>
+          <p class="b7-links">
+            <a href="https://www.w3.org/">Externer Link</a> ·
+            <a href="bilder/logo.svg">Link auf ein Bild</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="farben">
+        <h2>7.6 Farben</h2>
+        <p>Farben kann man auf mehrere Arten angeben:</p>
+        <ul>
+          <li><strong>Namen:</strong> <code>red</code>, <code>tomato</code>, <code>royalblue</code> … (über 140 Stück)</li>
+          <li><strong>Hex:</strong> <code>#ff6347</code> – Rot, Grün, Blau je zweistellig von 00 bis ff. Kurz: <code>#f00</code></li>
+          <li><strong>RGB:</strong> <code>rgb(255 99 71)</code> – jeweils 0 bis 255</li>
+          <li><strong>Transparenz:</strong> <code>rgb(255 99 71 / 50%)</code> oder Hex mit 8 Stellen <code>#ff634780</code></li>
+          <li><strong>HSL:</strong> <code>hsl(9 100% 64%)</code> – Farbton (0–360°), Sättigung, Helligkeit. Gut zum Abwandeln!</li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b7-farben { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+            .b7-farben div { padding: 0.8rem; border-radius: 6px; color: white; min-width: 130px; }
+          </style>
+          <div class="b7-farben">
+            <div style="background-color: tomato;">tomato</div>
+            <div style="background-color: #326ece;">#326ece</div>
+            <div style="background-color: rgb(46 160 67);">rgb(46 160 67)</div>
+            <div style="background-color: rgb(0 0 0 / 50%);">schwarz, 50 %</div>
+            <div style="background-color: hsl(280 60% 50%);">hsl(280 …)</div>
+            <div style="background-color: hsl(280 60% 30%);">dunkler</div>
+          </div>
+        </div>
+        <p class="tipp">💡 In VS Code erscheint vor jeder Farbe in einer .css-Datei ein kleines Kästchen. Fahr drüber, dann öffnet sich ein Farbwähler.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="hintergruende">
+        <h2>7.7 Hintergründe</h2>
+        <ul>
+          <li><code>background-color</code> – Hintergrundfarbe</li>
+          <li><code>background-image</code> – Bild <code>url(...)</code> oder Verlauf <code>linear-gradient(...)</code></li>
+          <li><code>background-size</code> – <code>cover</code> (füllt alles), <code>contain</code> (ganz sichtbar)</li>
+          <li><code>background-repeat</code> – wiederholen oder nicht (<code>no-repeat</code>)</li>
+          <li><code>background-position</code> – wo das Bild sitzt, z. B. <code>center</code></li>
+        </ul>
+        <div class="beispiel">
+          <style>
+            .b7-hg {
+              height: 110px;
+              border-radius: 8px;
+              margin-bottom: 0.6rem;
+              color: white;
+              padding: 0.6rem;
+              font-weight: bold;
+            }
+            .b7-bild {
+              background-image: url("bilder/landschaft.svg");
+              background-size: cover;       /* Bild füllt die ganze Fläche */
+              background-position: center;  /* mittig ausrichten */
+            }
+            .b7-muster {
+              background-image: url("bilder/logo.svg");
+              background-size: 40px;        /* jedes Logo 40px groß */
+              background-repeat: repeat;    /* wie Fliesen wiederholen */
+            }
+            .b7-verlauf {
+              /* Verlauf von links nach rechts mit drei Farben */
+              background-image: linear-gradient(to right, #326ece, #8e44ad, #e74c3c);
+            }
+            .b7-rund {
+              /* Kreisförmiger Verlauf */
+              background-image: radial-gradient(circle, gold, darkorange);
+              color: #222;
+            }
+          </style>
+          <div class="b7-hg b7-bild">Bild mit cover</div>
+          <div class="b7-hg b7-muster">Wiederholtes Muster</div>
+          <div class="b7-hg b7-verlauf">linear-gradient</div>
+          <div class="b7-hg b7-rund">radial-gradient</div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="einheiten">
+        <h2>7.8 Einheiten</h2>
+        <table class="tabelle">
+          <tr><th>Einheit</th><th>Bedeutung</th><th>Wofür?</th></tr>
+          <tr><td><code>px</code></td><td>Pixel, feste Größe</td><td>Rahmen, kleine Abstände</td></tr>
+          <tr><td><code>%</code></td><td>Prozent vom Eltern-Element</td><td>Breiten</td></tr>
+          <tr><td><code>em</code></td><td>Vielfaches der Schriftgröße des Elements</td><td>Abstände, die mit der Schrift wachsen</td></tr>
+          <tr><td><code>rem</code></td><td>Vielfaches der Schriftgröße von html (meist 16px)</td><td>Schriftgrößen, Abstände (empfohlen)</td></tr>
+          <tr><td><code>vw</code> / <code>vh</code></td><td>1 % der Fensterbreite / -höhe</td><td>Vollbild-Bereiche</td></tr>
+          <tr><td><code>ch</code></td><td>Breite der Ziffer „0“</td><td>Textbreite begrenzen, z. B. <code>max-width: 60ch</code></td></tr>
+        </table>
+        <div class="beispiel">
+          <style>
+            .b7-balken { background-color: #326ece; color: white; margin-bottom: 0.4rem; padding: 0.2rem 0.5rem; }
+          </style>
+          <div class="b7-balken" style="width: 200px;">200px</div>
+          <div class="b7-balken" style="width: 50%;">50 % der Breite</div>
+          <div class="b7-balken" style="width: 20rem;">20rem = 320px</div>
+          <div class="b7-balken" style="width: 30vw;">30vw (ändere die Fenstergröße!)</div>
+          <p style="font-size: 1.5rem;">1.5rem groß <span style="font-size: 0.5em;">und hier 0.5em davon</span></p>
+        </div>
+        <p class="tipp">💡 <code>calc()</code> rechnet mit gemischten Einheiten: <code>width: calc(100% - 2rem);</code></p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="kaskade">
+        <h2>7.9 Kaskade, Spezifität und Vererbung</h2>
+        <p>Was passiert, wenn mehrere Regeln dasselbe Element treffen? Der Browser entscheidet so:</p>
+        <ol>
+          <li><strong>Wichtigkeit:</strong> <code>!important</code> gewinnt (nur im Notfall benutzen!).</li>
+          <li><strong>Spezifität:</strong> genauere Selektoren gewinnen. Reihenfolge: inline-style &gt; ID &gt; Klasse/Attribut/Pseudo-Klasse &gt; Element.</li>
+          <li><strong>Reihenfolge:</strong> bei Gleichstand gewinnt die Regel, die <strong>später</strong> steht.</li>
+        </ol>
+        <p><strong>Vererbung:</strong> Manche Eigenschaften (z. B. <code>color</code>, <code>font-family</code>) erben Kinder automatisch vom Eltern-Element, andere (z. B. <code>border</code>, <code>padding</code>) nicht.</p>
+        <div class="beispiel">
+          <style>
+            p.b7-test { color: green; }   /* Element + Klasse: spezifischer */
+            .b7-test { color: red; }      /* nur Klasse: verliert, obwohl später */
+            #b7-test-id { color: blue; }  /* ID: am spezifischsten, gewinnt */
+
+            .b7-reihe { color: orange; }
+            .b7-reihe { color: purple; }  /* gleiche Spezifität: die spätere gewinnt */
+
+            .b7-eltern { color: teal; border: 2px solid teal; padding: 0.5rem; }
+          </style>
+          <p class="b7-test">Klasse + p-Regel: grün</p>
+          <p class="b7-test" id="b7-test-id">Mit ID: blau</p>
+          <p class="b7-reihe">Gleichstand, die spätere Regel gewinnt: lila</p>
+          <div class="b7-eltern">
+            Eltern-Element mit Rahmen
+            <p>Ich erbe die Farbe teal, aber NICHT den Rahmen.</p>
+          </div>
+        </div>
+        <p class="tipp">💡 Rechtsklick → <em>Untersuchen</em> (F12) zeigt im Reiter „Elemente“ rechts alle Regeln für ein Element. Durchgestrichene Regeln haben verloren.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="variablen">
+        <h2>7.10 CSS-Variablen</h2>
+        <p>
+          Variablen (eigentlich „Custom Properties“) beginnen mit <code>--</code> und werden mit
+          <code>var(--name)</code> gelesen. Meist definiert man sie in <code>:root</code>, dann
+          gelten sie überall. Deine <code>style.css</code> macht das schon für die Farben, und
+          der Dunkelmodus ändert einfach nur die Variablen.
+        </p>
+        <div class="beispiel">
+          <style>
+            .b7-thema {
+              --haupt: #e67e22;                 /* Variable festlegen */
+              --abstand: 0.8rem;
+            }
+            .b7-thema .b7-knopf {
+              background-color: var(--haupt);   /* Variable benutzen */
+              padding: var(--abstand);
+              margin-right: 0.5rem;
+            }
+            .b7-thema.b7-gruen {
+              --haupt: #27ae60;                 /* nur die Variable ändern */
+            }
+          </style>
+          <div class="b7-thema"><button class="b7-knopf" type="button">Orange</button></div>
+          <br>
+          <div class="b7-thema b7-gruen"><button class="b7-knopf" type="button">Gleiche Regel, andere Variable</button></div>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Erstelle <code>uebung.css</code> und binde sie in deine Übungsseite ein. Färbe alle h2 in deiner Lieblingsfarbe (als hsl).</li>
+          <li>Gib einem Absatz eine Klasse <code>hinweis</code> mit hellgelbem Hintergrund und einem anderen eine ID mit fetter Schrift.</li>
+          <li>Mach den body-Hintergrund zu einem Verlauf von oben (hell) nach unten (etwas dunkler).</li>
+          <li>Schreib zwei widersprüchliche Regeln und sag vorher, welche gewinnt. Prüfe es mit F12.</li>
+          <li>Ändere in <code>style.css</code> die Variable <code>--akzent</code> und schau, wie sich alle Seiten ändern.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 7</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

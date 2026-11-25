@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="400" height="240">
+  <!-- Ein einfaches Bild als SVG (Vektorgrafik). SVG ist auch eine Art HTML für Bilder. -->
+  <rect width="400" height="240" fill="#87ceeb"/>
+  <circle cx="320" cy="60" r="32" fill="#ffd54f"/>
+  <polygon points="0,240 120,90 240,240" fill="#4caf50"/>
+  <polygon points="140,240 270,110 400,240" fill="#388e3c"/>
+  <rect y="210" width="400" height="30" fill="#2e7d32"/>
+</svg>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!--
+  Seite 3: HTML Grundlagen
+  Jedes Kapitel hat eine Erklärung und ein Beispiel (class="beispiel").
+  lektion.js zeigt unter jedem Beispiel automatisch den zugehörigen Code an.
+-->
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite 3: HTML Grundlagen – Meine Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Seite 3: HTML Grundlagen 🧱</h1>
+      <nav id="navigation"></nav>
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
+    </header>
+
+    <main>
+      <!-- Inhaltsverzeichnis: Links mit # springen zu Elementen mit passender id -->
+      <section class="inhalt">
+        <h2>Inhalt</h2>
+        <ol>
+          <li><a href="#was-ist-html">Was ist HTML?</a></li>
+          <li><a href="#aufbau">Aufbau einer HTML-Seite</a></li>
+          <li><a href="#elemente">Elemente</a></li>
+          <li><a href="#attribute">Attribute</a></li>
+          <li><a href="#ueberschriften">Überschriften</a></li>
+          <li><a href="#absaetze">Absätze und Zeilenumbrüche</a></li>
+          <li><a href="#formatierung">Text formatieren</a></li>
+          <li><a href="#zitate">Zitate und Abkürzungen</a></li>
+          <li><a href="#kommentare">Kommentare</a></li>
+          <li><a href="#farben-stil">Das style-Attribut</a></li>
+        </ol>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="was-ist-html">
+        <h2>3.1 Was ist HTML?</h2>
+        <p>
+          <strong>HTML</strong> steht für <em>HyperText Markup Language</em>. Es ist keine
+          Programmiersprache, sondern eine <strong>Auszeichnungssprache</strong>: Du sagst dem
+          Browser mit sogenannten <strong>Tags</strong>, was ein Stück Text ist, zum Beispiel
+          eine Überschrift, ein Absatz oder ein Link.
+        </p>
+        <ul>
+          <li><strong>HTML</strong> = Struktur und Inhalt (das Skelett)</li>
+          <li><strong>CSS</strong> = Aussehen (Kleidung und Farben)</li>
+          <li><strong>JavaScript</strong> = Verhalten (die Muskeln)</li>
+        </ul>
+        <p class="tipp">
+          💡 Tipp: Rechtsklick auf eine Webseite → <em>Seitenquelltext anzeigen</em> (oder
+          <kbd>Strg</kbd> + <kbd>U</kbd>) zeigt dir das HTML jeder Website.
+        </p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="aufbau">
+        <h2>3.2 Aufbau einer HTML-Seite</h2>
+        <p>Jede HTML-Seite hat dasselbe Grundgerüst. In VS Code bekommst du es, wenn du in einer leeren .html-Datei <code>!</code> tippst und <kbd>Enter</kbd> drückst.</p>
+        <!-- Hier zeigen wir Code als Text, weil man ein komplettes Gerüst nicht in eine Seite einbauen kann. -->
+        <pre><code>&lt;!DOCTYPE html&gt;              &lt;!-- sagt: das ist modernes HTML5 --&gt;
+&lt;html lang="de"&gt;             &lt;!-- Wurzel-Element, Sprache Deutsch --&gt;
+  &lt;head&gt;                     &lt;!-- unsichtbare Infos für den Browser --&gt;
+    &lt;meta charset="UTF-8"&gt;   &lt;!-- Umlaute richtig anzeigen --&gt;
+    &lt;title&gt;Mein Titel&lt;/title&gt; &lt;!-- Text im Browser-Tab --&gt;
+  &lt;/head&gt;
+  &lt;body&gt;                     &lt;!-- alles Sichtbare kommt hier rein --&gt;
+    &lt;h1&gt;Hallo Welt&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <p class="tipp">💡 Die Zeichen <code>&amp;lt;</code> und <code>&amp;gt;</code> im Quelltext dieser Seite sind „Entities“ für &lt; und &gt;. Mehr dazu auf Seite 6.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="elemente">
+        <h2>3.3 Elemente</h2>
+        <p>
+          Ein <strong>Element</strong> besteht meist aus einem <strong>Start-Tag</strong>, dem
+          <strong>Inhalt</strong> und einem <strong>End-Tag</strong> mit Schrägstrich:
+          <code>&lt;p&gt;Inhalt&lt;/p&gt;</code>.
+        </p>
+        <p>
+          Manche Elemente sind <strong>leer</strong> (void elements) und haben kein End-Tag, zum
+          Beispiel <code>&lt;br&gt;</code> (Zeilenumbruch), <code>&lt;hr&gt;</code> (Trennlinie)
+          und <code>&lt;img&gt;</code> (Bild).
+        </p>
+        <p>Elemente können <strong>verschachtelt</strong> werden. Wichtig: Was zuletzt geöffnet wurde, wird zuerst geschlossen.</p>
+        <div class="beispiel">
+          <!-- richtig verschachtelt: <strong> liegt komplett IN <p> -->
+          <p>Das ist ein <strong>wichtiges</strong> Wort.</p>
+
+          <!-- <hr> ist ein leeres Element: eine waagerechte Linie -->
+          <hr>
+
+          <p>Erste Zeile<br>zweite Zeile nach einem &lt;br&gt;</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="attribute">
+        <h2>3.4 Attribute</h2>
+        <p>
+          <strong>Attribute</strong> geben einem Element zusätzliche Infos. Sie stehen immer im
+          Start-Tag, in der Form <code>name="wert"</code>.
+        </p>
+        <ul>
+          <li><code>href</code> – Ziel eines Links</li>
+          <li><code>src</code> und <code>alt</code> – Quelle und Ersatztext eines Bildes</li>
+          <li><code>id</code> – eindeutiger Name (nur einmal pro Seite!)</li>
+          <li><code>class</code> – Gruppenname für CSS, darf mehrfach vorkommen</li>
+          <li><code>title</code> – Tooltip, erscheint beim Drüberfahren mit der Maus</li>
+          <li><code>lang</code> – Sprache des Inhalts</li>
+          <li><code>style</code> – CSS direkt am Element</li>
+        </ul>
+        <div class="beispiel">
+          <!-- title zeigt einen Tooltip. Fahr mit der Maus über den Text! -->
+          <p title="Ich bin ein Tooltip 👋">Fahr mit der Maus über mich.</p>
+
+          <!-- href sagt, wohin der Link führt. target="_blank" öffnet einen neuen Tab. -->
+          <a href="https://developer.mozilla.org/de/" target="_blank">MDN Web Docs (neuer Tab)</a>
+
+          <!-- lang="en" sagt: dieser Absatz ist Englisch (wichtig für Screenreader) -->
+          <p lang="en">This paragraph is in English.</p>
+        </div>
+        <p class="tipp">💡 Schreib Attributnamen klein und Werte immer in Anführungszeichen.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="ueberschriften">
+        <h2>3.5 Überschriften</h2>
+        <p>
+          Es gibt sechs Stufen von <code>&lt;h1&gt;</code> (wichtigste) bis <code>&lt;h6&gt;</code>.
+          Suchmaschinen und Screenreader nutzen sie, um die Seite zu gliedern. Nutze pro Seite
+          genau ein <code>&lt;h1&gt;</code> und überspringe keine Stufen.
+        </p>
+        <div class="beispiel">
+          <h1>Überschrift 1</h1>
+          <h2>Überschrift 2</h2>
+          <h3>Überschrift 3</h3>
+          <h4>Überschrift 4</h4>
+          <h5>Überschrift 5</h5>
+          <h6>Überschrift 6</h6>
+        </div>
+        <p class="tipp">💡 Wähle die Stufe nach der Bedeutung, nicht nach der Größe. Die Größe änderst du mit CSS.</p>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="absaetze">
+        <h2>3.6 Absätze und Zeilenumbrüche</h2>
+        <p>
+          <code>&lt;p&gt;</code> ist ein Absatz. Der Browser <strong>ignoriert</strong> mehrere
+          Leerzeichen und Zeilenumbrüche im Quelltext und macht daraus ein einziges Leerzeichen.
+          Für einen Zeilenumbruch brauchst du <code>&lt;br&gt;</code>. Willst du den Text genau so
+          anzeigen, wie er getippt ist, nimm <code>&lt;pre&gt;</code>.
+        </p>
+        <div class="beispiel">
+          <p>
+            Dieser    Text   hat     viele
+            Leerzeichen und
+            Umbrüche im Quelltext, wird aber in einer Zeile angezeigt.
+          </p>
+
+          <!-- <pre> = "preformatted": Leerzeichen und Umbrüche bleiben erhalten -->
+          <pre>
+  Rosen sind rot,
+    Veilchen sind blau,
+      HTML ist toll,
+        das weiß ich genau.
+          </pre>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="formatierung">
+        <h2>3.7 Text formatieren</h2>
+        <p>
+          Für Text gibt es viele kleine Elemente. Manche haben eine <strong>Bedeutung</strong>
+          (semantisch), andere ändern nur das Aussehen. Bevorzuge die semantischen:
+          <code>&lt;strong&gt;</code> statt <code>&lt;b&gt;</code> und <code>&lt;em&gt;</code>
+          statt <code>&lt;i&gt;</code>.
+        </p>
+        <div class="beispiel">
+          <p><b>b</b> – fett, ohne besondere Bedeutung</p>
+          <p><strong>strong</strong> – wichtig (wird fett dargestellt)</p>
+          <p><i>i</i> – kursiv, z. B. für Fachbegriffe oder Gedanken</p>
+          <p><em>em</em> – betont (wird kursiv), Screenreader betonen es</p>
+          <p><mark>mark</mark> – markiert wie mit Textmarker</p>
+          <p><small>small</small> – Kleingedrucktes</p>
+          <p><del>del</del> – gelöschter Text, <ins>ins</ins> – eingefügter Text</p>
+          <p>H<sub>2</sub>O – <code>sub</code> ist tiefgestellt</p>
+          <p>E = mc<sup>2</sup> – <code>sup</code> ist hochgestellt</p>
+          <p><code>code</code> – Programmcode, <kbd>Strg</kbd> + <kbd>C</kbd> – Tastatureingabe</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="zitate">
+        <h2>3.8 Zitate und Abkürzungen</h2>
+        <div class="beispiel">
+          <!-- <blockquote> ist ein längeres Zitat als eigener Block. cite nennt die Quelle. -->
+          <blockquote cite="https://de.wikipedia.org/wiki/Tim_Berners-Lee">
+            Das Web ist mehr eine soziale als eine technische Erfindung.
+          </blockquote>
+
+          <!-- <q> ist ein kurzes Zitat im Satz. Der Browser setzt automatisch Anführungszeichen. -->
+          <p>Tim Berners-Lee sagte: <q>Das Web ist für alle.</q></p>
+
+          <!-- <abbr> erklärt eine Abkürzung. Fahr mit der Maus drüber! -->
+          <p>Die <abbr title="World Wide Web Consortium">W3C</abbr> legt Web-Standards fest.</p>
+
+          <!-- <address> für Kontaktdaten, <cite> für den Titel eines Werks -->
+          <address>Sirwan<br>Westfälische Hochschule</address>
+          <p><cite>Der Herr der Ringe</cite> von J. R. R. Tolkien</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="kommentare">
+        <h2>3.9 Kommentare</h2>
+        <p>
+          Kommentare beginnen mit <code>&lt;!--</code> und enden mit <code>--&gt;</code>. Der
+          Browser zeigt sie nicht an. Nutze sie für Notizen oder um Code vorübergehend
+          „auszuschalten“. In VS Code: Zeile markieren und <kbd>Strg</kbd> + <kbd>#</kbd>.
+        </p>
+        <div class="beispiel">
+          <!-- Dieser Kommentar ist unsichtbar. -->
+          <p>Dieser Absatz ist sichtbar.</p>
+          <!-- <p>Dieser Absatz ist "auskommentiert" und deshalb unsichtbar.</p> -->
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section id="farben-stil">
+        <h2>3.10 Das style-Attribut</h2>
+        <p>
+          Mit <code>style</code> kannst du CSS direkt an ein Element schreiben (inline). Das ist
+          praktisch zum Ausprobieren. Für echte Seiten ist eine CSS-Datei besser, weil man
+          dort alles an einer Stelle ändert. CSS lernst du ab Seite 7.
+        </p>
+        <div class="beispiel">
+          <p style="color: tomato;">Rote Schrift mit color</p>
+          <p style="background-color: gold; color: black;">Gelber Hintergrund</p>
+          <p style="font-size: 1.5rem;">Größere Schrift mit font-size</p>
+          <p style="text-align: center;">Zentrierter Text</p>
+        </div>
+      </section>
+
+      <!-- ================================================== -->
+      <section>
+        <h2>✍️ Übungen</h2>
+        <ol>
+          <li>Erstelle eine neue Datei <code>uebung.html</code>, tippe <code>!</code> + Enter und schreib eine kleine Seite über dein Lieblingshobby mit h1, zwei h2 und mehreren Absätzen.</li>
+          <li>Markiere darin ein wichtiges Wort mit <code>strong</code> und eine Abkürzung mit <code>abbr</code>.</li>
+          <li>Füge ein Zitat mit <code>blockquote</code> ein.</li>
+          <li>Öffne die Seite im Browser und schau dir den Quelltext mit <kbd>Strg</kbd> + <kbd>U</kbd> an.</li>
+        </ol>
+      </section>
+    </main>
+
+    <div id="blaettern" class="blaettern"></div>
+
+    <footer>
+      <p>Kurs: HTML, CSS und JavaScript · Seite 3</p>
+    </footer>
+
+    <script src="theme.js"></script>
+    <script src="navigation.js"></script>
+    <script src="lektion.js"></script>
+  </body>
+</html>

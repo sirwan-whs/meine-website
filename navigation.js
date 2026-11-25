@@ -3,16 +3,20 @@
 
   Statt die Links in jede HTML-Datei zu kopieren, stehen alle Seiten
   hier in einem Array. Das Skript baut daraus:
-  - die Links oben im Header (<nav id="navigation">)
-  - die Übersicht auf der Startseite (<ol id="seiten-liste">)
+  - die Links und eine Seiten-Auswahl oben im Header (<nav id="navigation">)
+  - die Übersicht auf der Startseite (<div id="seiten-liste">), nach Bereichen gruppiert
   - "← vorherige" und "nächste →" unten auf jeder Seite (<div id="blaettern">)
 
   👉 Neue Seite? Einfach unten im Array "seiten" eine Zeile ergänzen. Fertig.
 */
 
 const seiten = [
-  { nummer: 1, datei: "seite-01-todo.html", titel: "To-do-Liste", thema: "Formulare, Arrays, localStorage" },
-  { nummer: 2, datei: "seite-02-quiz.html", titel: "Quiz", thema: "Objekte, if/else, CSS Grid" },
+  { nummer: 1, datei: "seite-01-todo.html", bereich: "Projekte", titel: "To-do-Liste", thema: "Formulare, Arrays, localStorage" },
+  { nummer: 2, datei: "seite-02-quiz.html", bereich: "Projekte", titel: "Quiz", thema: "Objekte, if/else, CSS Grid" },
+  { nummer: 3, datei: "seite-03-html-grundlagen.html", bereich: "HTML", titel: "HTML Grundlagen", thema: "Elemente, Attribute, Überschriften, Text, Kommentare" },
+  { nummer: 4, datei: "seite-04-html-links-bilder-listen-tabellen.html", bereich: "HTML", titel: "Links, Bilder, Listen, Tabellen", thema: "a, img, ul/ol/dl, table" },
+  { nummer: 5, datei: "seite-05-html-formulare.html", bereich: "HTML", titel: "HTML Formulare", thema: "form, input-Typen, select, textarea, Validierung" },
+  { nummer: 6, datei: "seite-06-html-semantik-medien.html", bereich: "HTML", titel: "Semantik und Medien", thema: "header/main/footer, Block/Inline, Audio, Video, iframe, Entities" },
 ];
 
 // ----- Welche Seite ist gerade offen? -----
@@ -32,43 +36,80 @@ const aktuellePosition = seiten.findIndex(function (seite) {
 const nav = document.getElementById("navigation");
 
 if (nav) {
-  // Eine kleine Hilfsfunktion, die einen Link baut.
-  function linkBauen(ziel, text) {
-    const link = document.createElement("a");
-    link.href = ziel;
-    link.textContent = text;
-    // Den Link zur aktuellen Seite markieren (CSS macht ihn unterstrichen).
-    if (ziel === aktuelleDatei) {
-      link.classList.add("aktiv");
-      link.setAttribute("aria-current", "page");
-    }
-    return link; // "return" gibt das fertige Element an den Aufrufer zurück
+  // Link zur Startseite
+  const start = document.createElement("a");
+  start.href = "index.html";
+  start.textContent = "Start";
+  if (aktuelleDatei === "index.html") {
+    start.classList.add("aktiv");
   }
+  nav.append(start);
 
-  nav.append(linkBauen("index.html", "Start"));
+  // Bei vielen Seiten wäre eine Link-Reihe zu lang. Deshalb eine Auswahlliste (<select>).
+  const auswahl = document.createElement("select");
+  auswahl.className = "seiten-auswahl";
+  auswahl.setAttribute("aria-label", "Seite wählen");
 
-  // for...of ist eine weitere Schleife: läuft über jedes Element des Arrays.
+  // Erste Option als Hinweis
+  const hinweis = document.createElement("option");
+  hinweis.textContent = "Seite wählen …";
+  hinweis.value = "";
+  auswahl.append(hinweis);
+
   for (const seite of seiten) {
-    nav.append(linkBauen(seite.datei, `${seite.nummer}. ${seite.titel}`));
+    const option = document.createElement("option");
+    option.value = seite.datei;
+    option.textContent = `${seite.nummer}. ${seite.titel}`;
+    if (seite.datei === aktuelleDatei) {
+      option.selected = true; // aktuelle Seite vorauswählen
+    }
+    auswahl.append(option);
   }
+
+  // "change" passiert, wenn man eine andere Option wählt. Dann zur Seite springen.
+  auswahl.addEventListener("change", function () {
+    if (auswahl.value !== "") {
+      location.href = auswahl.value;
+    }
+  });
+
+  nav.append(auswahl);
 }
 
-// ----- 2. Übersicht auf der Startseite -----
+// ----- 2. Übersicht auf der Startseite, nach Bereichen gruppiert -----
 
 const seitenListe = document.getElementById("seiten-liste");
 
 if (seitenListe) {
-  for (const seite of seiten) {
-    const eintrag = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = seite.datei;
-    link.textContent = seite.titel;
+  // Alle Bereiche ohne Doppelte sammeln. new Set(...) entfernt doppelte Werte.
+  const bereiche = [...new Set(seiten.map(function (s) { return s.bereich; }))];
 
-    const thema = document.createElement("small");
-    thema.textContent = ` – ${seite.thema}`;
+  for (const bereich of bereiche) {
+    const ueberschrift = document.createElement("h3");
+    ueberschrift.textContent = bereich;
 
-    eintrag.append(link, thema);
-    seitenListe.append(eintrag);
+    const liste = document.createElement("ol");
+    liste.className = "seiten-liste";
+
+    // Nur die Seiten dieses Bereichs
+    const passende = seiten.filter(function (s) { return s.bereich === bereich; });
+
+    for (const seite of passende) {
+      const eintrag = document.createElement("li");
+      eintrag.value = seite.nummer; // <li value="3"> zeigt die echte Seitennummer
+
+      const link = document.createElement("a");
+      link.href = seite.datei;
+      link.textContent = seite.titel;
+
+      const thema = document.createElement("small");
+      thema.textContent = ` – ${seite.thema}`;
+
+      eintrag.append(link, thema);
+      liste.append(eintrag);
+    }
+
+    seitenListe.append(ueberschrift, liste);
   }
 }
 

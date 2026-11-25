@@ -35,7 +35,12 @@
         <a href="#ueber-mich">Über mich</a>
         <a href="#lernziele">Lernziele</a>
         <a href="#kontakt">Kontakt</a>
+        <!-- Ein Link auf eine ANDERE Datei: so verbindet man mehrere Seiten. -->
+        <a href="todo.html">To-do-Liste</a>
       </nav>
+
+      <!-- Schalter für den Dunkelmodus. Die Logik steckt in theme.js. -->
+      <button id="theme-button" class="theme-button" type="button">🌙 Dunkel</button>
     </header>
 
     <!-- <main>: der Hauptinhalt. -->
@@ -85,6 +90,7 @@
       So ist das HTML schon fertig geladen, wenn das Skript startet,
       und das Skript findet alle Elemente (z. B. den Button).
     -->
+    <script src="theme.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
